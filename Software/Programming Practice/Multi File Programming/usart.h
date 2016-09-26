@@ -49,10 +49,11 @@ char uartRead;										//Storage of incoming text
 
 void initialize_uart1_wired();						//Initialize UART1, which is used for the wired FTDI UART interface 
 void initialize_uart2_bt();							//Initialize UART2, which is used for the wireless Bluetooth UART interface 
+void initialize_uart_interrupts();					//Initialize UART1 and UART2 recieve interrupts 
 void USART1_INT();									//Wired UART1 interrupt handler (Can we change this name?)
 void USART2_INT();									//Bluetooth UART2 interrupt handler (can we change this name?)
 void serial_write(int, *char[], int);				//??????? Function to write text or data to BOTH UARTs (Text/Data Flag, Text Char array, Data as int) 
-void parse_command(*char);							//??????? Function to parse recieved text for use in main code 
+char parse_incoming_text(*char);					//??????? Function to parse recieved text for use in main code 
 
 
 
