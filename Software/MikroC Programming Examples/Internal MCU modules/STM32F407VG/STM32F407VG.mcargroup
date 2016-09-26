@@ -1,0 +1,10 @@
+[PROJECTS]
+Count=6
+Project0=DAC\DAC.mcpar
+Project1=External Interrupt\External_Interrupt.mcpar
+Project2=FLASH\FLASH.mcpar
+Project3=PWM\PWM.mcpar
+Project4=Timer2 Interrupt\Timer2 Interrupt.mcpar
+Project5=WDT\WatchDog_Timer.mcpar
+[ActiveProject]
+Index=0

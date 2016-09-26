@@ -1,0 +1,8 @@
+[PROJECTS]
+Count=4
+Project0=Basic_Realm\Basic_Realm.mcpar
+Project1=EthV2_Demo\EthV2_Demo.mcpar
+Project2=HTTP_Demo\HTTP_Demo.mcpar
+Project3=HTTP_Demo_j600\HTTP_Demo_j600.mcpar
+[ActiveProject]
+Index=0

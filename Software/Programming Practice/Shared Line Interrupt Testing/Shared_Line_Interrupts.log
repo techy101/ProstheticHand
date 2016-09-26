@@ -1,0 +1,12 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\Shared Line Interrupt Testing\Shared_Line_Interrupts.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\Shared Line Interrupt Testing\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" "Shared_Line_Interrupts.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_PWM_1234589_12_10_11_13_14.emcl"	 
+diagnostics: 0	122	Compilation Started	Shared_Line_Interrupts.c
+hint: 0	1004	interrupt handler (ExtInt at 0x0038)	Shared_Line_Interrupts.c
+diagnostics: 55	123	Compiled Successfully	Shared_Line_Interrupts.c
+diagnostics: 0	127	All files Compiled in 172 ms	 
+hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
+hint: 0	1144	Static RAM (bytes): 8   Dynamic RAM (bytes): 131061	Static RAM (bytes): 8   Dynamic RAM (bytes): 131061
+hint: 0	1144	Used ROM (bytes): 2744 (0%)  Free ROM (bytes): 1045832 (100%)	Used ROM (bytes): 2744 (0%)  Free ROM (bytes): 1045832 (100%)
+diagnostics: 0	125	Project Linked Successfully	Shared_Line_Interrupts.mcpar
+diagnostics: 0	128	Linked in 1078 ms	 
+diagnostics: 0	129	Project 'Shared_Line_Interrupts.mcpar' completed: 1718 ms	 
+diagnostics: 0	103	Finished successfully: 14 Sep 2016, 11:21:54	Shared_Line_Interrupts.mcpar

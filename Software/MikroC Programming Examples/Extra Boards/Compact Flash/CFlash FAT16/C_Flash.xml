@@ -1,0 +1,13 @@
+<C_Flash>
+	<Attributes>
+		<Url>http://www.mikroe.com/add-on-boards/storage/compact-flash/</Url>
+		<Image>Compact Flash.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>OpenUrl</OnLeftClick>
+		<OnRightClick></OnRightClick>
+		<OnDblClick>OpenUrl</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</C_Flash>

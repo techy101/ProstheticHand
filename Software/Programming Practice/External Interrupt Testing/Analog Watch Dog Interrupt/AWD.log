@@ -1,0 +1,11 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Analog Watch Dog Interrupt\AWD.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Analog Watch Dog Interrupt\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" "AWD.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_ADC_123_32F20x_16ch.emcl" "__Lib_LcdConsts.emcl" "__Lib_Lcd.emcl"	 
+diagnostics: 0	122	Compilation Started	AWD.c
+diagnostics: 218	123	Compiled Successfully	AWD.c
+diagnostics: 0	127	All files Compiled in 93 ms	 
+hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
+hint: 0	1144	Static RAM (bytes): 28   Dynamic RAM (bytes): 131041	Static RAM (bytes): 28   Dynamic RAM (bytes): 131041
+hint: 0	1144	Used ROM (bytes): 3688 (0%)  Free ROM (bytes): 1044888 (100%)	Used ROM (bytes): 3688 (0%)  Free ROM (bytes): 1044888 (100%)
+diagnostics: 0	125	Project Linked Successfully	AWD.mcpar
+diagnostics: 0	128	Linked in 1047 ms	 
+diagnostics: 0	129	Project 'AWD.mcpar' completed: 1625 ms	 
+diagnostics: 0	103	Finished successfully: 21 Sep 2016, 13:27:37	AWD.mcpar

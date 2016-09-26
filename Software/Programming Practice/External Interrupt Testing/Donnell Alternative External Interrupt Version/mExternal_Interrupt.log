@@ -1,0 +1,16 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -BIN -LHF -DL -SSA -O11111114 -fo140 -N"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Testing\mExternal_Interrupt.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\SCSUS\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Testing\" -SP"C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Multiple External Interrupt\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -SP"C:\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" "External_Interrupt.c" "Ext_Int_Direction_And_Enable.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl"	 
+warning: 0	1501	Specified search path does not exist: 'C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\External Interrupt Testing\Multiple External Interrupt'	 
+warning: 0	1501	Specified search path does not exist: 'C:\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs'	 
+diagnostics: 0	122	Compilation Started	External_Interrupt.c
+diagnostics: 0	123	Compiled Successfully	External_Interrupt.c
+diagnostics: 1	122	Compilation Started	External_Interrupt.c
+hint: 0	1004	interrupt handler (DirectionInt2 at 0x0038)	Ext_Int_Direction_And_Enable.c
+diagnostics: 39	123	Compiled Successfully	Ext_Int_Direction_And_Enable.c
+diagnostics: 0	127	All files Compiled in 188 ms	 
+hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
+hint: 0	1144	Static RAM (bytes): 8   Dynamic RAM (bytes): 131061	Static RAM (bytes): 8   Dynamic RAM (bytes): 131061
+hint: 0	1144	Used ROM (bytes): 2640 (0%)  Free ROM (bytes): 1045936 (100%)	Used ROM (bytes): 2640 (0%)  Free ROM (bytes): 1045936 (100%)
+diagnostics: 0	125	Project Linked Successfully	mExternal_Interrupt.mcpar
+diagnostics: 0	128	Linked in 1109 ms	 
+diagnostics: 0	129	Project 'mExternal_Interrupt.mcpar' completed: 1859 ms	 
+diagnostics: 0	103	Finished successfully: 09 Sep 2016, 13:06:09	mExternal_Interrupt.mcpar

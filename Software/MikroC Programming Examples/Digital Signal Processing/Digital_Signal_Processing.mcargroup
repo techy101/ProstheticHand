@@ -1,0 +1,10 @@
+[PROJECTS]
+Count=6
+Project0=FFT\FFT_Convolution.mcpar
+Project1=FIR\FIR_Demo.mcpar
+Project2=Fixed Point\Fixed_Point.mcpar
+Project3=IIR\IIR_Demo.mcpar
+Project4=Matrix\Matrix.mcpar
+Project5=Vectors\Vectors.mcpar
+[ActiveProject]
+Index=0

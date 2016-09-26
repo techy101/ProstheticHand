@@ -1,0 +1,28 @@
+[PROJECTS]
+Count=24
+Project0=Can Spi\CAN SPI 1st\Can_Spi_1st.mcpar
+Project1=Can Spi\CAN SPI 2nd\Can_Spi_2nd.mcpar
+Project2=Compact Flash\CFlash Common\CFlash_Common.mcpar
+Project3=Compact Flash\CFlash FAT16\Cf_Fat16_Test.mcpar
+Project4=DAC (Soft SPI)\Soft_SPI.mcpar
+Project5=DAC (SPI)\DAC.mcpar
+Project6=Keypad 4x4\Keypad 4x4.mcpar
+Project7=Lcd\Lcd.mcpar
+Project8=Port Expander\PortExpander.mcpar
+Project9=RS485\RS485 Master\RS485_Master_Example.mcpar
+Project10=RS485\RS485 Slave\RS485_Slave_Example.mcpar
+Project11=RTC (Soft I2C)\RTC Read\RTC_Read.mcpar
+Project12=RTC (Soft I2C)\RTC Write\RTC_Write.mcpar
+Project13=SPI Ethernet\Basic_Realm\Basic_Realm.mcpar
+Project14=SPI Ethernet\EthV2_Demo\EthV2_Demo.mcpar
+Project15=SPI Ethernet\HTTP_Demo\HTTP_Demo.mcpar
+Project16=SPI Ethernet\HTTP_Demo_j600\HTTP_Demo_j600.mcpar
+Project17=SPI T6963C\SPI T6963C 240x128\SPI_T6963C_240x128.mcpar
+Project18=SPI T6963C\SPI T6963C 240x64\SPI_T6963C_240x64.mcpar
+Project19=SPI_Glcd\SPI_Glcd.mcpar
+Project20=SPI_Lcd\SPI_Lcd.mcpar
+Project21=SPI_Lcd8\SPI_Lcd8.mcpar
+Project22=T6963C\T6963C 240x128\T6963C_240x128.mcpar
+Project23=T6963C\T6963C 240x64\T6963C_240x64.mcpar
+[ActiveProject]
+Index=0

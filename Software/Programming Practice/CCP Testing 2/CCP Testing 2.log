@@ -1,0 +1,56 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F103VE -BIN -LHF -DL -SSA -O11111114 -fo72 -N"C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\CCP Testing 2.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M3\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" -IP"..\STM32 Timers\Code Examples\Input Capture Example\" "Ex_6.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_101_102_103.emcl" "__Lib_GPIO_32F10x_Defs.emcl" "__Lib_GPIO_32F10x.emcl" "__Lib_CString.emcl" "__Lib_Conversions.emcl" "__Lib_LcdConsts.emcl" "__Lib_Lcd.emcl"	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+warning: 0	1502	Specified include path does not exist: '..\STM32 Timers\Code Examples\Input Capture Example'	 
+error: 1	304	 error: Can't open include file "tim_common.h"     #include "TIM_common.h"	C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\Ex_6.c
+error: 2	304	 error: Can't open include file "tim2.h"     #include "TIM2.h"	C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\Ex_6.c
+error: 3	304	 error: Can't open include file "tim3.h"     #include "TIM3.h"	C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\Ex_6.c
+error: 4	304	 error: Can't open include file "afio.h"     #include "AFIO.h"	C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\Ex_6.c
+error: 5	304	 error: Can't open include file "gpio.h"     #include "GPIO.h" 5 errors in preprocessor.	C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\Ex_6.c
+diagnostics: 0	122	Compilation Started	Ex_6.c
+hint: 0	1004	interrupt handler (TIM2_ISR at 0x002C)	Ex_6.c
+error: 69	393	'setup' Identifier redefined	Ex_6.c
+error: 85	324	Undeclared identifier 'AFIO_enable' in expression	Ex_6.c
+error: 86	324	Undeclared identifier 'AFIO_remap' in expression	Ex_6.c
+error: 87	324	Undeclared identifier 'AFIO_remap' in expression	Ex_6.c
+error: 89	324	Undeclared identifier 'enable_GPIOA' in expression	Ex_6.c
+error: 90	324	Undeclared identifier 'setup_GPIOA' in expression	Ex_6.c
+error: 91	324	Undeclared identifier 'enable_pull_down_GPIOA' in expression	Ex_6.c
+error: 92	324	Undeclared identifier 'setup_GPIOA' in expression	Ex_6.c
+error: 92	402	; expected, but ')' found	Ex_6.c
+error: 92	424	'}' expected ';' found	Ex_6.c
+error: 106	324	Undeclared identifier 'enable_TIM2' in expression	Ex_6.c
+error: 107	324	Undeclared identifier 'enable_TIM2_counter' in expression	Ex_6.c
+error: 110	324	Undeclared identifier 'set_TIM2_counting_direction' in expression	Ex_6.c
+error: 111	324	Undeclared identifier 'set_TIM2_clock_division' in expression	Ex_6.c
+error: 112	324	Undeclared identifier 'set_TIM2_CC1_selection' in expression	Ex_6.c
+error: 113	324	Undeclared identifier 'set_TIM2_CC1_state_and_polarity' in expression	Ex_6.c
+error: 114	324	Undeclared identifier 'set_TIM2_IC1_input_prescalar' in expression	Ex_6.c
+error: 115	324	Undeclared identifier 'set_TIM2_IC1_filter' in expression	Ex_6.c
+error: 116	324	Undeclared identifier 'enable_TIM2_CC1_interrupt' in expression	Ex_6.c
+error: 117	324	Undeclared identifier 'enable_TIM2_update_interrupt' in expression	Ex_6.c
+error: 120	324	Undeclared identifier 'enable_TIM2_counter' in expression	Ex_6.c
+error: 121	312	Internal error ''	Ex_6.c
+error: 0	102	Finished (with errors): 19 Sep 2016, 12:19:03	CCP Testing 2.mcpar

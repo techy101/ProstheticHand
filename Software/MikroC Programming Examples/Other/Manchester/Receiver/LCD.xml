@@ -1,0 +1,13 @@
+<LCD>
+	<Attributes>
+		<Url>http://www.mikroe.com/en/tools/components/#other</Url>
+		<Image>Lcd.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>OpenUrl</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</LCD>

@@ -1,0 +1,9 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\CCP Testing 1\CCPTest1.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\Rachel\Desktop\Dropbox\Senior Design Team Folder\Software\Programming Practice\CCP Testing 1\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" "main.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_UART_123_45_6.emcl"	 
+diagnostics: 0	122	Compilation Started	main.c
+hint: 0	1004	interrupt handler (wrong at 0x0016)	main.c
+hint: 0	1004	interrupt handler (InputCapture at 0x002B)	main.c
+error: 87	317	Operator '' is not applicable to these operands ''	main.c
+error: 87	317	Operator '' is not applicable to these operands ''	main.c
+warning: 87	1508	Implicit conversion of int to ptr	main.c
+error: 88	317	Operator '' is not applicable to these operands ''	main.c
+error: 0	102	Finished (with errors): 23 Sep 2016, 10:11:24	CCPTest1.mcpar

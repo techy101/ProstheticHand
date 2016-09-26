@@ -1,0 +1,22 @@
+[PROJECTS]
+Count=18
+Project0=C math\C_math.mcpar
+Project1=C stdlib\C_stdlib.mcpar
+Project2=C string\C_string.mcpar
+Project3=C type\C_type.mcpar
+Project4=Conversions\Conversions.mcpar
+Project5=Manchester\Receiver\ManchesterReceiver.mcpar
+Project6=Manchester\Transmitter\ManchesterTransmitter.mcpar
+Project7=Memory Manager\MM_Example.mcpar
+Project8=PrintOut\PrintOut.mcpar
+Project9=PS2 Keyboard\PS2.mcpar
+Project10=Soft UART\Soft_UART.mcpar
+Project11=Sprintf\Sprintf.mcpar
+Project12=Sprinti\Sprinti.mcpar
+Project13=Sprintl\Sprintl.mcpar
+Project14=Time\Time_Demo.mcpar
+Project15=USB HID Bootloader\Projects\STM32F107VC\USB HID Bootloader.mcpar
+Project16=USB HID Bootloader\Projects\STM32F207VG\USB HID Bootloader.mcpar
+Project17=USB HID Bootloader\Projects\STM32F407VG\USB HID Bootloader.mcpar
+[ActiveProject]
+Index=0

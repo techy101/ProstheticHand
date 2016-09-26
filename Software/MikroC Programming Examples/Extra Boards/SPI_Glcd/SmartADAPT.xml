@@ -1,0 +1,13 @@
+<SmartADAPT>
+	<Attributes>
+		<Url>http://www.mikroe.com/add-on-boards/various/smartadapt/</Url>
+		<Image>smart adapt.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>OpenUrl</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</SmartADAPT>

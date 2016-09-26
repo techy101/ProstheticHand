@@ -1,0 +1,6 @@
+[PROJECTS]
+Count=2
+Project0=Receiver\ManchesterReceiver.mcpar
+Project1=Transmitter\ManchesterTransmitter.mcpar
+[ActiveProject]
+Index=0

@@ -1,0 +1,13 @@
+<EasyPS2>
+	<Attributes>
+		<Url>http://www.mikroe.com/add-on-boards/various/easyps2/</Url>
+		<Image>EasyPS2.JPG</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>OpenUrl</OnLeftClick>
+		<OnRightClick></OnRightClick>
+		<OnDblClick>OpenUrl</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</EasyPS2>

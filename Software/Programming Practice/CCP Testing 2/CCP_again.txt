@@ -1,0 +1,85 @@
+//input capture mode with interrupt on one channel...
+
+//Interrupt handlers: might include a debug statement to start
+
+
+unsigned int counterValue;
+unsigned int pollingCounter = 0;
+
+
+void main() {
+	
+	//Capture counter value in TIM2_CCR1 when TI1 input rises (-> read this register!)
+	//Write 01 into CC1S bits in TIM2_CCMR1 register
+	TIM2_CCMR1_Input.B1 = 0;
+	TIM2_CCMR1_Input.B0 = 1;
+		
+	//TIM2_CCMR1 becomes read-only
+	
+	
+	//Program filter duration for timer input
+	Write 0s to IC1F bits in TIM2_CCMR1 -> no filter
+	TIM2_CCMR1_Input.B7 = 0;
+	TIM2_CCMR1_Input.B6 = 0;
+	TIM2_CCMR1_Input.B5 = 0;
+	TIM2_CCMR1_Input.B4 = 0;
+	
+	
+	//Select rising edge of TI1 channel input	
+	//Write 00 to CC1P and CC1NP bits in TIM2_CCER
+	TIM2_CCER.B3 = 0;
+	TIM2_CCER.B1 = 0;
+	
+	
+	//Program input prescaler: capture each valid transition	
+	//Write 00 to IC1PS bits in TIM2_CCMR1 (disable prescaler)
+	TIM2_CCMR1_Input.B3 = 0;
+	TIM2_CCMR1_Input.B2 = 0;
+	
+	
+	//Enable capture from counter into CCR	
+	//Set CC1E bit in TIM2_CCER 
+	TIM2_CCER.B0 = 1;
+	
+	
+	//If needed: enable related interrupt request	
+	//Set CC1IE bit in TIM2_DIER
+	TIM2_DIER.CC1IE = 1;
+	
+	
+	//If needed: enable related DMA request
+	//Will probably be enough to read value and display it for now
+	TIM2_DIER.CC1DE = 1; 
+	
+	
+	//When input capture occurs
+	TIM2_CCR1 gets value of counter on active transition
+	CC1IF is set; so is CC1OF if flag was not cleared for at least two consecutive captures
+	Interrupt on CC1IEDMA generated depending on CC1DE
+
+	
+	//configure PD0 for digital input (function gen)
+	GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_0);        
+	 
+	 
+	//cofigure UART1
+	UART1_Init(115200);              // Initialize UART module at 115200 bps
+	Delay_ms(100);                  // Wait for UART module to stabilize
+
+	UART1_Write_Text("Started \n");
+	UART1_Write(13);
+	UART1_Write(10);
+	
+	
+	while(1) {
+		pollingCounter++;
+		if(pollingCounter == POLLING_FREQUENCY) {
+			counterValue = TIM2_CCR1;	// read counter
+			UART1_Write_Text("Counter value: ");
+			UART1_Write(counterValue);	// display its value
+			UART1_Write_Text("\n");		
+			//auto-reload handles overflow... expect some funny results	
+			pollingCounter = 0;
+		}
+	}
+}
