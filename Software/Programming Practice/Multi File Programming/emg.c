@@ -43,6 +43,13 @@ void initialize_emg() {														// Initialization of remaining Electromyogr
     //ADC?_CR1bits.AWDEN = 1;    											// Enable Analog watchdog on regular channels
 	
 	//Initialize AWD Interrupt   ***Unsure of code here, waiting for Donnell***
+     /*
+     ADC1_CR1bits.AWDSGL = 0;
+     ADC1_CR1bits.JAWDEN = 0;
+     ADC1_CR1bits.SCAN = 1;
+     ADC1_CR1bits.OVRIE = 1;   //Enable overrun interrupt
+	 NVIC_IntEnable(IVT_INT_WWDG);
+    */	
 }
 
 

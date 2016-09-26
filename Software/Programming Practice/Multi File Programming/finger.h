@@ -1,5 +1,5 @@
-#ifndef FINGERSTRUCT_H
-#define FINGERSTRUCT_H
+#ifndef FINGER_H
+#define FINGER_H
 
 /*
 Prosthetic Hand Senior Design Project

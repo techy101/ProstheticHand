@@ -1,5 +1,5 @@
 #ifndef EMG_H
-#define EMB_H
+#define EMG_H
 /*
 Prosthetic Hand Senior Design Project
 9/25/2016

@@ -1,3 +1,6 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+
 //Mapping new names to port/pins
 
 //EMG 
