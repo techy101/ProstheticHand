@@ -5,7 +5,7 @@
 
 
 
-//Constants
+//Finger global constants
 extern const unsigned int directionOpen = 0;			//Finger direction of movement opening 
 extern const unsigned int directionClose = 1;			//Finger direction of movement closing 
 extern const unsigned int pwmFrequency = 100;			//PWM Generation frequency in Hz (100Hz)

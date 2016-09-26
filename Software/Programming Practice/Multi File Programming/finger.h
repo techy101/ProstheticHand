@@ -8,11 +8,11 @@ Rachel Mertz
 Matthew Varas
 Donnell Jones
 
- * Project name:
-    Prosthetic Hand
+ * File Name:
+    finger.h
 
  * Description:
-    Finger header file 
+    Header file for all finger related variables, structs, and functions
 
 
  * General Information about fingers:
@@ -27,6 +27,11 @@ Donnell Jones
 	0: Clockwise: Finger opening (defined as open)
 	1: Counter Clockwise: Finger Closing (defined as close)	
 */
+
+#include <defines.h>
+#include <globals.h>
+
+
 
 
 /************************  Initialize Finger Struct  ************************/

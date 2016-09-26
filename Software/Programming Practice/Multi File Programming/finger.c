@@ -18,8 +18,6 @@ Donnell Jones
 
 
 #include <finger.h>
-#include <globals.h>
-#include <defines.h>
 
 
 /*********************  Finger Initialization  **********************
@@ -44,10 +42,10 @@ void initialize_finger(struct fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
 			//Initialize Direction and PWM
-			GPIO_Digital_Output(&MaskPointerPortBase, MaskPointerDirPin);					//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_POINTER_PORT_BASE, MASK_POINTER_DIR_PIN);				//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelPointerPWM);     	//Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelPointerPWM, &PinPointerPWM);          					//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_POINTER_PWM);     	//Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_POINTER_PWM, &PIN_POINTER_PWM);          				//Start PWM (pin: ??)
 					
 			//Initialize Encoder Interrupts
 			
@@ -70,10 +68,10 @@ void initialize_finger(struct fingerName) {
 		//Middle Finger
 		case 'fngr_middle': 
 			//Initialize Direction and PWM
-			GPIO_Digital_Output(&MaskMiddlePortBase, MaskMiddleDirPin);						//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_MIDDLE_PORT_BASE, MASK_MIDDLE_DIR_PIN);				//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelMiddlePWM);     	//Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelMiddlePWM, &PinMiddlePWM);          						//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_MIDDLE_PWM);     	//Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_MIDDLE_PWM, &PIN_MIDDLE_PWM);          					//Start PWM (pin: ??)
 								
 			//Initialize Encoder Interrupts
 			
@@ -95,10 +93,10 @@ void initialize_finger(struct fingerName) {
 		//Ring Finger
 		case 'fngr_ring': 
 			//Initialize Direction and PWM
-			GPIO_Digital_Output(&MaskRingPortBase, MaskRingDirPin);							//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_RING_PORT_BASE, MASK_RING_DIR_PIN);					//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelRingPWM);     		//Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelRingPWM, &PinRingPWM);          							//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_RING_PWM);    		//Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_RING_PWM, &PIN_RING_PWM);          						//Start PWM (pin: ??)
 											
 			//Initialize Encoder Interrupts
 			
@@ -120,10 +118,10 @@ void initialize_finger(struct fingerName) {
 		//Pinky 
 		case 'fngr_pinky':
 			//Initialize Direction and PWM
-			GPIO_Digital_Output(&MaskPinkyPortBase, MaskPinkyDirPin);						//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_PINKY_PORT_BASE, MASK_PINKY_DIR_PIN);					//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelPinkyPWM);     		//Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelPinkyPWM, &PinPinkyPWM);          						//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_PINKY_PWM);     	//Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_PINKY_PWM, &PIN_PINKY_PWM);          					//Start PWM (pin: ??)
 											
 			//Initialize Encoder Interrupts
 			
@@ -145,10 +143,10 @@ void initialize_finger(struct fingerName) {
 		//Thumb
 		case 'fngr_thumb':
 			//Initialize Direction and PWM
-			GPIO_Digital_Output(&MaskThumbPortBase, MaskThumbDirPin);						//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_THUMB_PORT_BASE, MASK_THUMB_DIR_PIN);					//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelThumbPWM);   	  	//Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelThumbPWM, &PinThumbPWM);          						//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_THUMB_PWM);   	  	//Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_THUMB_PWM, &PIN_THUMB_PWM);          					//Start PWM (pin: ??)
 											
 			//Initialize Encoder Interrupts
 			
@@ -170,10 +168,10 @@ void initialize_finger(struct fingerName) {
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
 			//Initialize Direction and PWM 
-			GPIO_Digital_Output(&MaskThumbArticPortBase, MaskThumbArticDirPin);				//Enable digital output for Direction pin (Pin: ??)
+			GPIO_Digital_Output(&MASK_THUMB_ARTIC_PORT_BASE, MASK_THUMB_ARTIC_DIR_PIN);		//Enable digital output for Direction pin (Pin: ??)
 			pwm_period = PWM_TIM1_Init(pwmFrequency);                                  		//Set PWM base frequency
-			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, ChannelThumbArticPWM);     //Set initial duty cycle of 0 on Timer ??, channel ??
-			PWM_TIM1_Start(ChannelThumbArticPWM, &PinThumbArticPWM);          				//Start PWM (pin: ??)
+			PWM_TIM1_Set_Duty(pwmInitialDuty, _PWM_NON_INVERTED, CHANNEL_THUMB_ARTIC_PWM);  //Set initial duty cycle of 0 on Timer ??, channel ??
+			PWM_TIM1_Start(CHANNEL_THUMB_ARTIC_PWM, &PIN_THUMB_ARTIC_PWM);          		//Start PWM (pin: ??)
 											
 			//Initialize Encoder Interrupts
 			
@@ -330,8 +328,8 @@ unsigned int get_current_direction(struct fingerName) {
 	 switch(fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
-			encoderStateA = PinPointerEncoderA;
-			encoderStateB = PinPointerEncoderB;
+			encoderStateA = PIN_POINTER_ENCODER_A;
+			encoderStateB = PIN_POINTER_ENCODER_B;
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
 				fingerName.currentDirection = open;						//Set the instance variable to open 
@@ -350,8 +348,8 @@ unsigned int get_current_direction(struct fingerName) {
 		
 		//Middle Finger
 		case 'fngr_middle': 
-			encoderStateA = PinMiddleEncoderA;
-			encoderStateB = PinMiddleEncoderB;
+			encoderStateA = PIN_MIDDLE_ENCODER_A;
+			encoderStateB = PIN_MIDDLE_ENCODER_B;
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
 				fingerName.currentDirection = open;						//Set the instance variable to open 
@@ -370,8 +368,8 @@ unsigned int get_current_direction(struct fingerName) {
 		
 		//Ring Finger
 		case 'fngr_ring': 
-			encoderStateA = PinRingEncoderA;
-			encoderStateB = PinRingEncoderB;
+			encoderStateA = PIN_RING_ENCODER_A;
+			encoderStateB = PIN_RING_ENCODER_B;
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
 				fingerName.currentDirection = open;						//Set the instance variable to open 
@@ -390,8 +388,8 @@ unsigned int get_current_direction(struct fingerName) {
 		
 		//Pinky 
 		case 'fngr_pinky':
-			encoderStateA = PinPinkyEncoderA;
-			encoderStateB = PinPinkyEncoderB;
+			encoderStateA = PIN_PINKY_ENCODER_A;
+			encoderStateB = PIN_PINKY_ENCODER_B;
 			
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
@@ -411,8 +409,8 @@ unsigned int get_current_direction(struct fingerName) {
 
 		//Thumb
 		case 'fngr_thumb':
-			encoderStateA = PinThumbEncoderA;
-			encoderStateB = PinThumbEncoderB;
+			encoderStateA = PIN_THUMB_ENCODER_A;
+			encoderStateB = PIN_THUMB_ENCODER_B;
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
 				fingerName.currentDirection = open;						//Set the instance variable to open 
@@ -431,8 +429,8 @@ unsigned int get_current_direction(struct fingerName) {
 		
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
-			encoderStateA = PinThumbArticEncoderA;
-			encoderStateB = PinThumbArticEncoderB;
+			encoderStateA = PIN_THUMB_ARTIC_ENCODER_A;
+			encoderStateB = PIN_THUMB_ARTIC_ENCODER_B;
 			
 			if (encoderStateA && !encoderStateB) {						//The finger is opening **********This logic is a guess. needs to be sorted out*******
 				fingerName.currentDirection = open;						//Set the instance variable to open 
@@ -481,39 +479,39 @@ unsigned int get_current_position(struct fingerName) {
 	 switch(fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
-			//fingerName.currentPosition = CounterPointerPosition;
-			//actualPosition = CounterPointerPosition;
+			//fingerName.currentPosition = COUNTER_POINTER_POSITION;
+			//actualPosition = COUNTER_POINTER_POSITION;
 			break;
 		
 		//Middle Finger
 		case 'fngr_middle': 
 
-			//fingerName.currentPosition = CounterMiddlePosition;
-			//actualPosition = CounterMiddlePosition;
+			//fingerName.currentPosition = COUNTER_MIDDLE_POSITION;
+			//actualPosition = COUNTER_MIDDLE_POSITION;
 			break;
 		
 		//Ring Finger
 		case 'fngr_ring': 
-			//fingerName.currentPosition = CounterRingPosition;
-			//actualPosition = read value 
+			//fingerName.currentPosition = COUNTER_RING_POSITION;
+			//actualPosition = COUNTER_RING_POSITION 
 			break;
 		
 		//Pinky 
 		case 'fngr_pinky':
-			//fingerName.currentPosition = CounterPinkyPosition;
-			//actualPosition = CounterPinkyPosition;
+			//fingerName.currentPosition = COUNTER_PINKY_POSITION;
+			//actualPosition = COUNTER_PINKY_POSITION;
 			break;
 
 		//Thumb
 		case 'fngr_thumb':
-			//fingerName.currentPosition = CounterThumbPosition;
-			//actualPosition = CounterThumbPosition; 
+			//fingerName.currentPosition = COUNTER_THUMB_POSITION;
+			//actualPosition = COUNTER_THUMB_POSITION; 
 			break;
 		
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
-			//fingerName.currentPosition = CounterThumbArticPosition;
-			//actualPosition = CounterThumbArticPosition;
+			//fingerName.currentPosition = COUNTER_THUMB_ARTIC_POSITION;
+			//actualPosition = COUNTER_THUMB_ARTIC_POSITION;
 			break;  
 	 }
 	 
@@ -553,38 +551,39 @@ unsigned int get_current_speed(struct fingerName, int pollingRate) {
 	 switch(fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
-			//fingerName.currentPosition = CounterPointerPosition;
-			//actualPosition = CounterPointerPosition;
+			//fingerName.currentPosition = COUNTER_POINTER_POSITION;
+			//actualPosition = COUNTER_POINTER_POSITION;
 			break;
 		
 		//Middle Finger
 		case 'fngr_middle': 
-			//fingerName.currentPosition = CounterMiddlePosition;
-			//actualPosition = CounterMiddlePosition;
+
+			//fingerName.currentPosition = COUNTER_MIDDLE_POSITION;
+			//actualPosition = COUNTER_MIDDLE_POSITION;
 			break;
 		
 		//Ring Finger
 		case 'fngr_ring': 
-			//fingerName.currentPosition = CounterRingPosition;
-			//actualPosition = read value 
+			//fingerName.currentPosition = COUNTER_RING_POSITION;
+			//actualPosition = COUNTER_RING_POSITION 
 			break;
 		
 		//Pinky 
 		case 'fngr_pinky':
-			//fingerName.currentPosition = CounterPinkyPosition;
-			//actualPosition = CounterPinkyPosition;
+			//fingerName.currentPosition = COUNTER_PINKY_POSITION;
+			//actualPosition = COUNTER_PINKY_POSITION;
 			break;
 
 		//Thumb
 		case 'fngr_thumb':
-			//fingerName.currentPosition = CounterThumbPosition;
-			//actualPosition = CounterThumbPosition; 
+			//fingerName.currentPosition = COUNTER_THUMB_POSITION;
+			//actualPosition = COUNTER_THUMB_POSITION; 
 			break;
 		
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
-			//fingerName.currentPosition = CounterThumbArticPosition;
-			//actualPosition = CounterThumbArticPosition;
+			//fingerName.currentPosition = COUNTER_THUMB_ARTIC_POSITION;
+			//actualPosition = COUNTER_THUMB_ARTIC_POSITION;
 			break;  
 	 }
 	 
@@ -629,38 +628,38 @@ unsigned int get_tip_force(struct fingerName) {
 	 switch(fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_POINTER_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_POINTER_TIP_FORCE);
 			break;
 		
 		//Middle Finger
 		case 'fngr_middle': 
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_MIDDLE_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_MIDDLE_TIP_FORCE);
 			break;
 		
 		//Ring Finger
 		case 'fngr_ring': 
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_RING_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_RING_TIP_FORCE);
 			break;
 		
 		//Pinky 
 		case 'fngr_pinky':
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_PINKY_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_PINKY_TIP_FORCE);
 			break;
 
 		//Thumb
 		case 'fngr_thumb':
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_TIP_FORCE);
 			break;
 		
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
-			//fingerName.tipForce = ADC?_Get_Sample(?);
-			//currentTipForce = ADC?_Get_Sample(?);
+			//fingerName.tipForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ARTIC_TIP_FORCE);
+			//currentTipForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ARTIC_TIP_FORCE);
 			break;  
 	 }
 	 
@@ -697,38 +696,38 @@ unsigned int get_tip_force(struct fingerName) {
 	 switch(fingerName) {
 		//Pointer Finger 
 		case 'fngr_pointer': 
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_POINTER_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_POINTER_ISENSE);
 			break;
 		
 		//Middle Finger
 		case 'fngr_middle': 
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_MIDDLE_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_MIDDLE_ISENSE);
 			break;
 		
 		//Ring Finger
 		case 'fngr_ring': 
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_RING_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_RING_ISENSE);
 			break;
 		
 		//Pinky 
 		case 'fngr_pinky':
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_PINKY_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_PINKY_ISENSE);
 			break;
 
 		//Thumb
 		case 'fngr_thumb':
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ISENSE);
 			break;
 		
 		//Thumb Articulation 
 		case 'fngr_thumb_articulate': 
-			//fingerName.fingerForce = ADC?_Get_Sample(?);
-			//currentFingerForce = ADC?_Get_Sample(?);
+			//fingerName.fingerForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ARTIC_ISENSE);
+			//currentFingerForce = ADC?_Get_Sample(CHANNEL_ADC_THUMB_ARTIC_ISENSE);
 			break;  
 	 }
 	 
