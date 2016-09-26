@@ -21,7 +21,7 @@ Donnell Jones
 	* Motor 5: Ring
 	* Motor 6: Pinky
 	* Motor 1: Thumb Main
-	* Motor 1: Thumb Articulation ???
+	* Motor 2: Thumb Articulation ???
 	
  * Motor/Finger direction:
 	0: Clockwise: Finger opening (defined as open)

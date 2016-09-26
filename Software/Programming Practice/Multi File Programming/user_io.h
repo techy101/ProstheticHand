@@ -1,5 +1,21 @@
 #ifndef USER_IO_H
 #define USER_IO_H
+/*
+Prosthetic Hand Senior Design Project
+9/25/2016
+Rachel Mertz
+Matthew Varas
+Donnell Jones
+
+ * File name:
+    user_io.h
+
+ * Description:
+    * Header file for user interface hardware 
+	* Sets up external interrupts for user buttons 
+	* Sets up LED's for user feedback 
+*/
+
 
 #include <defines.h>
 #include <globals.h>

@@ -231,7 +231,7 @@ void serial_write(int, *char[], int) {									//??????? Function to write text 
 /		stored in the appropriate global variables 					/
 /																	/
 /*******************************************************************/
-char parse_incoming_text(*char) {										//Parse recieved text for use in main code 
+char parse_incoming_text(*char) {										//Parse received text for use in main code 
 	//Take incoming text string and break it up into data types
 	//Store values for each data type in the appropriate global variable 
 }

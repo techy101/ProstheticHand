@@ -689,7 +689,7 @@ unsigned int get_tip_force(struct fingerName) {
 /		Current Isense force value is returned 						/
 /																	/
 /*******************************************************************/
-unsigned int get_tip_force(struct fingerName) {
+unsigned int get_finger_force(struct fingerName) {
 	float currentFingerForce;
 	
 		 //Determine which finger to test 
