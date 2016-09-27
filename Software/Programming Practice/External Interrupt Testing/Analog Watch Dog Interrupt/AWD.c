@@ -172,46 +172,50 @@ void main() {
 
 
 #include <built_in.h>
-#define high_level       3695
-#define low_level         400
+#define high_level       2000
+//#define low_level         400 //250mV
 unsigned long adc_result = 0;
 
- /* void ADC_AWD() iv IVT_INT_WWDG ics ICS_AUTO {
-       GPIOC_ODRbits.ODR13 ^= 1;
-       ADC1_SRbits.AWD = 0;
-}
-  */
-void main() {
-     GPIO_Digital_Output(&GPIOD_ODR, _GPIO_PINMASK_ALL);        // Set PORTD as output
-     ADC_Set_Input_Channel(_ADC_CHANNEL_3);                     // Choose ADC channel
+ void ADC_AWD() iv IVT_INT_ADC ics ICS_AUTO {
+     //May need to wakeup core here
+     ADC1_CR1bits.AWDIE = 0;   //Disable analog interrupt
      
-     GPIO_Config(&GPIOA_BASE, (_GPIO_PINMASK_0 | _GPIO_PINMASK_1), (_GPIO_CFG_MODE_ANALOG | _GPIO_CFG_PULL_NO));
-     GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_13, (_GPIO_CFG_MODE_OUTPUT | _GPIO_CFG_SPEED_MAX | _GPIO_CFG_OTYPE_PP));
+     //Set mode flag (Crossing from low to high or from high to low)
+     //if(low to high(using mode flag)) {
+            //Initialize timer for wakeup on overflow
+            //Set high AWD level to absurdly high so we can't cross it
+            //Set low AWD level to previous AWD high level
+     //}
 
-     ADC1_Init();                                               // Init
-     ADC1_LTR = low_level;     //Setting max threshold
+     //else if(high to low (using mode flag)) {
+            //Disable and reset timer to prepare for next event
+            //Set low AWD level to 0 again
+            //Set high AWD level to initial level again
+     //}
+     
+     GPIOC_ODRbits.ODR13 = 1;
+     ADC1_SRbits.AWD = 0;
+     ADC1_CR1bits.AWDIE = 1;   //Enable analog interrupt (enabled)
+}
+
+void main() {
+     ADC_Set_Input_Channel(_ADC_CHANNEL_3);
+     
+     GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_13, (_GPIO_CFG_MODE_OUTPUT | _GPIO_CFG_SPEED_MAX | _GPIO_CFG_OTYPE_PP)); //LED PC13 (output)
+     GPIO_Digital_Output(&GPIOD_ODR, _GPIO_PINMASK_ALL);        // LED port D (output)
+     GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_1); //Pin 1 (output)
+     
+     ADC1_Init();              // Init
+  //   ADC1_LTR = low_level;     //Setting max threshold
      ADC1_HTR = high_level;    //Setting low threshold
-     ADC1_CR1bits.AWDIE = 1;   //Enable analog interrupt
-     ADC1_CR1bits.AWDEN = 1;    //Enable Analog watchdog on regular channels
-     /*
-     ADC1_CR1bits.AWDSGL = 0;
-     ADC1_CR1bits.JAWDEN = 0;
-     ADC1_CR1bits.SCAN = 1;
-     ADC1_CR1bits.OVRIE = 1;   //Enable overrun interrupt
-    */
-
-     //NVIC_IntEnable(IVT_INT_WWDG);
+     ADC1_CR1bits.AWDEN = 1;   //Enable Analog watchdog on regular channels (enabled)
+     ADC1_CR1bits.AWDSGL = 0;  //Enable the watchdog on a single channel in scan mode (disabled)
+     ADC1_CR1bits.JAWDEN = 0;  //Analog watchdog enable on injected channels (disabled)
+     ADC1_CR1bits.AWDIE = 1;   //Enable analog interrupt (enabled)
+     NVIC_IntEnable(IVT_INT_ADC);
 
      while(1){
-     
-              if(ADC1_SRbits.AWD == 1){
-              GPIOC_ODRbits.ODR13 ^= 1;
-              ADC1_SRbits.AWD = 0;
-              }
-              else{
                 GPIOC_ODRbits.ODR13 = 0;
-                }
-                
                 GPIOD_ODR = ADC1_Get_Sample(3);            // Get ADC value from corresponding channel
                 Delay_ms(20);
          }
