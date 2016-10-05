@@ -1,10 +1,10 @@
-#line 1 "C:/Users/Rachel/Desktop/Dropbox/Senior Design Team Folder/Software/STM32 Timers/Code Examples/Input Capture Example/Ex_6.c"
-#line 1 "c:/users/rachel/desktop/dropbox/senior design team folder/software/stm32 timers/code examples/input capture example/tim_common.h"
-#line 1 "c:/users/rachel/desktop/dropbox/senior design team folder/software/stm32 timers/code examples/input capture example/tim2.h"
-#line 1 "c:/users/rachel/desktop/dropbox/senior design team folder/software/stm32 timers/code examples/input capture example/tim3.h"
-#line 1 "c:/users/rachel/desktop/dropbox/senior design team folder/software/stm32 timers/code examples/input capture example/afio.h"
-#line 1 "c:/users/rachel/desktop/dropbox/senior design team folder/software/stm32 timers/code examples/input capture example/gpio.h"
-#line 8 "C:/Users/Rachel/Desktop/Dropbox/Senior Design Team Folder/Software/STM32 Timers/Code Examples/Input Capture Example/Ex_6.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/STM32 Timers/Code Examples/Input Capture Example/Ex_6.c"
+#line 1 "c:/handgitrepo/prosthetichand/software/stm32 timers/code examples/input capture example/tim_common.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/stm32 timers/code examples/input capture example/tim2.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/stm32 timers/code examples/input capture example/tim3.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/stm32 timers/code examples/input capture example/afio.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/stm32 timers/code examples/input capture example/gpio.h"
+#line 8 "C:/HandGitRepo/ProstheticHand/Software/STM32 Timers/Code Examples/Input Capture Example/Ex_6.c"
 sbit LCD_RS at GPIOD_ODR.B8;
 sbit LCD_EN at GPIOD_ODR.B9;
 sbit LCD_D4 at GPIOD_ODR.B10;
@@ -97,6 +97,8 @@ void setup_IO()
   do{if((11 >= 0) && (11 < 8)){ do{GPIOD_CRL &= (~(0xF << (11 << 2))); GPIOD_CRL |= ((0x0 | 0x2) << (11 << 2));}while(0) ;}else{ do{GPIOD_CRH &= (~(0xF << ((11 - 8) << 2))); GPIOD_CRH |= ((0x0 | 0x2) << ((11 - 8) << 2));}while(0) ;}}while(0) ;
   do{if((12 >= 0) && (12 < 8)){ do{GPIOD_CRL &= (~(0xF << (12 << 2))); GPIOD_CRL |= ((0x0 | 0x2) << (12 << 2));}while(0) ;}else{ do{GPIOD_CRH &= (~(0xF << ((12 - 8) << 2))); GPIOD_CRH |= ((0x0 | 0x2) << ((12 - 8) << 2));}while(0) ;}}while(0) ;
   do{if((13 >= 0) && (13 < 8)){ do{GPIOD_CRL &= (~(0xF << (13 << 2))); GPIOD_CRL |= ((0x0 | 0x2) << (13 << 2));}while(0) ;}else{ do{GPIOD_CRH &= (~(0xF << ((13 - 8) << 2))); GPIOD_CRH |= ((0x0 | 0x2) << ((13 - 8) << 2));}while(0) ;}}while(0) ;
+
+ GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM2);
 }
 
 

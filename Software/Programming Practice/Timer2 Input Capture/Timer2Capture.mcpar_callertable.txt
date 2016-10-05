@@ -1,0 +1,22 @@
+main
+	__CC2DW
+	__FillZeros
+	GPIO_Digital_Output
+		GPIO_Config
+			GPIO_Clk_Enable
+	GPIO_Alternate_Function_Enable
+		GPIO_Config_Pin_Alternate_Function
+			GPIO_Config
+	init_tim2_input_capture
+		NVIC_IntEnable
+		EnableInterrupts
+	UART1_Init
+		UARTx_Init_Advanced
+			RCC_GetClocksFrequency
+				Get_Fosc_kHz
+			GPIO_Alternate_Function_Enable
+Timer2_interrupt
+	NVIC_IntDisable
+	NVIC_IntEnable
+	UART1_Write
+		UARTx_Write

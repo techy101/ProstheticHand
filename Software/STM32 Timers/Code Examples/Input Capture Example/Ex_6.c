@@ -97,6 +97,8 @@ void setup_IO()
      setup_GPIOD(11, (GPIO_PP_output | output_mode_low_speed));
      setup_GPIOD(12, (GPIO_PP_output | output_mode_low_speed));
      setup_GPIOD(13, (GPIO_PP_output | output_mode_low_speed));
+     
+     GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM2);
 }
 
 
