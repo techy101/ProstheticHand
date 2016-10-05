@@ -29,7 +29,6 @@ unsigned int overflow_count = 0;
 unsigned long pulse_ticks = 0;
 unsigned long start_time = 0;
 unsigned long end_time = 0;
-//unsigned data = 0x30;
 
 void init_tim2_input_capture() {
      RCC_APB1ENR.TIM2EN = 1;           //Enable clock gating for timer module 2
@@ -76,9 +75,7 @@ void Timer2_interrupt() iv IVT_INT_TIM2 {
           //
           //
           //
-          //data = '9';
-         // data = data - 0x30;
-          UART1_Write(0x30);       // should be
+          UART1_Write(0x30);      // this is all that works so far
           
           delay_ms(1000);
           GPIOE_ODR = ~GPIOE_ODR;

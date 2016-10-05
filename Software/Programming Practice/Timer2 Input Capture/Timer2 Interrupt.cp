@@ -4,7 +4,7 @@ unsigned int overflow_count = 0;
 unsigned long pulse_ticks = 0;
 unsigned long start_time = 0;
 unsigned long end_time = 0;
-
+char data[15];
 
 void init_tim2_input_capture() {
  RCC_APB1ENR.TIM2EN = 1;
@@ -53,7 +53,8 @@ void Timer2_interrupt() iv IVT_INT_TIM2 {
 
 
 
- UART1_Write(0x30);
+ data = "Word";
+ UART1_Write_Text(data);
 
  delay_ms(1000);
  GPIOE_ODR = ~GPIOE_ODR;
