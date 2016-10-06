@@ -16,8 +16,7 @@
 
 
 
-//TESTING AREA!!!!
-
+//TESTING AREA!!!
 char testOutput;
 
 // Global Variables
