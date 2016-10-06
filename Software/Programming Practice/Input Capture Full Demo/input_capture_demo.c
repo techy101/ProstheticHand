@@ -21,10 +21,11 @@ unsigned long presentTime = 0;										// Timer value for the current input cap
 
 
 //Function Prototypes 
+void timer2_interrupt();											// Handler for timer 2 interrupt 
+void external_interrupt();											// Handler for external interrupt 	
 void init_tim2_input_capture();										// Initialize input capture for Timer 2 Channel 1 
 void init_hardware();												// Initialize GPIO's 
 void init_serial_comm();											// Initialize UART communication 
-void timer2_interrupt();											// Handler for timer 2 interrupt 
 
 
 
@@ -41,6 +42,7 @@ void main() {
 		}
 	}	
 }
+
 
 
 
@@ -78,29 +80,39 @@ void init_tim2_input_capture() {
 
 
 //**********  Interrupt handler for Timer 2  **********
-void timer2_interrupt() {
+void timer2_interrupt() iv IVT_INT_TIM2 {
 	NVIC_IntDisable(IVT_INT_TIM2);     								// Disable timer 2 interrupts
 	GPIOE_ODR.B10 = 1;												// Set handler timing pin high 
 	
 	if(TIM2_SR.UIF == 1) {											// If timer 2 overflow event occured 
-		//TIM2_SR.UIF = 0;                                   		// Clear timer 2 interrupt bit 
+		TIM2_SR.UIF = 0;                                   			// Clear timer 2 interrupt bit 
 		overflowCount++;                                  			// Increment overflow counter
 	}
 	 
 	if (TIM2_SR.CC1IF == 1) {										// If Input Capture event occured 
-		//TIM2_SR.CC1IF = 0;                                 		// Clear input capture event bit 
+		TIM2_SR.CC1IF = 0;                                 			// Clear input capture event bit 
 		presentTime = TIM2_CCR1;                              		// Read stored input capture time
 		totalTicks = (overflowCount << 16) - previousTime + presentTime;    // Calculate total ticks between input capture events 
 		previousTime = presentTime;									// Store time of latest input capture event for use in next instance 
 		overflowCount = 0;											// Reset the overflow counter to 0
-		GPIOE_ODR.B10 = 0;											// Set handler timing pin low 
 	}
 	
-		TIM2_SR.CC1IF = 0;                                 			// Reset input capture event bit 
-		TIM2_SR.UIF = 0;                                   			// Reset timer 2 interupt bit 
-		NVIC_IntEnable(IVT_INT_TIM2);								// Re-enable timer 2 interrupt 
-	}
+	//TIM2_SR.CC1IF = 0;                                 			// Reset input capture event bit 
+	//TIM2_SR.UIF = 0;                                   			// Reset timer 2 interupt bit 
+	NVIC_IntEnable(IVT_INT_TIM2);									// Re-enable timer 2 interrupt 
+	GPIOE_ODR.B10 = 0;												// Set handler timing pin low 
+}
 
+
+
+
+
+
+//**********  Handler for External Interrupt  **********
+void external_interrupt() iv IVT_INT_EXTI15_10 ics ICS_AUTO {
+	EXTI_PR.B10 = 1;												// Clear external interrupt flag 
+	poll_flag = 1;													// Set poll flag for main 	
+}
 
 
 
@@ -121,6 +133,8 @@ void init_hardware() {
 	EXTI_IMR |= 0x00000400;              							// Set mask to interrupt on bit 10 
 	NVIC_IntEnable(IVT_INT_EXTI1);   								// Enable External interrupt
 }
+
+
 
 
 
