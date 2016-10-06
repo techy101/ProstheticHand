@@ -24,6 +24,11 @@ main
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
+	_UnsignedLongLongToFloat
+	IntToStr
+		WordToStr
+	LongLongUnsignedToStr
+		_Div_64x64_U
 	FloatToStr
 		strcpy
 	LongToStr

@@ -13194,9 +13194,13 @@ enarp_i2c2_cr1_bit
 encmdcompl
 encmdcompl
 encmdcompl_bit
+encoder_tim_overflow
+encoder_tim_psc
+encoder_tim_reload
 endianess
 endianess
 endianess_bit
+endtime
 endual
 endual
 endual
@@ -35628,6 +35632,7 @@ over8_usart1_cr1_bit
 over8_usart2_cr1_bit
 over8_usart3_cr1_bit
 overflowcount
+overflowsintext
 ovr
 ovr
 ovr
@@ -37581,8 +37586,6 @@ pres
 pres
 pres_bit
 pres_otg_hs_hprt_bit
-presenttime
-previoustime
 prften
 prften
 prften_bit
@@ -38565,6 +38568,7 @@ ptyp
 ptyp_bit
 ptyp_fsmc_pcr3_bit
 ptyp_fsmc_pcr4_bit
+pulseticks
 pupdr0
 pupdr0
 pupdr0
@@ -42255,6 +42259,7 @@ start
 start_bit
 start_i2c1_cr1_bit
 start_i2c2_cr1_bit
+starttime
 stbiterr
 stbiterr
 stbiterr_bit
@@ -43690,6 +43695,7 @@ ti1s_tim8_cr2_bit
 tickint
 tickint
 tickint_bit
+ticksintext
 tie
 tie
 tie
@@ -44486,6 +44492,7 @@ timeout
 timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
+timepertick
 timer2_interrupt
 tjtie
 tjtie
@@ -44558,7 +44565,6 @@ tom_bit
 tom_otg_hs_diepeachmsk1_bit
 tom_otg_hs_diepmsk_bit
 tom_otg_hs_doepeachmsk1_bit
-totalticks
 tpd
 tpd0
 tpd0_bit

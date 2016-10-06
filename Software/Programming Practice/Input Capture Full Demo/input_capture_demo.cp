@@ -1,18 +1,29 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-#line 25 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 23 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+unsigned int ENCODER_TIM_OVERFLOW = 5;
+unsigned int ENCODER_TIM_PSC = 13;
+unsigned int ENCODER_TIM_RELOAD = 59999;
+
+
+
+
 unsigned int poll_flag = 0;
 unsigned int overflowCount = 0;
-unsigned long totalTicks = 0;
-unsigned long previousTime = 0;
-unsigned long presentTime = 0;
+unsigned long long pulseTicks = 0;
+unsigned long startTime = 0;
+unsigned long endTime = 0;
 float inputPeriod = 0.0;
 float inputFrequency = 0.0;
+float timePerTick = 0.0;
 unsigned long inputEventCounter = 0;
-char periodInText[15];
-char frequencyInText[15];
-char eventCounterInText[15];
+char periodInText[ 100 ];
+char frequencyInText[ 100 ];
+char eventCounterInText[ 100 ];
+char ticksInText[ 100 ];
+char overflowsInText[ 100 ];
 
 char testOutput[ 100 ];
+
 
 
 void timer2_interrupt();
@@ -36,20 +47,32 @@ void main() {
 
 
  while(1) {
- if (poll_flag && inputEventCounter) {
+ if (poll_flag && inputEventCounter >= 100) {
  poll_flag = 0;
 
- inputPeriod = (totalTicks * 1000) /  63999 ;
- inputFrequency = 1000 / inputPeriod;
+
+ inputPeriod = (float) pulseTicks * timePerTick;
+ inputFrequency = 1000000.0 / inputPeriod;
 
 
- FloatToStr(totalTicks, periodInText);
- UART1_Write_Text("Total Ticks: ");
+ IntToStr(overflowCount, overflowsInText);
+ UART1_Write_Text("Total number of timer overflows: ");
+ UART1_Write_Text(overflowsInText);
+ UART1_Write_Text("\n\r");
+
+
+ LongLongUnsignedToStr(pulseTicks, ticksInText);
+ UART1_Write_Text("Total number of ticks between events: ");
+ UART1_Write_Text(ticksInText);
+ UART1_Write_Text("\n\r");
+
+ FloatToStr(inputPeriod, periodInText);
+ UART1_Write_Text("Period of incoming signal (us): ");
  UART1_Write_Text(periodInText);
  UART1_Write_Text("\n\r");
 
  FloatToStr(inputFrequency, frequencyInText);
- UART1_Write_Text("Frequency of incoming signal: ");
+ UART1_Write_Text("Frequency of incoming signal (Hz): ");
  UART1_Write_Text(frequencyInText);
  UART1_Write_Text("\n\r");
 
@@ -75,8 +98,8 @@ void init_tim2_input_capture() {
 
  RCC_APB1ENR.TIM2EN = 1;
  TIM2_CR1.CEN = 0;
- TIM2_PSC =  2624 ;
- TIM2_ARR =  63999 ;
+ TIM2_PSC = ENCODER_TIM_PSC;
+ TIM2_ARR = ENCODER_TIM_RELOAD;
  TIM2_CR1 |= 0x10;
  TIM2_CCMR1_Input |= 0x01;
  TIM2_CCER.CC1P = 1;
@@ -86,6 +109,8 @@ void init_tim2_input_capture() {
  NVIC_IntEnable(IVT_INT_TIM2);
  EnableInterrupts();
  TIM2_CR1.CEN = 1;
+
+ timePerTick = (float) (1000.0 * ENCODER_TIM_OVERFLOW) / ENCODER_TIM_RELOAD;
 }
 
 
@@ -93,9 +118,10 @@ void init_tim2_input_capture() {
 void timer2_interrupt() iv IVT_INT_TIM2 {
 
  NVIC_IntDisable(IVT_INT_TIM2);
- GPIOE_ODR.B10 = 1;
+
 
  if(TIM2_SR.UIF == 1) {
+
 
  TIM2_SR.UIF = 0;
  overflowCount++;
@@ -105,9 +131,9 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
 
 
  TIM2_SR.CC1IF = 0;
- presentTime = TIM2_CCR1;
- totalTicks = ((overflowCount << 16) - previousTime + presentTime);
- previousTime = presentTime;
+ endTime = TIM2_CCR1;
+ pulseTicks = (((long long) overflowCount * 59999) - startTime + endTime);
+ startTime = endTime;
  overflowCount = 0;
  inputEventCounter++;
  }
@@ -115,7 +141,7 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
 
 
  NVIC_IntEnable(IVT_INT_TIM2);
- GPIOE_ODR.B10 = 0;
+
 }
 
 
