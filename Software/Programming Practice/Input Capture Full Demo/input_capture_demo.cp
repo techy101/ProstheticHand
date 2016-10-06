@@ -1,15 +1,17 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-#line 23 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-unsigned int ENCODER_TIM_OVERFLOW = 5;
-unsigned int ENCODER_TIM_PSC = 13;
-unsigned int ENCODER_TIM_RELOAD = 59999;
+#line 20 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+unsigned int ENCODER_TIM_OVERFLOW = 1000;
+unsigned int ENCODER_TIM_PSC = 2;
+unsigned int ENCODER_TIM_RELOAD = 55999;
 
 
 
 
 unsigned int poll_flag = 0;
+unsigned int print_counter = 0;
 unsigned int overflowCount = 0;
-unsigned long long pulseTicks = 0;
+unsigned int overflowCountTemp = 0;
+unsigned long pulseTicks = 0;
 unsigned long startTime = 0;
 unsigned long endTime = 0;
 float inputPeriod = 0.0;
@@ -26,6 +28,8 @@ char testOutput[ 100 ];
 
 
 
+void init_timer3();
+void Timer3_interrupt();
 void timer2_interrupt();
 void external_interrupt();
 void init_tim2_input_capture();
@@ -38,6 +42,7 @@ void main() {
 
 
  init_hardware();
+ init_timer3();
  init_tim2_input_capture();
  init_serial_comm();
 
@@ -47,7 +52,7 @@ void main() {
 
 
  while(1) {
- if (poll_flag && inputEventCounter >= 100) {
+ if (poll_flag && print_counter >= 15) {
  poll_flag = 0;
 
 
@@ -55,19 +60,19 @@ void main() {
  inputFrequency = 1000000.0 / inputPeriod;
 
 
- IntToStr(overflowCount, overflowsInText);
+ IntToStr(overflowCountTemp, overflowsInText);
  UART1_Write_Text("Total number of timer overflows: ");
  UART1_Write_Text(overflowsInText);
  UART1_Write_Text("\n\r");
 
 
- LongLongUnsignedToStr(pulseTicks, ticksInText);
+ LongToStr(pulseTicks, ticksInText);
  UART1_Write_Text("Total number of ticks between events: ");
  UART1_Write_Text(ticksInText);
  UART1_Write_Text("\n\r");
 
  FloatToStr(inputPeriod, periodInText);
- UART1_Write_Text("Period of incoming signal (us): ");
+ UART1_Write_Text("Period of incoming signal (ms): ");
  UART1_Write_Text(periodInText);
  UART1_Write_Text("\n\r");
 
@@ -82,6 +87,7 @@ void main() {
  UART1_Write_Text("\n\n\n\r");
 
  inputEventCounter = 0;
+ print_counter = 0;
  }
 
  else if (poll_flag && !inputEventCounter) {
@@ -110,7 +116,7 @@ void init_tim2_input_capture() {
  EnableInterrupts();
  TIM2_CR1.CEN = 1;
 
- timePerTick = (float) (1000.0 * ENCODER_TIM_OVERFLOW) / ENCODER_TIM_RELOAD;
+ timePerTick = (float) ENCODER_TIM_OVERFLOW / ENCODER_TIM_RELOAD;
 }
 
 
@@ -122,18 +128,22 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
 
  if(TIM2_SR.UIF == 1) {
 
-
  TIM2_SR.UIF = 0;
  overflowCount++;
  }
 
  if (TIM2_SR.CC1IF == 1) {
 
-
  TIM2_SR.CC1IF = 0;
  endTime = TIM2_CCR1;
- pulseTicks = (((long long) overflowCount * 59999) - startTime + endTime);
+
+ pulseTicks = ((long) (overflowCount * ENCODER_TIM_RELOAD) - startTime + endTime);
+
+
+
+
  startTime = endTime;
+ overflowCountTemp = overflowCount;
  overflowCount = 0;
  inputEventCounter++;
  }
@@ -163,15 +173,7 @@ void init_hardware() {
 
 
  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);
-
-
- GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_10);
- SYSCFGEN_bit = 1;
- SYSCFG_EXTICR3 = 0x00000300;
- EXTI_RTSR = 0x00000000;
- EXTI_FTSR = 0x00000400;
- EXTI_IMR |= 0x00000400;
- NVIC_IntEnable(IVT_INT_EXTI15_10);
+#line 203 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 }
 
 
@@ -180,4 +182,22 @@ void init_serial_comm() {
 
  UART1_Init( 115200 );
  Delay_ms(200);
+}
+
+
+
+void init_timer3(){
+ RCC_APB1ENR.TIM3EN = 1;
+ TIM3_CR1.CEN = 0;
+ TIM3_PSC = 279;
+ TIM3_ARR = 59999;
+ NVIC_IntEnable(IVT_INT_TIM3);
+ TIM3_DIER.UIE = 1;
+ TIM3_CR1.CEN = 1;
+}
+
+void Timer3_interrupt() iv IVT_INT_TIM3 {
+ TIM3_SR.UIF = 0;
+ poll_flag = 1;
+ print_counter++;
 }

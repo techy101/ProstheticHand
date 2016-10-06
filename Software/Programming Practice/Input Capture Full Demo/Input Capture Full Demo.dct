@@ -26399,6 +26399,7 @@ init_bit
 init_hardware
 init_serial_comm
 init_tim2_input_capture
+init_timer3
 initf
 initf
 initf_bit
@@ -35632,6 +35633,7 @@ over8_usart1_cr1_bit
 over8_usart2_cr1_bit
 over8_usart3_cr1_bit
 overflowcount
+overflowcounttemp
 overflowsintext
 ovr
 ovr
@@ -37698,6 +37700,7 @@ prigroup1
 prigroup1_bit
 prigroup2
 prigroup2_bit
+print_counter
 product_id
 product_id
 product_id0
@@ -44494,6 +44497,7 @@ timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
 timepertick
 timer2_interrupt
+timer3_interrupt
 tjtie
 tjtie
 tjtie_bit
