@@ -44496,6 +44496,7 @@ timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
 timepertick
+timepertickintext
 timer2_interrupt
 timer3_interrupt
 tjtie

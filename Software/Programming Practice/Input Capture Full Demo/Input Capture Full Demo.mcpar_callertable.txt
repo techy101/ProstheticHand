@@ -23,12 +23,12 @@ main
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
+	FloatToStr
+		strcpy
 	IntToStr
 		WordToStr
 	LongToStr
 		LongWordToStr
-	FloatToStr
-		strcpy
 Timer3_interrupt
 external_interrupt
 timer2_interrupt

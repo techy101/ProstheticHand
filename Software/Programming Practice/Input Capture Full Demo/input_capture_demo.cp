@@ -9,8 +9,8 @@ unsigned int ENCODER_TIM_RELOAD = 55999;
 
 unsigned int poll_flag = 0;
 unsigned int print_counter = 0;
-unsigned int overflowCount = 0;
-unsigned int overflowCountTemp = 0;
+unsigned long overflowCount = 0;
+unsigned long overflowCountTemp = 0;
 unsigned long pulseTicks = 0;
 unsigned long startTime = 0;
 unsigned long endTime = 0;
@@ -18,13 +18,14 @@ float inputPeriod = 0.0;
 float inputFrequency = 0.0;
 float timePerTick = 0.0;
 unsigned long inputEventCounter = 0;
-char periodInText[ 100 ];
-char frequencyInText[ 100 ];
-char eventCounterInText[ 100 ];
-char ticksInText[ 100 ];
-char overflowsInText[ 100 ];
+char periodInText[ 15 ];
+char frequencyInText[ 15 ];
+char eventCounterInText[ 15 ];
+char ticksInText[ 15 ];
+char overflowsInText[ 15 ];
+char timePerTickInText[ 15 ];
 
-char testOutput[ 100 ];
+char testOutput[ 15 ];
 
 
 
@@ -47,7 +48,7 @@ void main() {
  init_serial_comm();
 
 
- strncpy(testOutput, "\rProgram Has Started\n\r",  100 );
+ strncpy(testOutput, "\rProgram Has Started\n\r",  15 );
  UART1_Write_Text(testOutput);
 
 
@@ -58,6 +59,12 @@ void main() {
 
  inputPeriod = (float) pulseTicks * timePerTick;
  inputFrequency = 1000000.0 / inputPeriod;
+
+
+ FloatToStr(timePerTick, timePerTickInText);
+ UART1_Write_Text("Time per tick: ");
+ UART1_Write_Text(timePerTickInText);
+ UART1_Write_Text("\n\r");
 
 
  IntToStr(overflowCountTemp, overflowsInText);
@@ -137,7 +144,7 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
  TIM2_SR.CC1IF = 0;
  endTime = TIM2_CCR1;
 
- pulseTicks = ((long) (overflowCount * ENCODER_TIM_RELOAD) - startTime + endTime);
+ pulseTicks = (overflowCount * ENCODER_TIM_RELOAD) - startTime + endTime;
 
 
 
@@ -173,7 +180,7 @@ void init_hardware() {
 
 
  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);
-#line 203 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 210 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 }
 
 
