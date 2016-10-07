@@ -13201,6 +13201,7 @@ endianess
 endianess
 endianess_bit
 endtime
+endtimeintext
 endual
 endual
 endual
@@ -30741,6 +30742,7 @@ mcp
 mcp
 mcp_bit
 mcp_ethernet_mmc_mmccr_bit
+mcu_frequency
 mem_mode
 mem_mode0
 mem_mode0_bit
@@ -44570,6 +44572,8 @@ tom_bit
 tom_otg_hs_diepeachmsk1_bit
 tom_otg_hs_diepmsk_bit
 tom_otg_hs_doepeachmsk1_bit
+totaloverflowtime
+totaloverflowtimeintext
 tpd
 tpd0
 tpd0_bit

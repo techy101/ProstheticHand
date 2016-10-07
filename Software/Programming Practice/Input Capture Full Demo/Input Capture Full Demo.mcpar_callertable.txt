@@ -12,7 +12,8 @@ main
 		NVIC_IntEnable
 	init_tim2_input_capture
 		NVIC_IntEnable
-		EnableInterrupts
+		_UnsignedIntegralToLongDouble
+		_Div_DP
 	init_serial_comm
 		UART1_Init
 			UARTx_Init_Advanced
@@ -23,6 +24,11 @@ main
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
+	_UnsignedIntegralToLongDouble
+	_Mul_DP
+	_FloatToLongDouble
+	_Div_DP
+	_LongDoubleToFloat
 	FloatToStr
 		strcpy
 	IntToStr

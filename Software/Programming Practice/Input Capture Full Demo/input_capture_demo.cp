@@ -1,22 +1,26 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-#line 20 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-unsigned int ENCODER_TIM_OVERFLOW = 1000;
-unsigned int ENCODER_TIM_PSC = 2;
-unsigned int ENCODER_TIM_RELOAD = 55999;
+#line 19 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+unsigned long MCU_FREQUENCY = 168000000;
+
+
+unsigned int ENCODER_TIM_OVERFLOW;
+unsigned int ENCODER_TIM_PSC = 0;
+unsigned int ENCODER_TIM_RELOAD = 65535;
 
 
 
 
 unsigned int poll_flag = 0;
 unsigned int print_counter = 0;
-unsigned long overflowCount = 0;
-unsigned long overflowCountTemp = 0;
+unsigned int overflowCount = 0;
+unsigned int overflowCountTemp = 0;
 unsigned long pulseTicks = 0;
 unsigned long startTime = 0;
+unsigned long totalOverflowTime;
 unsigned long endTime = 0;
-float inputPeriod = 0.0;
+long double inputPeriod = 0.0;
 float inputFrequency = 0.0;
-float timePerTick = 0.0;
+long double timePerTick = 0.0;
 unsigned long inputEventCounter = 0;
 char periodInText[ 15 ];
 char frequencyInText[ 15 ];
@@ -24,6 +28,8 @@ char eventCounterInText[ 15 ];
 char ticksInText[ 15 ];
 char overflowsInText[ 15 ];
 char timePerTickInText[ 15 ];
+char totalOverflowTimeInText[ 15 ];
+char endTimeInText[ 15 ];
 
 char testOutput[ 15 ];
 
@@ -56,9 +62,10 @@ void main() {
  if (poll_flag && print_counter >= 15) {
  poll_flag = 0;
 
-
- inputPeriod = (float) pulseTicks * timePerTick;
+ pulseTicks = ((long) overflowCountTemp * ENCODER_TIM_RELOAD) + endTime;
+ inputPeriod = (long double) pulseTicks * timePerTick;
  inputFrequency = 1000000.0 / inputPeriod;
+ totalOverflowTime = (long) overflowCountTemp * ENCODER_TIM_RELOAD;
 
 
  FloatToStr(timePerTick, timePerTickInText);
@@ -70,6 +77,18 @@ void main() {
  IntToStr(overflowCountTemp, overflowsInText);
  UART1_Write_Text("Total number of timer overflows: ");
  UART1_Write_Text(overflowsInText);
+ UART1_Write_Text("\n\r");
+
+
+ FloatToStr(totalOverflowTime, totalOverflowTimeInText);
+ UART1_Write_Text("Calculated Overflow Time : ");
+ UART1_Write_Text(totalOverflowTimeInText);
+ UART1_Write_Text("\n\r");
+
+
+ FloatToStr(endTime, endTimeInText);
+ UART1_Write_Text("Time read from CCP1 Register: ");
+ UART1_Write_Text(endTimeInText);
  UART1_Write_Text("\n\r");
 
 
@@ -120,36 +139,27 @@ void init_tim2_input_capture() {
  TIM2_DIER.CC1IE = 1;
  TIM2_DIER.UIE = 1;
  NVIC_IntEnable(IVT_INT_TIM2);
- EnableInterrupts();
+
+ TIM2_CNT = 0x00;
  TIM2_CR1.CEN = 1;
 
- timePerTick = (float) ENCODER_TIM_OVERFLOW / ENCODER_TIM_RELOAD;
-}
-
+ timePerTick = (long double) 1000000.0 / MCU_FREQUENCY;
+ }
 
 
 void timer2_interrupt() iv IVT_INT_TIM2 {
-
+ TIM2_CNT = 0x00;
  NVIC_IntDisable(IVT_INT_TIM2);
 
-
  if(TIM2_SR.UIF == 1) {
-
  TIM2_SR.UIF = 0;
  overflowCount++;
  }
 
  if (TIM2_SR.CC1IF == 1) {
-
  TIM2_SR.CC1IF = 0;
  endTime = TIM2_CCR1;
 
- pulseTicks = (overflowCount * ENCODER_TIM_RELOAD) - startTime + endTime;
-
-
-
-
- startTime = endTime;
  overflowCountTemp = overflowCount;
  overflowCount = 0;
  inputEventCounter++;
@@ -180,7 +190,7 @@ void init_hardware() {
 
 
  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);
-#line 210 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 219 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 }
 
 
