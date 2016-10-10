@@ -2,14 +2,22 @@
 
 
 
-#define FNGR_POINTER_ENC_A 						gpio_for_Enc_a
-#define FNGR_POINTER_ENC_B						gpio for enc b
-#define FNGR_MIDDLE_ENC_A	
-#define FNGR_MIDDLE_ENC_B
-#define FNGR_RING_ENC_A
-#define FNGR_RING_ENC_B 
-#define FNGR_PINKY_ENC_A
-#define FNGR_PINKY_ENC_B
+//Unsure how to use structure member to access input register 
+//	assigning a member to a specific pin 
+//	So could call member.in1 and access GPIOA_IDR.B1 
+
+
+
+
+
+#define FNGR_POINTER_ENC_A 						GPIOA_IDR.B0			// Pin A0: Pointer finger encoder channel A (Tim2 CH1 input capture)
+#define FNGR_POINTER_ENC_B						GPIOA_IDR.B4			// Pin A4: Pointer finger encoder channel B (Direction only)
+#define FNGR_MIDDLE_ENC_A						GPIOA_IDR.B1			// Pin A1: Middle finger encoder channel A (Tim2 CH2 input capture)
+#define FNGR_MIDDLE_ENC_B						GPIOA_IDR.B5			// Pin A5: Middle finger encoder channel B (Direction only)  
+#define FNGR_RING_ENC_A							GPIOA_IDR.B2			// Pin A2: Ring finger encoder channel A (Tim2 CH3 input capture) 
+#define FNGR_RING_ENC_B 						GPIOA_IDR.B6			// Pin A6: Ring finger encoder channel B (Direction only) 
+#define FNGR_PINKY_ENC_A						GPIOA_IDR.B3			// Pin A3: Pinky finger encoder channel A (Tim2 CH4 input capture)
+#define FNGR_PINKY_ENC_B						GPIOA_IDR.B7			// Pin A7: Pinky finger encoder channel B (Direction only)
 
 
 /**************  Constants  **************/
@@ -51,6 +59,8 @@ struct finger {
 	char name[10];											// Name of finger 
 	unsigned int direction_actual;							// Actual direction of motor movement as read from encoder 
 	unsigned int speed_actual;								// Actual speed of the motor (calculated from encoder data)
+	unsigned int enc_chan_a;								// ?????? Encoder channel A Pin definition 
+	unsigned int enc_chan_b;								// ?????? Encoder channel B pin definition 
 	unsigned long enc_start_time;							// Value of encoder timer when previous capture event occured 
 	unsigned long enc_end_time;								// Value of encoder timer when current capture event occured 
 	unsigned long enc_total_time;							// Calculated total time between input capture events
@@ -90,6 +100,12 @@ void main() {
 	strcpy(fngr_middle.name, "Middle");
 	strcpy(fngr_ring.name, "Ring");
 	strcpy(fngr_pinky.name, "Pinky");
+	
+	
+	//Define encoder channel pins 
+	
+	//?????????????????????????????????????????????????????????????????????????????????????
+	
 		
 	
 	// Program start terminal verification 
@@ -189,6 +205,9 @@ void timer3_ISR() iv IVT_INT_EXTI15_10 ics ICS_AUTO {
 //Initialize MCU GPIO's and other hardware 
 void init_GPIO() {
 
+	//Configure GPIO's for secondary motor encoder channels 
+	GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | GPIO_PINMASK_6 | GPIO_PINMASK_7);
+
 	GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);                   	// ** DEBUG ** Enable digital output on E10
     GPIOE_ODR.B10 = 0;                                                      // ** DEBUG ** Set pin E10 low
 }
@@ -221,22 +240,22 @@ void init_input_capture() {
 	TIM2_CCER.CC1E = 1;                                                     // Enable capture on channel 1
 	TIM2_DIER.CC1IE = 1;                                                    // Enable interrupt on capture channel 1 
 	
-	//Configure middle finger (Pin ??, Channel 2) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_???_???);				// Configure alternate function for pin ?? as Timer 2 Channel 2 
+	//Configure middle finger (Pin A1, Channel 2) input capture 
+	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH2_PA1);				// Configure alternate function for pin A1 as Timer 2 Channel 2 
 	TIM2_CCMR1_Input |= 0x200;												// Set capture channel 2 as input on TI1 (CC2S = 10)
 	TIM2_CCER.CC2P = 0;														// Set capture on rising edge event 
 	TIM2_CCER.CC2E = 1;														// Enable capture on channel 2 
 	TIM2_DIER.CC2IE = 1;													// Enable interrupt on capture channel 2
 	
-	//Configure ring finger (Pin ??, Channel 3) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_???_???);				// Configure alternate function for pin ?? as Timer 2 Channel 3 
+	//Configure ring finger (Pin A2, Channel 3) input capture 
+	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH3_PA2);				// Configure alternate function for pin A2 as Timer 2 Channel 3 
 	TIM2_CCMR2_Input |= 0x01;												// Set capture channel 3 as input on TI2 (CC3S = 01)
 	TIM2_CCER.CC3P = 0;														// Set capture on rising edge event 
 	TIM2_CCER.CC3E = 1;														// Enable capture on channel 3 
 	TIM2_DIER.CC3IE = 1;													// Enable interrupt on capture channel 3	
 	
-	//Configure pinky finger (Pin ??, Channel 4) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_???_???);				// Configure alternate function for pin ?? as Timer 2 Channel 4 
+	//Configure pinky finger (Pin A3, Channel 4) input capture 
+	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH4_PA3);				// Configure alternate function for pin A3 as Timer 2 Channel 4 
 	TIM2_CCMR2_Input |= 0x200;												// Set capture channel 4 as input on TI1 (CC4S = 10)
 	TIM2_CCER.CC3P = 0;														// Set capture on rising edge event 
 	TIM2_CCER.CC3E = 1;														// Enable capture on channel 4
