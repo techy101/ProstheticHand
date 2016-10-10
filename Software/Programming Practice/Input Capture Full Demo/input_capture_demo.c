@@ -26,18 +26,18 @@ unsigned int ENCODER_TIM_RELOAD = 65535;
 
 
 // Global Variables
-unsigned int poll_flag = 0;                                                     // Flag to alert main that a polling event occured
-unsigned int print_counter = 0;
-unsigned int overflowCount = 0;                                                 // Number of timer 2 overflows
-unsigned int overflowCountTemp = 0;
-unsigned long pulseTicks = 0;                                                   // Total time between previous input capture event and current one
-unsigned long startTime = 0;                                                 // Timer value when the previous input capture event occured
-unsigned long totalOverflowTime;
-unsigned long endTime = 0;                                                  // Timer value for the current input capture event
-long double inputPeriod = 0.0;                                                        // Period of incoming input capture signal
-float inputFrequency = 0.0;                                                     // Frequency of incoming input capture signal
-long double timePerTick = 0.0;                                                        // Time between timer pulses in ms
-unsigned long inputEventCounter = 0;                                            // Total number of input capture events
+//unsigned int poll_flag = 0;                                                     // Flag to alert main that a polling event occured
+//unsigned int print_counter = 0;
+//unsigned int overflowCount = 0;                                                 // Number of timer 2 overflows
+//unsigned int overflowCountTemp = 0;
+//unsigned long pulseTicks = 0;                                                   // Total time between previous input capture event and current one
+//unsigned long startTime = 0;                                                 // Timer value when the previous input capture event occured
+//unsigned long totalOverflowTime;
+//unsigned long endTime = 0;                                                  // Timer value for the current input capture event
+//long double inputPeriod = 0.0;                                                        // Period of incoming input capture signal
+//float inputFrequency = 0.0;                                                     // Frequency of incoming input capture signal
+//long double timePerTick = 0.0;                                                        // Time between timer pulses in ms
+//unsigned long inputEventCounter = 0;                                            // Total number of input capture events
 char periodInText[STR_MAX];                                                          // String version of input signal period
 char frequencyInText[STR_MAX];                                                       // String version of input signal frequency
 char eventCounterInText[STR_MAX];                                                    // String version of input event counter

@@ -2,7 +2,10 @@
 // 10/8/2016
 
 
-// Simulated encoder input: A0
+// Encoder 1 Input: A0
+// Encoder 2 Input: ??
+// Encoder 3 Input: ??
+// Encoder 4 Input: ??
 // Interrupt timing pulse: E10
 
 
@@ -98,7 +101,7 @@ void main() {
 			input_capture_frequency = 1000000.0 / input_capture_period;						// Hertz
 			total_overflow_time = (long) timer2_overflow_temp * TIMER_2_ARR;				// ** DEBUG ** 
 			input_capture_delta = timer2_end_eime - timer2_start_time;						// ** DEBUG ** 
-			timer2_start_time = timer2_end_eime;											// Set new start time for next input capture event 
+			timer2_start_time = timer2_end_time;											// Set new start time for next input capture event 
 		}
 		
 	
