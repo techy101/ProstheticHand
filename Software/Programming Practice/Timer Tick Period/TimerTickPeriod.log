@@ -1,0 +1,13 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer Tick Period\TimerTickPeriod.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer Tick Period\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Examples\ST\Internal MCU modules\STM32F407VG\Timer2 Interrupt\" -SP"C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer2 Input Capture\" "TimerTickPeriod.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_CString.emcl" "__Lib_Conversions.emcl" "__Lib_UART_123_45_6.emcl"	 
+diagnostics: 0	122	Compilation Started	TimerTickPeriod.c
+hint: 0	1004	interrupt handler (TIM3_timed at 0x002D)	TimerTickPeriod.c
+hint: 0	1004	interrupt handler (TIM4_run at 0x002E)	TimerTickPeriod.c
+diagnostics: 60	123	Compiled Successfully	TimerTickPeriod.c
+diagnostics: 0	127	All files Compiled in 234 ms	 
+hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
+hint: 0	1144	Static RAM (bytes): 100   Dynamic RAM (bytes): 130965	Static RAM (bytes): 100   Dynamic RAM (bytes): 130965
+hint: 0	1144	Used ROM (bytes): 4525 (0%)  Free ROM (bytes): 1044051 (100%)	Used ROM (bytes): 4525 (0%)  Free ROM (bytes): 1044051 (100%)
+diagnostics: 0	125	Project Linked Successfully	TimerTickPeriod.mcpar
+diagnostics: 0	128	Linked in 1797 ms	 
+diagnostics: 0	129	Project 'TimerTickPeriod.mcpar' completed: 2859 ms	 
+diagnostics: 0	103	Finished successfully: 08 Oct 2016, 20:22:39	TimerTickPeriod.mcpar

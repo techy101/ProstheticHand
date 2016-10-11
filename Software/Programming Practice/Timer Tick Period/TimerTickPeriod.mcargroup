@@ -1,0 +1,6 @@
+[PROJECTS]
+Count=2
+Project0=..\..\..\..\..\..\Desktop\Senior design\Input Capture Example\Ex_6.mcpar
+Project1=TimerTickPeriod.mcpar
+[ActiveProject]
+Index=1
