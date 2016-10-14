@@ -15,29 +15,46 @@
 #define UART_BAUD_RATE                                  115200                  // Baud rate for UART's
 #define STR_MAX                                         15                     // Maximum char array size for UART strings
 
+/*
+double timer2_overflow_frequency;
+double timer2_overflow_period_ms;
+double timer2_tick_period_ms;
+
+timer2_overflow_frequency = (double) MCU_FREQUENCY / ((ENCODER_TIM_PSC + 1) * (ENCODER_TIM_RELOAD + 1));
+timer2_overflow_period_ms = (double) 100000 / timer2_overflow_frequency;
+timer2_tick_period_ms = (double) timer2_overflow_period_ms / (ENCODER_TIM_RELOAD + 1);
+
+*/
+
+
 
 unsigned long MCU_FREQUENCY = 168000000;
 
 //Constants
-unsigned int ENCODER_TIM_OVERFLOW;                //in us
+unsigned long ENCODER_TIM_OVERFLOW;                //in us
 unsigned int ENCODER_TIM_PSC = 0;
-unsigned int ENCODER_TIM_RELOAD = 65535;
+unsigned long ENCODER_TIM_RELOAD = 65535;
 
 
 
 // Global Variables
-//unsigned int poll_flag = 0;                                                     // Flag to alert main that a polling event occured
-//unsigned int print_counter = 0;
-//unsigned int overflowCount = 0;                                                 // Number of timer 2 overflows
-//unsigned int overflowCountTemp = 0;
-//unsigned long pulseTicks = 0;                                                   // Total time between previous input capture event and current one
-//unsigned long startTime = 0;                                                 // Timer value when the previous input capture event occured
-//unsigned long totalOverflowTime;
-//unsigned long endTime = 0;                                                  // Timer value for the current input capture event
-//long double inputPeriod = 0.0;                                                        // Period of incoming input capture signal
-//float inputFrequency = 0.0;                                                     // Frequency of incoming input capture signal
-//long double timePerTick = 0.0;                                                        // Time between timer pulses in ms
-//unsigned long inputEventCounter = 0;                                            // Total number of input capture events
+long double timer2_overflow_frequency;
+long double timer2_overflow_period_ms;
+long double timer2_tick_period_ms;
+long double totalInputTime;
+
+unsigned int poll_flag = 0;                                                     // Flag to alert main that a polling event occured
+unsigned int print_counter = 0;
+unsigned int overflowCount = 0;                                                 // Number of timer 2 overflows
+unsigned int overflowCountTemp = 0;
+long pulseTicks = 0;                                                   // Total time between previous input capture event and current one
+unsigned long startTime = 0;                                                 // Timer value when the previous input capture event occured
+long double totalOverflowTime;
+long double endTime = 0;                                                  // Timer value for the current input capture event
+long double inputPeriod;                                                        // Period of incoming input capture signal
+long double inputFrequency;                                                     // Frequency of incoming input capture signal
+long double timePerTick;                                                        // Time between timer pulses in ms
+long inputEventCounter = 0;                                            // Total number of input capture events
 char periodInText[STR_MAX];                                                          // String version of input signal period
 char frequencyInText[STR_MAX];                                                       // String version of input signal frequency
 char eventCounterInText[STR_MAX];                                                    // String version of input event counter
@@ -78,13 +95,25 @@ void main() {
         if (poll_flag && print_counter >= 15) {
            poll_flag = 0;                                                       // Clear state entry flag
 
-           pulseTicks = ((long) overflowCountTemp * ENCODER_TIM_RELOAD) + endTime;
-           inputPeriod = (long double) pulseTicks * timePerTick;                      // Calculate period in ms
-           inputFrequency = 1000000.0 / inputPeriod;                            // Calculate frequency in Hz
-           totalOverflowTime = (long) overflowCountTemp * ENCODER_TIM_RELOAD;
+ //double timer2_overflow_frequency;
+//double timer2_overflow_period_ms;
+//double timer2_tick_period_ms;
+
+           totalOverflowTime = (long double) timer2_overflow_period_ms * overflowCountTemp;
+           totalInputTime = (long double) endTime * timer2_tick_period_ms;
+           inputPeriod = (long double) totalOverflowTime + totalInputTime;
+           inputFrequency = (long double) 1 / inputPeriod;
+
+
+
+
+          pulseTicks = ((long) (overflowCountTemp * (ENCODER_TIM_RELOAD)) + (endTime));
+           //inputPeriod = (long double) pulseTicks * timePerTick;                      // Calculate period in ms
+           //inputFrequency = 1000000.0 / inputPeriod;                            // Calculate frequency in Hz
+           //totalOverflowTime = (long) overflowCountTemp * ENCODER_TIM_RELOAD;
  
            //Print values to terminal
-           FloatToStr(timePerTick, timePerTickInText);                                  // Convert number of overflows to a string
+           LongDoubleToStr(timer2_tick_period_ms, timePerTickInText);                                  // Convert number of overflows to a string
            UART1_Write_Text("Time per tick: ");
            UART1_Write_Text(timePerTickInText);
            UART1_Write_Text("\n\r");
@@ -96,13 +125,13 @@ void main() {
            UART1_Write_Text("\n\r");
           
            //Print values to terminal
-           FloatToStr(totalOverflowTime, totalOverflowTimeInText);                                  // Convert number of overflows to a string
+           LongDoubleToStr(totalOverflowTime, totalOverflowTimeInText);                                  // Convert number of overflows to a string
            UART1_Write_Text("Calculated Overflow Time : ");
            UART1_Write_Text(totalOverflowTimeInText);
            UART1_Write_Text("\n\r");
         
                    //Print values to terminal
-           FloatToStr(endTime, endTimeInText);                                  // Convert number of overflows to a string
+           LongDoubleToStr(endTime, endTimeInText);                                  // Convert number of overflows to a string
            UART1_Write_Text("Time read from CCP1 Register: ");
            UART1_Write_Text(endTimeInText);
            UART1_Write_Text("\n\r");
@@ -113,12 +142,12 @@ void main() {
            UART1_Write_Text(ticksInText);
            UART1_Write_Text("\n\r");
            
-           FloatToStr(inputPeriod, periodInText);                               // Convert period float to string
+           LongDoubleToStr(inputPeriod, periodInText);                               // Convert period float to string
            UART1_Write_Text("Period of incoming signal (ms): ");
            UART1_Write_Text(periodInText);
            UART1_Write_Text("\n\r");
 
-           FloatToStr(inputFrequency, frequencyInText);                         // Convert Frequency float to string
+           LongDoubleToStr(inputFrequency, frequencyInText);                         // Convert Frequency float to string
            UART1_Write_Text("Frequency of incoming signal (Hz): ");
            UART1_Write_Text(frequencyInText);
            UART1_Write_Text("\n\r");
@@ -159,7 +188,9 @@ void init_tim2_input_capture() {
      TIM2_CNT = 0x00;
      TIM2_CR1.CEN = 1;                                                          // Enable timer/counter
 
-     timePerTick = (long double) 1000000.0 / MCU_FREQUENCY;                                //Time per tick in ms
+     timer2_overflow_frequency = (long double) MCU_FREQUENCY / ((ENCODER_TIM_PSC + 1) * (ENCODER_TIM_RELOAD + 1));
+     timer2_overflow_period_ms = (long double) 100000 / timer2_overflow_frequency;
+     timer2_tick_period_ms = (long double) timer2_overflow_period_ms / (ENCODER_TIM_RELOAD + 1);
  }
 
 //**********  Interrupt handler for Timer 2  **********

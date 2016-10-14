@@ -26,11 +26,14 @@ main
 			UARTx_Write
 	_UnsignedIntegralToLongDouble
 	_Mul_DP
-	_FloatToLongDouble
+	_Add_DP
 	_Div_DP
-	_LongDoubleToFloat
-	FloatToStr
+	_SignedIntegralToLongDouble
+	_LongDoubleToSignedIntegral
+	LongDoubleToStr
 		strcpy
+		_Compare_DP
+		_Mul_DP
 	IntToStr
 		WordToStr
 	LongToStr
@@ -40,3 +43,4 @@ external_interrupt
 timer2_interrupt
 	NVIC_IntDisable
 	NVIC_IntEnable
+	_UnsignedIntegralToLongDouble

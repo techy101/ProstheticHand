@@ -45,6 +45,7 @@ void init_GPIO();										// Initialization of MCU I/O
 void init_UART();										// Initialization of UART for terminal communication 
 void init_input_capture();								// Initialization of input capture for timer 2 
 void init_timer3();										// Initialization of timer 3 (Used for fixed polling rate)
+void calc_timer2_values();								// Calculate the time per tick for finger timer 
 void calc_finger_state(struct finger *fngr);			// Function to determine state of finger 
 void print_finger_info(struct finger *fngr);			// Function to print finger state info to terminal 
 
@@ -73,7 +74,7 @@ struct finger {
 	unsigned long enc_overflow_ticks;						// Total number of timer ticks for the timer overflows between events 
 	unsigned long enc_delta_ticks;							// Number of timer ticks between previous/current capture events (Minus overflows)
 	unsigned long position_actual;							// Total input capture events, represents finger position 
-}
+};
 
 
 
@@ -159,7 +160,10 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 		fngr_pointer.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_pointer.position_actual++;                                		// Increment total input capture event counter
     }
-
+	
+	
+//All other channels disabled for initial testing. Start with testing only a single channel, then expand. 
+/*
 	// Channel 2 (Middle finger) input capture event 
     if (TIM2_SR.CC2IF == 1) {                                               
         //TIM2_SR.CC2IF = 0;                                     			// Clear  *** Shouldn't be needed per p.663 ref man, reading on next line auto clears 
@@ -183,7 +187,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 		fngr_pinky.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_pinky.position_actual++;                                		// Increment total input capture event counter
     }	
-	
+*/	
     //NVIC_IntEnable(IVT_INT_TIM2);                                	    	// Re-enable timer 2 interrupt
 }
 
@@ -285,6 +289,17 @@ void init_timer3() {
 	TIM3_DIER.UIE = 1;														// Timer 3 update interrupt enable 
 	TIM3_CR1.CEN = 1;														// Enable timer/counter 
 }
+
+
+
+//Calculate time per tick for timer2 - Based on TIMCLK, PSC, and ARR
+void calc_timer2_values() {
+	
+	//Do math here. Basic function for interrupt time is: TIMx_CLK / ((ARR+1) * (PSC+1))
+	
+}
+
+
 
 
 

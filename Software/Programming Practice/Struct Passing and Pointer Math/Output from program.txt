@@ -1,0 +1,29 @@
+Program Has Started
+
+Finger 1 original values:
+Name = Finger 1
+a =      5
+b =      5
+c =      5
+
+
+Finger 2 original Values:
+Name = Finger 2
+a =     10
+b =     10
+c =     10
+
+
+Finger 1 changed values:
+Name = Finger 1 Altered
+a =     10
+b =     15
+c =     25
+
+
+Finger 2 changed Values:
+Name = Finger 2 Altered
+a =     20
+b =     30
+c =     25
+

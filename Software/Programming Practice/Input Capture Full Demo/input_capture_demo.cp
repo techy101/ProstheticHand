@@ -1,27 +1,32 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-#line 19 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 31 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 unsigned long MCU_FREQUENCY = 168000000;
 
 
-unsigned int ENCODER_TIM_OVERFLOW;
+unsigned long ENCODER_TIM_OVERFLOW;
 unsigned int ENCODER_TIM_PSC = 0;
-unsigned int ENCODER_TIM_RELOAD = 65535;
+unsigned long ENCODER_TIM_RELOAD = 65535;
 
 
 
+
+long double timer2_overflow_frequency;
+long double timer2_overflow_period_ms;
+long double timer2_tick_period_ms;
+long double totalInputTime;
 
 unsigned int poll_flag = 0;
 unsigned int print_counter = 0;
 unsigned int overflowCount = 0;
 unsigned int overflowCountTemp = 0;
-unsigned long pulseTicks = 0;
+long pulseTicks = 0;
 unsigned long startTime = 0;
-unsigned long totalOverflowTime;
-unsigned long endTime = 0;
-long double inputPeriod = 0.0;
-float inputFrequency = 0.0;
-long double timePerTick = 0.0;
-unsigned long inputEventCounter = 0;
+long double totalOverflowTime;
+long double endTime = 0;
+long double inputPeriod;
+long double inputFrequency;
+long double timePerTick;
+long inputEventCounter = 0;
 char periodInText[ 15 ];
 char frequencyInText[ 15 ];
 char eventCounterInText[ 15 ];
@@ -62,13 +67,25 @@ void main() {
  if (poll_flag && print_counter >= 15) {
  poll_flag = 0;
 
- pulseTicks = ((long) overflowCountTemp * ENCODER_TIM_RELOAD) + endTime;
- inputPeriod = (long double) pulseTicks * timePerTick;
- inputFrequency = 1000000.0 / inputPeriod;
- totalOverflowTime = (long) overflowCountTemp * ENCODER_TIM_RELOAD;
 
 
- FloatToStr(timePerTick, timePerTickInText);
+
+
+ totalOverflowTime = (long double) timer2_overflow_period_ms * overflowCountTemp;
+ totalInputTime = (long double) endTime * timer2_tick_period_ms;
+ inputPeriod = (long double) totalOverflowTime + totalInputTime;
+ inputFrequency = (long double) 1 / inputPeriod;
+
+
+
+
+ pulseTicks = ((long) (overflowCountTemp * (ENCODER_TIM_RELOAD)) + (endTime));
+
+
+
+
+
+ LongDoubleToStr(timer2_tick_period_ms, timePerTickInText);
  UART1_Write_Text("Time per tick: ");
  UART1_Write_Text(timePerTickInText);
  UART1_Write_Text("\n\r");
@@ -80,13 +97,13 @@ void main() {
  UART1_Write_Text("\n\r");
 
 
- FloatToStr(totalOverflowTime, totalOverflowTimeInText);
+ LongDoubleToStr(totalOverflowTime, totalOverflowTimeInText);
  UART1_Write_Text("Calculated Overflow Time : ");
  UART1_Write_Text(totalOverflowTimeInText);
  UART1_Write_Text("\n\r");
 
 
- FloatToStr(endTime, endTimeInText);
+ LongDoubleToStr(endTime, endTimeInText);
  UART1_Write_Text("Time read from CCP1 Register: ");
  UART1_Write_Text(endTimeInText);
  UART1_Write_Text("\n\r");
@@ -97,12 +114,12 @@ void main() {
  UART1_Write_Text(ticksInText);
  UART1_Write_Text("\n\r");
 
- FloatToStr(inputPeriod, periodInText);
+ LongDoubleToStr(inputPeriod, periodInText);
  UART1_Write_Text("Period of incoming signal (ms): ");
  UART1_Write_Text(periodInText);
  UART1_Write_Text("\n\r");
 
- FloatToStr(inputFrequency, frequencyInText);
+ LongDoubleToStr(inputFrequency, frequencyInText);
  UART1_Write_Text("Frequency of incoming signal (Hz): ");
  UART1_Write_Text(frequencyInText);
  UART1_Write_Text("\n\r");
@@ -143,7 +160,9 @@ void init_tim2_input_capture() {
  TIM2_CNT = 0x00;
  TIM2_CR1.CEN = 1;
 
- timePerTick = (long double) 1000000.0 / MCU_FREQUENCY;
+ timer2_overflow_frequency = (long double) MCU_FREQUENCY / ((ENCODER_TIM_PSC + 1) * (ENCODER_TIM_RELOAD + 1));
+ timer2_overflow_period_ms = (long double) 100000 / timer2_overflow_frequency;
+ timer2_tick_period_ms = (long double) timer2_overflow_period_ms / (ENCODER_TIM_RELOAD + 1);
  }
 
 
@@ -190,7 +209,7 @@ void init_hardware() {
 
 
  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);
-#line 219 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 250 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 }
 
 
