@@ -24,7 +24,8 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=0
+Count=1
+File0=TimerTickPeriod.c
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -34,9 +35,9 @@ Count=0
 [SEARCH_PATH]
 Count=6
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
-Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
-Path2=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path3=C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer Tick Period\
+Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
+Path2=C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer Tick Period\
+Path3=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Examples\ST\Internal MCU modules\STM32F407VG\Timer2 Interrupt\
 Path5=C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\Timer2 Input Capture\
 [HEADER_PATH]
@@ -58,7 +59,7 @@ Value=SWD
 [PROGRAMMER_TYPE]
 Value=mE
 [DEBUGGER_TYPE]
-Value=
+Value=default
 [AT_DEBUG_STARTUP]
 LOAD_BIN_TO_RAM=0
 START_EXEC_FROM_ADDR=0

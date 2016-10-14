@@ -10,10 +10,10 @@ main
 				GPIO_Config_Pin_Alternate_Function
 					GPIO_Config
 						GPIO_Clk_Enable
-	IntToStr
-		WordToStr
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
+	LongToStr
+		LongWordToStr
 TIM4_run
 TIM3_timed

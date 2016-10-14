@@ -2,9 +2,10 @@
 
 int print_flag = 0;
 unsigned int overflow_count = 0;
-unsigned int tick_count;
-unsigned int tim4_leftover;
+unsigned long tick_count = 0;
+unsigned long tim4_leftover = 0;
 char tickCountInText[15];
+char tim4LeftoverInText[15];
 
 void TIM3_timed() iv IVT_INT_TIM3 {
  TIM3_SR.UIF = 0;
@@ -32,7 +33,7 @@ void main() {
  RCC_APB1ENR.TIM4EN = 1;
  TIM4_CR1.CEN = 0;
  TIM4_PSC = 0;
- TIM4_ARR = 6;
+ TIM4_ARR = 65535;
  NVIC_IntEnable(IVT_INT_TIM4);
  TIM4_DIER.UIE = 1;
 
@@ -45,14 +46,22 @@ void main() {
  TIM3_CR1.CEN = 0;
  TIM4_CR1.CEN = 0;
 
- tick_count = 65536*overflow_count + tim4_leftover;
- IntToStr(tick_count, tickCountInText);
- UART1_Write_Text("Total timer ticks in one second: ");
+ tim4_leftover = TIM4_CNT;
+ tick_count = (unsigned long)65535*overflow_count + tim4_leftover;
+
+ UART1_Write_Text("Timer ticks per 1 sec: ");
+ LongToStr(tick_count, tickCountInText);
  UART1_Write_Text(tickCountInText);
+ UART1_Write_Text("\n");
+
+ LongToStr(tim4_leftover, tim4LeftoverInText);
+ UART1_Write_Text("Timer 4 value: ");
+ UART1_Write_Text(tim4LeftoverInText);
  UART1_Write_Text("\n\n");
 
  print_flag = 0;
  overflow_count = 0;
+ TIM4_CNT = 0;
 
  TIM3_CR1.CEN = 1;
  TIM4_CR1.CEN = 1;
