@@ -7470,6 +7470,7 @@ ckpol_i2s2ext_i2scfgr_bit
 ckpol_i2s3ext_i2scfgr_bit
 ckpol_spi2_i2scfgr_bit
 ckpol_spi3_i2scfgr_bit
+clk_freq
 clkdiv
 clkdiv
 clkdiv
@@ -26407,6 +26408,8 @@ initf_bit
 inits
 inits
 inits_bit
+input_sig_freq
+input_sig_period
 inputeventcounter
 inputfrequency
 inputperiod
@@ -30742,7 +30745,6 @@ mcp
 mcp
 mcp_bit
 mcp_ethernet_mmc_mmccr_bit
-mcu_frequency
 mem_mode
 mem_mode0
 mem_mode0_bit
@@ -34111,6 +34113,7 @@ ois4
 ois4
 ois4_bit
 ois4_tim8_cr2_bit
+old_tim_ticks_remain
 omfc
 omfc
 omfc_bit
@@ -43748,6 +43751,11 @@ tifrfe_i2s2ext_sr_bit
 tifrfe_i2s3ext_sr_bit
 tifrfe_spi2_sr_bit
 tifrfe_spi3_sr_bit
+tim_arr
+tim_overflow_ticks
+tim_psc
+tim_ticks_remain
+tim_ticks_total
 tim1_arr
 tim1_arrbits
 tim1_bdtr
@@ -44499,6 +44507,7 @@ timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
 timepertick
 timepertickintext
+timer_period_ms
 timer2_interrupt
 timer2_overflow_frequency
 timer2_overflow_period_ms

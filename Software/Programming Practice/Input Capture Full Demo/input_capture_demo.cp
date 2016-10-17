@@ -1,12 +1,22 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-#line 31 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
-unsigned long MCU_FREQUENCY = 168000000;
-
-
+#line 19 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 unsigned long ENCODER_TIM_OVERFLOW;
 unsigned int ENCODER_TIM_PSC = 0;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 
+
+
+
+long double timer_period_ms;
+unsigned long clk_freq = 168000000;
+unsigned long tim_arr = 65535;
+unsigned int tim_psc = 2;
+unsigned long tim_ticks_remain;
+unsigned long old_tim_ticks_remain;
+unsigned long tim_overflow_ticks;
+long double input_sig_freq;
+long double input_sig_period;
+unsigned long tim_ticks_total;
 
 
 
@@ -69,23 +79,13 @@ void main() {
 
 
 
+ tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr - 3);
+ tim_ticks_total = (unsigned long) (old_tim_ticks_remain) - (tim_ticks_remain) + tim_overflow_ticks;
+ input_sig_period = (long double) tim_ticks_total * timer_period_ms;
+ input_sig_freq = (long double) 1000.0 / input_sig_period;
 
 
- totalOverflowTime = (long double) timer2_overflow_period_ms * overflowCountTemp;
- totalInputTime = (long double) endTime * timer2_tick_period_ms;
- inputPeriod = (long double) totalOverflowTime + totalInputTime;
- inputFrequency = (long double) 1 / inputPeriod;
-
-
-
-
- pulseTicks = ((long) (overflowCountTemp * (ENCODER_TIM_RELOAD)) + (endTime));
-
-
-
-
-
- LongDoubleToStr(timer2_tick_period_ms, timePerTickInText);
+ LongDoubleToStr(timer_period_ms, timePerTickInText);
  UART1_Write_Text("Time per tick: ");
  UART1_Write_Text(timePerTickInText);
  UART1_Write_Text("\n\r");
@@ -97,29 +97,29 @@ void main() {
  UART1_Write_Text("\n\r");
 
 
- LongDoubleToStr(totalOverflowTime, totalOverflowTimeInText);
- UART1_Write_Text("Calculated Overflow Time : ");
+ LongWordToStr(tim_overflow_ticks, totalOverflowTimeInText);
+ UART1_Write_Text("Total Overflow Ticks : ");
  UART1_Write_Text(totalOverflowTimeInText);
  UART1_Write_Text("\n\r");
 
 
- LongDoubleToStr(endTime, endTimeInText);
+ LongWordToStr(tim_ticks_remain, endTimeInText);
  UART1_Write_Text("Time read from CCP1 Register: ");
  UART1_Write_Text(endTimeInText);
  UART1_Write_Text("\n\r");
 
 
- LongToStr(pulseTicks, ticksInText);
+ LongWordToStr(tim_ticks_total, ticksInText);
  UART1_Write_Text("Total number of ticks between events: ");
  UART1_Write_Text(ticksInText);
  UART1_Write_Text("\n\r");
 
- LongDoubleToStr(inputPeriod, periodInText);
+ LongDoubleToStr(input_sig_period, periodInText);
  UART1_Write_Text("Period of incoming signal (ms): ");
  UART1_Write_Text(periodInText);
  UART1_Write_Text("\n\r");
 
- LongDoubleToStr(inputFrequency, frequencyInText);
+ LongDoubleToStr(input_sig_freq, frequencyInText);
  UART1_Write_Text("Frequency of incoming signal (Hz): ");
  UART1_Write_Text(frequencyInText);
  UART1_Write_Text("\n\r");
@@ -160,15 +160,18 @@ void init_tim2_input_capture() {
  TIM2_CNT = 0x00;
  TIM2_CR1.CEN = 1;
 
- timer2_overflow_frequency = (long double) MCU_FREQUENCY / ((ENCODER_TIM_PSC + 1) * (ENCODER_TIM_RELOAD + 1));
- timer2_overflow_period_ms = (long double) 100000 / timer2_overflow_frequency;
- timer2_tick_period_ms = (long double) timer2_overflow_period_ms / (ENCODER_TIM_RELOAD + 1);
+
+
+
+ timer_period_ms = (long double) 1000.0 / clk_freq;
+
+
  }
 
 
 void timer2_interrupt() iv IVT_INT_TIM2 {
- TIM2_CNT = 0x00;
- NVIC_IntDisable(IVT_INT_TIM2);
+
+
 
  if(TIM2_SR.UIF == 1) {
  TIM2_SR.UIF = 0;
@@ -176,9 +179,9 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
  }
 
  if (TIM2_SR.CC1IF == 1) {
- TIM2_SR.CC1IF = 0;
- endTime = TIM2_CCR1;
 
+ old_tim_ticks_remain = tim_ticks_remain;
+ tim_ticks_remain = TIM2_CCR1;
  overflowCountTemp = overflowCount;
  overflowCount = 0;
  inputEventCounter++;
@@ -186,7 +189,7 @@ void timer2_interrupt() iv IVT_INT_TIM2 {
 
 
 
- NVIC_IntEnable(IVT_INT_TIM2);
+
 
 }
 
@@ -209,7 +212,7 @@ void init_hardware() {
 
 
  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);
-#line 250 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
+#line 241 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 }
 
 

@@ -26,21 +26,16 @@ main
 			UARTx_Write
 	_UnsignedIntegralToLongDouble
 	_Mul_DP
-	_Add_DP
 	_Div_DP
-	_SignedIntegralToLongDouble
-	_LongDoubleToSignedIntegral
 	LongDoubleToStr
 		strcpy
 		_Compare_DP
 		_Mul_DP
 	IntToStr
 		WordToStr
+	LongWordToStr
 	LongToStr
 		LongWordToStr
 Timer3_interrupt
 external_interrupt
 timer2_interrupt
-	NVIC_IntDisable
-	NVIC_IntEnable
-	_UnsignedIntegralToLongDouble

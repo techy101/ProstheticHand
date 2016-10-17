@@ -3,12 +3,12 @@ diagnostics: 0	122	Compilation Started	input_capture_demo.c
 hint: 0	1004	interrupt handler (timer2_interrupt at 0x002C)	input_capture_demo.c
 hint: 0	1004	interrupt handler (external_interrupt at 0x0038)	input_capture_demo.c
 hint: 0	1004	interrupt handler (Timer3_interrupt at 0x002D)	input_capture_demo.c
-diagnostics: 276	123	Compiled Successfully	input_capture_demo.c
-diagnostics: 0	127	All files Compiled in 141 ms	 
+diagnostics: 267	123	Compiled Successfully	input_capture_demo.c
+diagnostics: 0	127	All files Compiled in 109 ms	 
 hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
-hint: 0	1144	Static RAM (bytes): 596   Dynamic RAM (bytes): 130469	Static RAM (bytes): 596   Dynamic RAM (bytes): 130469
-hint: 0	1144	Used ROM (bytes): 8741 (1%)  Free ROM (bytes): 1039835 (99%)	Used ROM (bytes): 8741 (1%)  Free ROM (bytes): 1039835 (99%)
+hint: 0	1144	Static RAM (bytes): 568   Dynamic RAM (bytes): 130497	Static RAM (bytes): 568   Dynamic RAM (bytes): 130497
+hint: 0	1144	Used ROM (bytes): 7731 (1%)  Free ROM (bytes): 1040845 (99%)	Used ROM (bytes): 7731 (1%)  Free ROM (bytes): 1040845 (99%)
 diagnostics: 0	125	Project Linked Successfully	Input Capture Full Demo.mcpar
-diagnostics: 0	128	Linked in 1156 ms	 
-diagnostics: 0	129	Project 'Input Capture Full Demo.mcpar' completed: 1765 ms	 
-diagnostics: 0	103	Finished successfully: 12 Oct 2016, 13:45:54	Input Capture Full Demo.mcpar
+diagnostics: 0	128	Linked in 1141 ms	 
+diagnostics: 0	129	Project 'Input Capture Full Demo.mcpar' completed: 1735 ms	 
+diagnostics: 0	103	Finished successfully: 17 Oct 2016, 14:02:55	Input Capture Full Demo.mcpar
