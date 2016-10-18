@@ -1,8 +1,7 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 #line 19 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/input_capture_demo.c"
 unsigned long ENCODER_TIM_OVERFLOW;
-unsigned int ENCODER_TIM_PSC = 0;
-unsigned long ENCODER_TIM_RELOAD = 65535;
+
 
 
 
@@ -10,7 +9,7 @@ unsigned long ENCODER_TIM_RELOAD = 65535;
 long double timer_period_ms;
 unsigned long clk_freq = 168000000;
 unsigned long tim_arr = 65535;
-unsigned int tim_psc = 2;
+unsigned int tim_psc = 100;
 unsigned long tim_ticks_remain;
 unsigned long old_tim_ticks_remain;
 unsigned long tim_overflow_ticks;
@@ -79,10 +78,12 @@ void main() {
 
 
 
- tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr - 3);
+ tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr);
  tim_ticks_total = (unsigned long) (old_tim_ticks_remain) - (tim_ticks_remain) + tim_overflow_ticks;
  input_sig_period = (long double) tim_ticks_total * timer_period_ms;
  input_sig_freq = (long double) 1000.0 / input_sig_period;
+
+
 
 
  LongDoubleToStr(timer_period_ms, timePerTickInText);
@@ -147,8 +148,8 @@ void init_tim2_input_capture() {
 
  RCC_APB1ENR.TIM2EN = 1;
  TIM2_CR1.CEN = 0;
- TIM2_PSC = ENCODER_TIM_PSC;
- TIM2_ARR = ENCODER_TIM_RELOAD;
+ TIM2_PSC = tim_psc;
+ TIM2_ARR = tim_arr;
  TIM2_CR1 |= 0x10;
  TIM2_CCMR1_Input |= 0x01;
  TIM2_CCER.CC1P = 1;
@@ -162,8 +163,7 @@ void init_tim2_input_capture() {
 
 
 
-
- timer_period_ms = (long double) 1000.0 / clk_freq;
+ timer_period_ms = (long double) 1000.0 / (clk_freq / (tim_psc + 1));
 
 
  }

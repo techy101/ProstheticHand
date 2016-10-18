@@ -21,12 +21,12 @@
 
 
 /**************  Constants  **************/
-const unsigned int UART_BAUD_RATE = 115200;				// Baud rate for UART connection 
-const unsigned int STR_MAX = 15;						// Maximum string size for UART writes 
-const unsigned int ENCODER_TIMER_PRESCALER = 0;			// Prescaler for timer 2 (Used for encoder CCP timing)
-const unsigned int TERMINAL_PRINT_THRESH = 15;			// Number of polling events before a terminal print is executed 
-const unsigned long ENCODER_TIMER_ARR = 65535;			// Auto Reload value for Timer 2 (16 bit register)
 const unsigned long MCU_FREQUENCY = 168000000;			// Microcontroller clock speed in Hz
+const unsigned long TIM2_ARR = 65535;					// Auto Reload value for Timer 2 (16 bit register)
+const unsigned int TIM2_PSC = 0;						// Prescaler for timer 2 (Used for encoder CCP timing)
+const unsigned int STR_MAX = 15;						// Maximum string size for UART writes 
+const unsigned int UART_BAUD_RATE = 115200;				// Baud rate for UART connection 
+const unsigned int TERMINAL_PRINT_THRESH = 15;			// Number of polling events before a terminal print is executed 
 
 
 
@@ -34,7 +34,7 @@ const unsigned long MCU_FREQUENCY = 168000000;			// Microcontroller clock speed 
 unsigned int poll_flag;									// Flag to enter main loop (Polled via Timer ??)
 unsigned int terminal_print_count;						// ** DEBUG ** Flag to print statistics to terminal (via UART)
 unsigned long overflow_count;							// How many times timer 2 has overflowed 
-float time_per_tick;									// Time per tick of timer 2 (Calculated from timer parameters)
+long double timer_period_ms;							// Time per tick of timer 2 (period in ms)
 
 
 
@@ -45,9 +45,9 @@ void init_GPIO();										// Initialization of MCU I/O
 void init_UART();										// Initialization of UART for terminal communication 
 void init_input_capture();								// Initialization of input capture for timer 2 
 void init_timer3();										// Initialization of timer 3 (Used for fixed polling rate)
-void calc_timer2_values();								// Calculate the time per tick for finger timer 
 void calc_finger_state(struct finger *fngr);			// Function to determine state of finger 
 void print_finger_info(struct finger *fngr);			// Function to print finger state info to terminal 
+void calc_timer_values(struct finger *fngr);			// Function to calculate motor speed, etc... 
 
 
 
@@ -155,7 +155,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 
 	// Channel 1 (Pin A0) Pointer finger input capture event 
     if (TIM2_SR.CC1IF == 1) {                                               
-        //TIM2_SR.CC1IF = 0;                                     			// Clear  *** Shouldn't be needed per p.663 ref man, reading on next line auto clears 
         fngr_pointer.enc_end_time = TIM2_CCR1;                         		// Read stored input capture time
 		fngr_pointer.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_pointer.position_actual++;                                		// Increment total input capture event counter
@@ -166,7 +165,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 /*
 	// Channel 2 (Middle finger) input capture event 
     if (TIM2_SR.CC2IF == 1) {                                               
-        //TIM2_SR.CC2IF = 0;                                     			// Clear  *** Shouldn't be needed per p.663 ref man, reading on next line auto clears 
         fngr_middle.enc_end_time = TIM2_CCR2;                         		// Read stored input capture time
 		fngr_middle.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_middle.position_actual++;                                		// Increment total input capture event counter
@@ -174,7 +172,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 	
 	// Channel 3 (Ring finger) input capture event 
     if (TIM2_SR.CC13F == 1) {                                               
-        //TIM2_SR.CC3IF = 0;                                     			// Clear  *** Shouldn't be needed per p.663 ref man, reading on next line auto clears 
         fngr_ring.enc_end_time = TIM2_CCR3;                         		// Read stored input capture time
 		fngr_ring.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_ring.position_actual++;                                		// Increment total input capture event counter
@@ -182,7 +179,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 	
 	// Channel 4 (Pinky) input capture event 
     if (TIM2_SR.CC4IF == 1) {                                               
-        //TIM2_SR.CC4IF = 0;                                     			// Clear  *** Shouldn't be needed per p.663 ref man, reading on next line auto clears 
         fngr_pinky.enc_end_time = TIM2_CCR4;                         		// Read stored input capture time
 		fngr_pinky.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
         fngr_pinky.position_actual++;                                		// Increment total input capture event counter
@@ -273,7 +269,7 @@ void init_input_capture() {
 	TIM2_CR1.CEN = 1;                                                       // Enable timer/counter
 
 	//Calculate the time per timer 2 tick 
-	timePerTick = (long double) 1000000.0 / MCU_FREQUENCY;                  // Time per tick in ms	
+	timer_period_ms = (long double) 1000.0 / (clk_freq / (tim_psc + 1));	// Calculate period of TIM2_CLK in ms 
 }
 
 
@@ -289,16 +285,6 @@ void init_timer3() {
 	TIM3_DIER.UIE = 1;														// Timer 3 update interrupt enable 
 	TIM3_CR1.CEN = 1;														// Enable timer/counter 
 }
-
-
-
-//Calculate time per tick for timer2 - Based on TIMCLK, PSC, and ARR
-void calc_timer2_values() {
-	
-	//Do math here. Basic function for interrupt time is: TIMx_CLK / ((ARR+1) * (PSC+1))
-	
-}
-
 
 
 

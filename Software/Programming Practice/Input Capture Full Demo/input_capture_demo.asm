@@ -1,15 +1,15 @@
 _main:
-;input_capture_demo.c,79 :: 		void main() {
+;input_capture_demo.c,78 :: 		void main() {
 SUB	SP, SP, #20
-;input_capture_demo.c,82 :: 		init_hardware();                                                           // Initialize GPIO hardware
+;input_capture_demo.c,81 :: 		init_hardware();                                                           // Initialize GPIO hardware
 BL	_init_hardware+0
-;input_capture_demo.c,83 :: 		init_timer3();
+;input_capture_demo.c,82 :: 		init_timer3();
 BL	_init_timer3+0
-;input_capture_demo.c,84 :: 		init_tim2_input_capture();                                                 // Initialize input capture
+;input_capture_demo.c,83 :: 		init_tim2_input_capture();                                                 // Initialize input capture
 BL	_init_tim2_input_capture+0
-;input_capture_demo.c,85 :: 		init_serial_comm();                                                        // Initialize UART1 (Wired)
+;input_capture_demo.c,84 :: 		init_serial_comm();                                                        // Initialize UART1 (Wired)
 BL	_init_serial_comm+0
-;input_capture_demo.c,88 :: 		strncpy(testOutput, "\rProgram Has Started\n\r", STR_MAX);
+;input_capture_demo.c,87 :: 		strncpy(testOutput, "\rProgram Has Started\n\r", STR_MAX);
 MOVW	R0, #lo_addr(?lstr1_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr1_input_capture_demo+0)
 MOVS	R2, #15
@@ -18,13 +18,13 @@ MOV	R1, R0
 MOVW	R0, #lo_addr(_testOutput+0)
 MOVT	R0, #hi_addr(_testOutput+0)
 BL	_strncpy+0
-;input_capture_demo.c,89 :: 		UART1_Write_Text(testOutput);
+;input_capture_demo.c,88 :: 		UART1_Write_Text(testOutput);
 MOVW	R0, #lo_addr(_testOutput+0)
 MOVT	R0, #hi_addr(_testOutput+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,92 :: 		while(1) {
+;input_capture_demo.c,91 :: 		while(1) {
 L_main0:
-;input_capture_demo.c,93 :: 		if (poll_flag && print_counter >= 15) {
+;input_capture_demo.c,92 :: 		if (poll_flag && print_counter >= 15) {
 MOVW	R0, #lo_addr(_poll_flag+0)
 MOVT	R0, #hi_addr(_poll_flag+0)
 LDRH	R0, [R0, #0]
@@ -38,24 +38,23 @@ CMP	R0, #15
 IT	CC
 BCC	L__main15
 L__main14:
-;input_capture_demo.c,94 :: 		poll_flag = 0;                                                       // Clear state entry flag
+;input_capture_demo.c,93 :: 		poll_flag = 0;                                                       // Clear state entry flag
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_poll_flag+0)
 MOVT	R0, #hi_addr(_poll_flag+0)
 STRH	R1, [R0, #0]
-;input_capture_demo.c,98 :: 		tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr - 3);            // 3 is an adjustment factor for accurate reading.
+;input_capture_demo.c,97 :: 		tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr);            // 3 is an adjustment factor for accurate reading.
 MOVW	R0, #lo_addr(_overflowCountTemp+0)
 MOVT	R0, #hi_addr(_overflowCountTemp+0)
 LDRH	R1, [R0, #0]
 MOVW	R0, #lo_addr(_tim_arr+0)
 MOVT	R0, #hi_addr(_tim_arr+0)
 LDR	R0, [R0, #0]
-SUBS	R0, R0, #3
 MUL	R2, R1, R0
 MOVW	R0, #lo_addr(_tim_overflow_ticks+0)
 MOVT	R0, #hi_addr(_tim_overflow_ticks+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,99 :: 		tim_ticks_total = (unsigned long) (old_tim_ticks_remain) - (tim_ticks_remain) + tim_overflow_ticks;
+;input_capture_demo.c,98 :: 		tim_ticks_total = (unsigned long) (old_tim_ticks_remain) - (tim_ticks_remain) + tim_overflow_ticks;
 MOVW	R0, #lo_addr(_tim_ticks_remain+0)
 MOVT	R0, #hi_addr(_tim_ticks_remain+0)
 LDR	R1, [R0, #0]
@@ -67,7 +66,7 @@ ADDS	R2, R0, R2
 MOVW	R0, #lo_addr(_tim_ticks_total+0)
 MOVT	R0, #hi_addr(_tim_ticks_total+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,100 :: 		input_sig_period = (long double) tim_ticks_total * timer_period_ms;
+;input_capture_demo.c,99 :: 		input_sig_period = (long double) tim_ticks_total * timer_period_ms;
 MOV	R0, R2
 BL	__UnsignedIntegralToLongDouble+0
 MOVW	R2, #lo_addr(_timer_period_ms+0)
@@ -84,7 +83,7 @@ STRD	R1, R2, [SP, #0]
 LDRD	R1, R2, [SP, #8]
 STRD	R1, R2, [R0, #0]
 LDRD	R1, R2, [SP, #0]
-;input_capture_demo.c,101 :: 		input_sig_freq = (long double) 1000.0 / input_sig_period;
+;input_capture_demo.c,100 :: 		input_sig_freq = (long double) 1000.0 / input_sig_period;
 MOV	R0, #0
 MOVW	R1, #16384
 MOVT	R1, #16527
@@ -99,7 +98,7 @@ LDRD	R2, R3, [SP, #0]
 MOVW	R2, #lo_addr(_input_sig_freq+0)
 MOVT	R2, #hi_addr(_input_sig_freq+0)
 STRD	R0, R1, [R2, #0]
-;input_capture_demo.c,104 :: 		LongDoubleToStr(timer_period_ms, timePerTickInText);                 // Time Per Tick in ms
+;input_capture_demo.c,105 :: 		LongDoubleToStr(timer_period_ms, timePerTickInText);                 // Time Per Tick in ms
 LDR	R0, [SP, #16]
 LDRD	R0, R1, [R0, #0]
 VMOV	S0, R0
@@ -107,95 +106,95 @@ VMOV	S1, R1
 MOVW	R0, #lo_addr(_timePerTickInText+0)
 MOVT	R0, #hi_addr(_timePerTickInText+0)
 BL	_LongDoubleToStr+0
-;input_capture_demo.c,105 :: 		UART1_Write_Text("Time per tick: ");
+;input_capture_demo.c,106 :: 		UART1_Write_Text("Time per tick: ");
 MOVW	R0, #lo_addr(?lstr2_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr2_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,106 :: 		UART1_Write_Text(timePerTickInText);
+;input_capture_demo.c,107 :: 		UART1_Write_Text(timePerTickInText);
 MOVW	R0, #lo_addr(_timePerTickInText+0)
 MOVT	R0, #hi_addr(_timePerTickInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,107 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,108 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr3_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr3_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,110 :: 		IntToStr(overflowCountTemp, overflowsInText);                        // Number of overflows
+;input_capture_demo.c,111 :: 		IntToStr(overflowCountTemp, overflowsInText);                        // Number of overflows
 MOVW	R0, #lo_addr(_overflowCountTemp+0)
 MOVT	R0, #hi_addr(_overflowCountTemp+0)
 LDRH	R0, [R0, #0]
 MOVW	R1, #lo_addr(_overflowsInText+0)
 MOVT	R1, #hi_addr(_overflowsInText+0)
 BL	_IntToStr+0
-;input_capture_demo.c,111 :: 		UART1_Write_Text("Total number of timer overflows: ");
+;input_capture_demo.c,112 :: 		UART1_Write_Text("Total number of timer overflows: ");
 MOVW	R0, #lo_addr(?lstr4_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr4_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,112 :: 		UART1_Write_Text(overflowsInText);
+;input_capture_demo.c,113 :: 		UART1_Write_Text(overflowsInText);
 MOVW	R0, #lo_addr(_overflowsInText+0)
 MOVT	R0, #hi_addr(_overflowsInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,113 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,114 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr5_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr5_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,116 :: 		LongWordToStr(tim_overflow_ticks, totalOverflowTimeInText);          // Total number of overflow ticks
+;input_capture_demo.c,117 :: 		LongWordToStr(tim_overflow_ticks, totalOverflowTimeInText);          // Total number of overflow ticks
 MOVW	R0, #lo_addr(_tim_overflow_ticks+0)
 MOVT	R0, #hi_addr(_tim_overflow_ticks+0)
 LDR	R0, [R0, #0]
 MOVW	R1, #lo_addr(_totalOverflowTimeInText+0)
 MOVT	R1, #hi_addr(_totalOverflowTimeInText+0)
 BL	_LongWordToStr+0
-;input_capture_demo.c,117 :: 		UART1_Write_Text("Total Overflow Ticks : ");
+;input_capture_demo.c,118 :: 		UART1_Write_Text("Total Overflow Ticks : ");
 MOVW	R0, #lo_addr(?lstr6_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr6_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,118 :: 		UART1_Write_Text(totalOverflowTimeInText);
+;input_capture_demo.c,119 :: 		UART1_Write_Text(totalOverflowTimeInText);
 MOVW	R0, #lo_addr(_totalOverflowTimeInText+0)
 MOVT	R0, #hi_addr(_totalOverflowTimeInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,119 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,120 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr7_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr7_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,122 :: 		LongWordToStr(tim_ticks_remain, endTimeInText);                             // Value of CC1 at capture event
+;input_capture_demo.c,123 :: 		LongWordToStr(tim_ticks_remain, endTimeInText);                             // Value of CC1 at capture event
 MOVW	R0, #lo_addr(_tim_ticks_remain+0)
 MOVT	R0, #hi_addr(_tim_ticks_remain+0)
 LDR	R0, [R0, #0]
 MOVW	R1, #lo_addr(_endTimeInText+0)
 MOVT	R1, #hi_addr(_endTimeInText+0)
 BL	_LongWordToStr+0
-;input_capture_demo.c,123 :: 		UART1_Write_Text("Time read from CCP1 Register: ");
+;input_capture_demo.c,124 :: 		UART1_Write_Text("Time read from CCP1 Register: ");
 MOVW	R0, #lo_addr(?lstr8_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr8_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,124 :: 		UART1_Write_Text(endTimeInText);
+;input_capture_demo.c,125 :: 		UART1_Write_Text(endTimeInText);
 MOVW	R0, #lo_addr(_endTimeInText+0)
 MOVT	R0, #hi_addr(_endTimeInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,125 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,126 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr9_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr9_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,128 :: 		LongWordToStr(tim_ticks_total, ticksInText);                                  // Total number of timer ticks between events
+;input_capture_demo.c,129 :: 		LongWordToStr(tim_ticks_total, ticksInText);                                  // Total number of timer ticks between events
 MOVW	R0, #lo_addr(_tim_ticks_total+0)
 MOVT	R0, #hi_addr(_tim_ticks_total+0)
 LDR	R0, [R0, #0]
 MOVW	R1, #lo_addr(_ticksInText+0)
 MOVT	R1, #hi_addr(_ticksInText+0)
 BL	_LongWordToStr+0
-;input_capture_demo.c,129 :: 		UART1_Write_Text("Total number of ticks between events: ");
+;input_capture_demo.c,130 :: 		UART1_Write_Text("Total number of ticks between events: ");
 MOVW	R0, #lo_addr(?lstr10_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr10_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,130 :: 		UART1_Write_Text(ticksInText);
+;input_capture_demo.c,131 :: 		UART1_Write_Text(ticksInText);
 MOVW	R0, #lo_addr(_ticksInText+0)
 MOVT	R0, #hi_addr(_ticksInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,131 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,132 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr11_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr11_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,133 :: 		LongDoubleToStr(input_sig_period, periodInText);                          // Input signal period (ms)
+;input_capture_demo.c,134 :: 		LongDoubleToStr(input_sig_period, periodInText);                          // Input signal period (ms)
 MOVW	R0, #lo_addr(_input_sig_period+0)
 MOVT	R0, #hi_addr(_input_sig_period+0)
 LDRD	R0, R1, [R0, #0]
@@ -204,19 +203,19 @@ VMOV	S1, R1
 MOVW	R0, #lo_addr(_periodInText+0)
 MOVT	R0, #hi_addr(_periodInText+0)
 BL	_LongDoubleToStr+0
-;input_capture_demo.c,134 :: 		UART1_Write_Text("Period of incoming signal (ms): ");
+;input_capture_demo.c,135 :: 		UART1_Write_Text("Period of incoming signal (ms): ");
 MOVW	R0, #lo_addr(?lstr12_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr12_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,135 :: 		UART1_Write_Text(periodInText);
+;input_capture_demo.c,136 :: 		UART1_Write_Text(periodInText);
 MOVW	R0, #lo_addr(_periodInText+0)
 MOVT	R0, #hi_addr(_periodInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,136 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,137 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr13_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr13_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,138 :: 		LongDoubleToStr(input_sig_freq, frequencyInText);                    // Input signal frequency
+;input_capture_demo.c,139 :: 		LongDoubleToStr(input_sig_freq, frequencyInText);                    // Input signal frequency
 MOVW	R0, #lo_addr(_input_sig_freq+0)
 MOVT	R0, #hi_addr(_input_sig_freq+0)
 LDRD	R0, R1, [R0, #0]
@@ -225,54 +224,54 @@ VMOV	S1, R1
 MOVW	R0, #lo_addr(_frequencyInText+0)
 MOVT	R0, #hi_addr(_frequencyInText+0)
 BL	_LongDoubleToStr+0
-;input_capture_demo.c,139 :: 		UART1_Write_Text("Frequency of incoming signal (Hz): ");
+;input_capture_demo.c,140 :: 		UART1_Write_Text("Frequency of incoming signal (Hz): ");
 MOVW	R0, #lo_addr(?lstr14_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr14_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,140 :: 		UART1_Write_Text(frequencyInText);
+;input_capture_demo.c,141 :: 		UART1_Write_Text(frequencyInText);
 MOVW	R0, #lo_addr(_frequencyInText+0)
 MOVT	R0, #hi_addr(_frequencyInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,141 :: 		UART1_Write_Text("\n\r");
+;input_capture_demo.c,142 :: 		UART1_Write_Text("\n\r");
 MOVW	R0, #lo_addr(?lstr15_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr15_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,143 :: 		LongToStr(inputEventCounter, eventCounterInText);                    // Total number of input events between polls
+;input_capture_demo.c,144 :: 		LongToStr(inputEventCounter, eventCounterInText);                    // Total number of input events between polls
 MOVW	R0, #lo_addr(_inputEventCounter+0)
 MOVT	R0, #hi_addr(_inputEventCounter+0)
 LDR	R0, [R0, #0]
 MOVW	R1, #lo_addr(_eventCounterInText+0)
 MOVT	R1, #hi_addr(_eventCounterInText+0)
 BL	_LongToStr+0
-;input_capture_demo.c,144 :: 		UART1_Write_Text("Number of input capture events: ");
+;input_capture_demo.c,145 :: 		UART1_Write_Text("Number of input capture events: ");
 MOVW	R0, #lo_addr(?lstr16_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr16_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,145 :: 		UART1_Write_Text(eventCounterInText);
+;input_capture_demo.c,146 :: 		UART1_Write_Text(eventCounterInText);
 MOVW	R0, #lo_addr(_eventCounterInText+0)
 MOVT	R0, #hi_addr(_eventCounterInText+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,146 :: 		UART1_Write_Text("\n\n\n\r");
+;input_capture_demo.c,147 :: 		UART1_Write_Text("\n\n\n\r");
 MOVW	R0, #lo_addr(?lstr17_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr17_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,148 :: 		inputEventCounter = 0;                                               // Reset input event counter for next
+;input_capture_demo.c,149 :: 		inputEventCounter = 0;                                               // Reset input event counter for next
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_inputEventCounter+0)
 MOVT	R0, #hi_addr(_inputEventCounter+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,149 :: 		print_counter = 0;
+;input_capture_demo.c,150 :: 		print_counter = 0;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_print_counter+0)
 MOVT	R0, #hi_addr(_print_counter+0)
 STRH	R1, [R0, #0]
-;input_capture_demo.c,150 :: 		}
+;input_capture_demo.c,151 :: 		}
 IT	AL
 BAL	L_main5
-;input_capture_demo.c,93 :: 		if (poll_flag && print_counter >= 15) {
+;input_capture_demo.c,92 :: 		if (poll_flag && print_counter >= 15) {
 L__main16:
 L__main15:
-;input_capture_demo.c,152 :: 		else if (poll_flag && !inputEventCounter) {
+;input_capture_demo.c,153 :: 		else if (poll_flag && !inputEventCounter) {
 MOVW	R0, #lo_addr(_poll_flag+0)
 MOVT	R0, #hi_addr(_poll_flag+0)
 LDRH	R0, [R0, #0]
@@ -286,64 +285,65 @@ CMP	R0, #0
 IT	NE
 BNE	L__main17
 L__main13:
-;input_capture_demo.c,153 :: 		UART1_Write_Text("No Events Detected\n\n\r");
+;input_capture_demo.c,154 :: 		UART1_Write_Text("No Events Detected\n\n\r");
 MOVW	R0, #lo_addr(?lstr18_input_capture_demo+0)
 MOVT	R0, #hi_addr(?lstr18_input_capture_demo+0)
 BL	_UART1_Write_Text+0
-;input_capture_demo.c,154 :: 		poll_flag = 0;
+;input_capture_demo.c,155 :: 		poll_flag = 0;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_poll_flag+0)
 MOVT	R0, #hi_addr(_poll_flag+0)
 STRH	R1, [R0, #0]
-;input_capture_demo.c,155 :: 		inputEventCounter = 0;
+;input_capture_demo.c,156 :: 		inputEventCounter = 0;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_inputEventCounter+0)
 MOVT	R0, #hi_addr(_inputEventCounter+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,152 :: 		else if (poll_flag && !inputEventCounter) {
+;input_capture_demo.c,153 :: 		else if (poll_flag && !inputEventCounter) {
 L__main18:
 L__main17:
-;input_capture_demo.c,156 :: 		}
-L_main5:
 ;input_capture_demo.c,157 :: 		}
+L_main5:
+;input_capture_demo.c,158 :: 		}
 IT	AL
 BAL	L_main0
-;input_capture_demo.c,158 :: 		}
+;input_capture_demo.c,159 :: 		}
 L_end_main:
 L__main_end_loop:
 B	L__main_end_loop
 ; end of _main
 _init_tim2_input_capture:
-;input_capture_demo.c,162 :: 		void init_tim2_input_capture() {
+;input_capture_demo.c,163 :: 		void init_tim2_input_capture() {
 SUB	SP, SP, #20
 STR	LR, [SP, #0]
-;input_capture_demo.c,164 :: 		RCC_APB1ENR.TIM2EN = 1;                                                    // Enable clock gating for timer module 2
+;input_capture_demo.c,165 :: 		RCC_APB1ENR.TIM2EN = 1;                                                    // Enable clock gating for timer module 2
 MOVS	R2, #1
 SXTB	R2, R2
 MOVW	R0, #lo_addr(RCC_APB1ENR+0)
 MOVT	R0, #hi_addr(RCC_APB1ENR+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,165 :: 		TIM2_CR1.CEN = 0;                                                          // Disable timer/counter
+;input_capture_demo.c,166 :: 		TIM2_CR1.CEN = 0;                                                          // Disable timer/counter
 MOVS	R1, #0
 SXTB	R1, R1
 MOVW	R0, #lo_addr(TIM2_CR1+0)
 MOVT	R0, #hi_addr(TIM2_CR1+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,166 :: 		TIM2_PSC = ENCODER_TIM_PSC;                                                // Set timer 2 prescaler (need to determine value)
-MOVW	R0, #lo_addr(_ENCODER_TIM_PSC+0)
-MOVT	R0, #hi_addr(_ENCODER_TIM_PSC+0)
+;input_capture_demo.c,167 :: 		TIM2_PSC = tim_psc;                                                // Set timer 2 prescaler (need to determine value)
+MOVW	R0, #lo_addr(_tim_psc+0)
+MOVT	R0, #hi_addr(_tim_psc+0)
+STR	R0, [SP, #12]
 LDRH	R1, [R0, #0]
 MOVW	R0, #lo_addr(TIM2_PSC+0)
 MOVT	R0, #hi_addr(TIM2_PSC+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,167 :: 		TIM2_ARR = ENCODER_TIM_RELOAD;                                             // Set timer 2 overflow value at max
-MOVW	R0, #lo_addr(_ENCODER_TIM_RELOAD+0)
-MOVT	R0, #hi_addr(_ENCODER_TIM_RELOAD+0)
+;input_capture_demo.c,168 :: 		TIM2_ARR = tim_arr;                                             // Set timer 2 overflow value at max
+MOVW	R0, #lo_addr(_tim_arr+0)
+MOVT	R0, #hi_addr(_tim_arr+0)
 LDR	R1, [R0, #0]
 MOVW	R0, #lo_addr(TIM2_ARR+0)
 MOVT	R0, #hi_addr(TIM2_ARR+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,168 :: 		TIM2_CR1 |= 0x10;                                                          // Set counter direction as upcounting (DIR bit)
+;input_capture_demo.c,169 :: 		TIM2_CR1 |= 0x10;                                                          // Set counter direction as upcounting (DIR bit)
 MOVW	R0, #lo_addr(TIM2_CR1+0)
 MOVT	R0, #hi_addr(TIM2_CR1+0)
 LDR	R0, [R0, #0]
@@ -351,7 +351,7 @@ ORR	R1, R0, #16
 MOVW	R0, #lo_addr(TIM2_CR1+0)
 MOVT	R0, #hi_addr(TIM2_CR1+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,169 :: 		TIM2_CCMR1_Input |= 0x01;                                                  // Set capture channel 1 as input (CC1S = 01)
+;input_capture_demo.c,170 :: 		TIM2_CCMR1_Input |= 0x01;                                                  // Set capture channel 1 as input (CC1S = 01)
 MOVW	R0, #lo_addr(TIM2_CCMR1_Input+0)
 MOVT	R0, #hi_addr(TIM2_CCMR1_Input+0)
 LDR	R0, [R0, #0]
@@ -359,41 +359,45 @@ ORR	R1, R0, #1
 MOVW	R0, #lo_addr(TIM2_CCMR1_Input+0)
 MOVT	R0, #hi_addr(TIM2_CCMR1_Input+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,170 :: 		TIM2_CCER.CC1P = 1;                                                        // Set capture on rising edge event
+;input_capture_demo.c,171 :: 		TIM2_CCER.CC1P = 1;                                                        // Set capture on rising edge event
 MOVW	R0, #lo_addr(TIM2_CCER+0)
 MOVT	R0, #hi_addr(TIM2_CCER+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,171 :: 		TIM2_CCER.CC1E = 1;                                                        // Enable capture on channel 1
+;input_capture_demo.c,172 :: 		TIM2_CCER.CC1E = 1;                                                        // Enable capture on channel 1
 MOVW	R0, #lo_addr(TIM2_CCER+0)
 MOVT	R0, #hi_addr(TIM2_CCER+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,172 :: 		TIM2_DIER.CC1IE = 1;                                                       // Enable capture 1 interrupt
+;input_capture_demo.c,173 :: 		TIM2_DIER.CC1IE = 1;                                                       // Enable capture 1 interrupt
 MOVW	R0, #lo_addr(TIM2_DIER+0)
 MOVT	R0, #hi_addr(TIM2_DIER+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,173 :: 		TIM2_DIER.UIE = 1;                                                         // CC1 Update Interrupt Enable
+;input_capture_demo.c,174 :: 		TIM2_DIER.UIE = 1;                                                         // CC1 Update Interrupt Enable
 MOVW	R0, #lo_addr(TIM2_DIER+0)
 MOVT	R0, #hi_addr(TIM2_DIER+0)
 STR	R2, [R0, #0]
-;input_capture_demo.c,174 :: 		NVIC_IntEnable(IVT_INT_TIM2);                                              // Enable timer 2 interrupt
+;input_capture_demo.c,175 :: 		NVIC_IntEnable(IVT_INT_TIM2);                                              // Enable timer 2 interrupt
 MOVW	R0, #44
 BL	_NVIC_IntEnable+0
-;input_capture_demo.c,176 :: 		TIM2_CNT = 0x00;
+;input_capture_demo.c,177 :: 		TIM2_CNT = 0x00;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(TIM2_CNT+0)
 MOVT	R0, #hi_addr(TIM2_CNT+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,177 :: 		TIM2_CR1.CEN = 1;                                                          // Enable timer/counter
+;input_capture_demo.c,178 :: 		TIM2_CR1.CEN = 1;                                                          // Enable timer/counter
 MOVS	R1, #1
 SXTB	R1, R1
 MOVW	R0, #lo_addr(TIM2_CR1+0)
 MOVT	R0, #hi_addr(TIM2_CR1+0)
 STR	R1, [R0, #0]
-;input_capture_demo.c,182 :: 		timer_period_ms = (long double) 1000.0 / clk_freq;
+;input_capture_demo.c,182 :: 		timer_period_ms = (long double) 1000.0 / (clk_freq / (tim_psc + 1));
+LDR	R0, [SP, #12]
+LDRH	R0, [R0, #0]
+ADDS	R1, R0, #1
+UXTH	R1, R1
 MOVW	R0, #lo_addr(_clk_freq+0)
 MOVT	R0, #hi_addr(_clk_freq+0)
-VLDR	#1, S0, [R0, #0]
-VMOV	R0, S0
+LDR	R0, [R0, #0]
+UDIV	R0, R0, R1
 BL	__UnsignedIntegralToLongDouble+0
 STRD	R0, R1, [SP, #12]
 MOV	R0, #0

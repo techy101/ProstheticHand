@@ -17,8 +17,7 @@
 
 //Constants
 unsigned long ENCODER_TIM_OVERFLOW;                //in us
-unsigned int ENCODER_TIM_PSC = 0;
-unsigned long ENCODER_TIM_RELOAD = 65535;
+
 
 
 
@@ -26,7 +25,7 @@ unsigned long ENCODER_TIM_RELOAD = 65535;
 long double timer_period_ms;
 unsigned long clk_freq = 168000000;
 unsigned long tim_arr = 65535;
-unsigned int tim_psc = 2;
+unsigned int tim_psc = 100;
 unsigned long tim_ticks_remain;
 unsigned long old_tim_ticks_remain;
 unsigned long tim_overflow_ticks;
@@ -95,10 +94,12 @@ void main() {
 
 
            //Calculate needed values:
-           tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr - 3);            // 3 is an adjustment factor for accurate reading.
+           tim_overflow_ticks = (unsigned long) overflowCountTemp * (tim_arr);            // 3 is an adjustment factor for accurate reading.
            tim_ticks_total = (unsigned long) (old_tim_ticks_remain) - (tim_ticks_remain) + tim_overflow_ticks;
            input_sig_period = (long double) tim_ticks_total * timer_period_ms;
            input_sig_freq = (long double) 1000.0 / input_sig_period;
+           //input_sig_freq = input_sig_freq * 100.0;                // Round off frequency to two decimal places
+           //input_sig_freq = (long double) input_sig_freq / 100;
 
            //Print values to terminal
            LongDoubleToStr(timer_period_ms, timePerTickInText);                 // Time Per Tick in ms
@@ -163,8 +164,8 @@ void init_tim2_input_capture() {
 
      RCC_APB1ENR.TIM2EN = 1;                                                    // Enable clock gating for timer module 2
      TIM2_CR1.CEN = 0;                                                          // Disable timer/counter
-     TIM2_PSC = ENCODER_TIM_PSC;                                                // Set timer 2 prescaler (need to determine value)
-     TIM2_ARR = ENCODER_TIM_RELOAD;                                             // Set timer 2 overflow value at max
+     TIM2_PSC = tim_psc;                                                // Set timer 2 prescaler (need to determine value)
+     TIM2_ARR = tim_arr;                                             // Set timer 2 overflow value at max
      TIM2_CR1 |= 0x10;                                                          // Set counter direction as upcounting (DIR bit)
      TIM2_CCMR1_Input |= 0x01;                                                  // Set capture channel 1 as input (CC1S = 01)
      TIM2_CCER.CC1P = 1;                                                        // Set capture on rising edge event
@@ -178,8 +179,7 @@ void init_tim2_input_capture() {
 
 
      //Calculate timer period and stuf
-     //timer_period_ms = (long double) (1000.0 / ((clk_freq + (tim_arr + 1)) / ((tim_psc + 1) * (tim_arr + 1)))) / (tim_arr + 1);
-     timer_period_ms = (long double) 1000.0 / clk_freq;
+     timer_period_ms = (long double) 1000.0 / (clk_freq / (tim_psc + 1));
 
 
  }

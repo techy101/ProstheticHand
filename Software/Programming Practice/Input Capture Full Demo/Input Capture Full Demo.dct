@@ -13196,8 +13196,6 @@ encmdcompl
 encmdcompl
 encmdcompl_bit
 encoder_tim_overflow
-encoder_tim_psc
-encoder_tim_reload
 endianess
 endianess
 endianess_bit
