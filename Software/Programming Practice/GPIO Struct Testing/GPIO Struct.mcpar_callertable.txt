@@ -11,6 +11,10 @@ main
 			GPIO_Alternate_Function_Enable
 				GPIO_Config_Pin_Alternate_Function
 					GPIO_Config
+	UART1_Write
+		UARTx_Write
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
+	readEncoderDirection
+		UART1_Write_Text

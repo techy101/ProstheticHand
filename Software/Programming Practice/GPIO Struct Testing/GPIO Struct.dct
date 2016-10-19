@@ -10966,7 +10966,6 @@ delay2
 delay2_bit
 delay3
 delay3_bit
-descriptive
 dev_id
 dev_id0
 dev_id0_bit
@@ -11074,6 +11073,7 @@ dir1_dma2_s4cr_bit
 dir1_dma2_s5cr_bit
 dir1_dma2_s6cr_bit
 dir1_dma2_s7cr_bit
+direction_actual
 disableinterrupts
 discen
 discen
@@ -13182,6 +13182,8 @@ enarp_i2c2_cr1_bit
 encmdcompl
 encmdcompl
 encmdcompl_bit
+encoder_chan_a
+encoder_chan_b
 endianess
 endianess
 endianess_bit
@@ -32477,6 +32479,7 @@ naksts_otg_hs_doepctl0_bit
 naksts_otg_hs_doepctl1_bit
 naksts_otg_hs_doepctl2_bit
 naksts_otg_hs_doepctl3_bit
+name
 nart
 nart
 nart
@@ -39161,6 +39164,7 @@ re_uart5_cr1_bit
 re_usart1_cr1_bit
 re_usart2_cr1_bit
 re_usart3_cr1_bit
+readencoderdirection
 ready
 ready
 ready_bit
@@ -39196,6 +39200,7 @@ recalpf_bit
 refckon
 refckon
 refckon_bit
+reglocation
 reload
 reload0
 reload0_bit
