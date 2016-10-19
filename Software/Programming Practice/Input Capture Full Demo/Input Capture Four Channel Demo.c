@@ -3,136 +3,167 @@
 
 
 //Unsure how to use structure member to access input register 
-//	assigning a member to a specific pin 
-//	So could call member.in1 and access GPIOA_IDR.B1 
+//        assigning a member to a specific pin 
+//        So could call member.in1 and access GPIOA_IDR.B1 
 
 
 
 
-
-#define FNGR_POINTER_ENC_A 						GPIOA_IDR.B0			// Pin A0: Pointer finger encoder channel A (Tim2 CH1 input capture)
-#define FNGR_POINTER_ENC_B						GPIOA_IDR.B4			// Pin A4: Pointer finger encoder channel B (Direction only)
-#define FNGR_MIDDLE_ENC_A						GPIOA_IDR.B1			// Pin A1: Middle finger encoder channel A (Tim2 CH2 input capture)
-#define FNGR_MIDDLE_ENC_B						GPIOA_IDR.B5			// Pin A5: Middle finger encoder channel B (Direction only)  
-#define FNGR_RING_ENC_A							GPIOA_IDR.B2			// Pin A2: Ring finger encoder channel A (Tim2 CH3 input capture) 
-#define FNGR_RING_ENC_B 						GPIOA_IDR.B6			// Pin A6: Ring finger encoder channel B (Direction only) 
-#define FNGR_PINKY_ENC_A						GPIOA_IDR.B3			// Pin A3: Pinky finger encoder channel A (Tim2 CH4 input capture)
-#define FNGR_PINKY_ENC_B						GPIOA_IDR.B7			// Pin A7: Pinky finger encoder channel B (Direction only)
+#define FNGR_POINTER_ENC_A                                                 0x00                                        // Pin A0 IDR bit offset: Pointer finger encoder channel A (Tim2 CH1 input capture)
+#define FNGR_POINTER_ENC_B                                                0x10                                        // Pin A4 IDR bit offset: Pointer finger encoder channel B (Direction only)
+#define FNGR_MIDDLE_ENC_A                                                0x02                                        // Pin A1 IDR bit offset: Middle finger encoder channel A (Tim2 CH2 input capture)
+#define FNGR_MIDDLE_ENC_B                                                0x20                                        // Pin A5 IDR bit offset: Middle finger encoder channel B (Direction only)  
+#define FNGR_RING_ENC_A                                                        0x04                                        // Pin A2 IDR bit offset: Ring finger encoder channel A (Tim2 CH3 input capture) 
+#define FNGR_RING_ENC_B                                                 0x40                                        // Pin A6 IDR bit offset: Ring finger encoder channel B (Direction only) 
+#define FNGR_PINKY_ENC_A                                                0x08                                        // Pin A3 IDR bit offset: Pinky finger encoder channel A (Tim2 CH4 input capture)
+#define FNGR_PINKY_ENC_B                                                0x80                                        // Pin A7 IDR bit offset: Pinky finger encoder channel B (Direction only)
+#define STR_MAX                                                         15                                          //Max string size
+#define UART_BAUD_RATE                                                  115200
 
 
 /**************  Constants  **************/
-const unsigned long MCU_FREQUENCY = 168000000;			// Microcontroller clock speed in Hz
-const unsigned long TIM2_ARR = 65535;					// Auto Reload value for Timer 2 (16 bit register)
-const unsigned int TIM2_PSC = 0;						// Prescaler for timer 2 (Used for encoder CCP timing)
-const unsigned int STR_MAX = 15;						// Maximum string size for UART writes 
-const unsigned int UART_BAUD_RATE = 115200;				// Baud rate for UART connection 
-const unsigned int TERMINAL_PRINT_THRESH = 15;			// Number of polling events before a terminal print is executed 
+unsigned long MCU_FREQUENCY = 168000000;                        // Microcontroller clock speed in Hz
+unsigned long ENCODER_TIM_RELOAD = 65535;                                        // Auto Reload value for Timer 2 (16 bit register)
+unsigned int ENCODER_TIM_PSC = 0;                                                // Prescaler for timer 2 (Used for encoder CCP timing)
+unsigned int TERMINAL_PRINT_THRESH = 40;                        // Number of polling events before a terminal print is executed
 
 
 
 /**************  Global Variables  **************/
-unsigned int poll_flag;									// Flag to enter main loop (Polled via Timer ??)
-unsigned int terminal_print_count;						// ** DEBUG ** Flag to print statistics to terminal (via UART)
-unsigned long overflow_count;							// How many times timer 2 has overflowed 
-long double timer_period_ms;							// Time per tick of timer 2 (period in ms)
+long double timer2_period_ms;                                                        // TIM2_CLK calculated period 
+unsigned int poll_flag;                                                                        // Flag to enter main loop (Polled via Timer ??)
+unsigned int terminal_print_count;                                                // ** DEBUG ** Flag to print statistics to terminal (via UART)
+unsigned long overflow_count;                                                        // Current number of overflow events on timer 
+
 
 
 
 /**************  Function Prototypes  **************/
-void timer2_ISR();										// Interrupt handler for Timer 2
-void timer3_ISR();										// Interrupt handler for Timer 3
-void init_GPIO();										// Initialization of MCU I/O 
-void init_UART();										// Initialization of UART for terminal communication 
-void init_input_capture();								// Initialization of input capture for timer 2 
-void init_timer3();										// Initialization of timer 3 (Used for fixed polling rate)
-void calc_finger_state(struct finger *fngr);			// Function to determine state of finger 
-void print_finger_info(struct finger *fngr);			// Function to print finger state info to terminal 
-void calc_timer_values(struct finger *fngr);			// Function to calculate motor speed, etc... 
+void timer2_ISR();                                                                                // Interrupt handler for Timer 2
+void timer3_ISR();                                                                                // Interrupt handler for Timer 3
+void init_GPIO();                                                                                // Initialization of MCU I/O 
+void init_UART();                                                                                // Initialization of UART for terminal communication 
+void init_input_capture();                                                                // Initialization of input capture for timer 2 
+void init_timer3();                                                                                // Initialization of timer 3 (Used for fixed polling rate)
+void calc_finger_state(struct finger *fngr);                        // Function to determine state of finger 
+void print_finger_info(struct finger *fngr);                        // Function to print finger state info to terminal 
+void calc_timer_values(struct finger *fngr);                        // Function to calculate motor speed, etc... 
 
 
+
+
+/**************  Hardware Access Structs  **************/
+// Used to access address of GPIO register 
+
+struct GPIOx_t {
+        unsigned long addr0;                                                                // Used to access base address of GPIO_IDR register 
+};
 
 
 // Limited finger struct definition 
-//	* Not all parameters will be used in final implementation. 
-//	* Some are used only for this demo program to verify functionality 
+//        * Not all parameters will be used in final implementation. 
+//        * Some are used only for this demo program to verify functionality 
 
 struct finger {
-	char name[10];											// Name of finger 
-	unsigned int direction_actual;							// Actual direction of motor movement as read from encoder 
-	unsigned int speed_actual;								// Actual speed of the motor (calculated from encoder data)
-	unsigned int enc_chan_a;								// ?????? Encoder channel A Pin definition 
-	unsigned int enc_chan_b;								// ?????? Encoder channel B pin definition 
-	unsigned long enc_start_time;							// Value of encoder timer when previous capture event occured 
-	unsigned long enc_end_time;								// Value of encoder timer when current capture event occured 
-	unsigned long enc_total_time;							// Calculated total time between input capture events
-	unsigned long enc_total_ticks;							// Calculated total number of timer ticks between input capture events 
-	unsigned long enc_overflow_start;						// Value of timer overflow counter when previous capture event occured 
-	unsigned long enc_overflow_end;							// Value of timer overflow counter when current capture event occured 
-	unsigned long period;									// Period of motor encoder signal (in ms)
-	unsigned long frequency;								// Frequency of motor encoder signal (in Hz)
-	unsigned long enc_overflow_delta;						// Calculated number of timer overflows between capture events 
-	unsigned long enc_overflow_ticks;						// Total number of timer ticks for the timer overflows between events 
-	unsigned long enc_delta_ticks;							// Number of timer ticks between previous/current capture events (Minus overflows)
-	unsigned long position_actual;							// Total input capture events, represents finger position 
+        struct GPIOx_t *reg_bit;                                                                // Base address of IDR for GPIO 
+        char name[STR_MAX];                                                                                        // Name of finger 
+        unsigned int direction_actual;                                                        // Actual direction of motor movement as read from encoder 
+        unsigned int speed_actual;                                                                // Actual speed of the motor (calculated from encoder data)
+        unsigned int enc_chan_a;                                                                // ?????? Encoder channel A Pin definition 
+        unsigned int enc_chan_b;                                                                // ?????? Encoder channel B pin definition 
+        unsigned long enc_start_time;                                                        // Value of encoder timer when previous capture event occured 
+        unsigned long enc_end_time;                                                                // Value of encoder timer when current capture event occured 
+//        unsigned long enc_total_time;                                                        // Calculated total time between input capture events
+        unsigned long enc_total_ticks;                                                        // Calculated total number of timer ticks between input capture events 
+        unsigned long enc_overflow_start;                                                // Value of timer overflow counter when previous capture event occured 
+        unsigned long enc_overflow_end;                                                        // Value of timer overflow counter when current capture event occured 
+        long double input_sig_period;                                                        // Period of motor encoder signal (in ms)
+        long double input_sig_frequency;                                                // Frequency of motor encoder signal (in Hz)
+        unsigned long enc_overflow_delta;                                                // Calculated number of timer overflows between capture events 
+        unsigned long enc_overflow_ticks;                                                // Total number of timer ticks for the timer overflows between events 
+        unsigned long enc_delta_ticks;                                                        // Number of timer ticks between previous/current capture events (Minus overflows)
+        unsigned long position_actual;                                                        // Total input capture events, represents finger position 
 };
 
+
+        // Create Finger Structs
+        struct finger fngr_pointer;
+        struct finger fngr_middle;
+        struct finger fngr_ring;
+        struct finger fngr_pinky;
+
+        // Create pointer structs for GPIO access
+        struct GPIOx_t * GPIOA_IDR_LOC = 0x40020000 + 0x10;                // Location (Base + Offset) of the input data register for GPIO Port A
 
 
 
 
 // Main Starts here 
 void main() {
-	
-	// Initializations 
-	init_UART();
-	init_input_capture();
-	init_timer3();
-	
-	
-	// Create Structs
-	struct finger fngr_pointer;
-	struct finger fngr_middle;
-	struct finger fngr_ring;
-	struct finger fngr_pinky;
-	
-	
-	//Define names of fingers 
-	strcpy(fngr_pointer.name, "Pointer");
-	strcpy(fngr_middle.name, "Middle");
-	strcpy(fngr_ring.name, "Ring");
-	strcpy(fngr_pinky.name, "Pinky");
-	
-	
-	//Define encoder channel pins 
-	
-	//?????????????????????????????????????????????????????????????????????????????????????
-	
-		
-	
-	// Program start terminal verification 
-	UART1_Write_Text("\n\n\rProgram Has Started!\n\n\r");
-	
-	
-	// Infinite Loop
-	while(1) {
-		
-		if (poll_flag) {													// Polling event occured => Calculate values 
-			poll_flag = 0;													// Clear poll_flag 
-			
-			calc_finger_state(&fngr_pointer);								// Perform finger calculations 
-			//calc_finger_state(&fngr_middle);
-			//calc_finger_state(&fngr_ring);
-			//calc_finger_state(&fngr_pinky);
-		}
-		
-		if (terminal_print_count >= TERMINAL_PRINT_THRESH) {				// Set number of polling events has occured => Print statistics to terminal		
-		
-			print_finger_info(&fngr_pointer);
-			//print_finger_info(&fngr_middle);
-			//print_finger_info(&fngr_ring);
-			//print_finger_info(&fngr_pinky);		
-		}	
-	}
+        
+        // Initializations 
+        init_UART();
+        init_GPIO();
+
+
+        //Define names of fingers 
+        strcpy(fngr_pointer.name, "Pointer");
+        strcpy(fngr_middle.name, "Middle");
+        strcpy(fngr_ring.name, "Ring");
+        strcpy(fngr_pinky.name, "Pinky");
+        
+        UART1_Write_Text("Test point 2\n\r");
+        
+        //Define GPIO Base addresses for finger I/O 
+        fngr_pointer.reg_bit = GPIOA_IDR_LOC;
+        fngr_middle.reg_bit = GPIOA_IDR_LOC;
+        fngr_ring.reg_bit = GPIOA_IDR_LOC;
+        fngr_pinky.reg_bit = GPIOA_IDR_LOC;
+        
+        
+        UART1_Write_Text("Test point 3\n\r");
+        
+        //Define specific bits for encoder channels 
+        fngr_pointer.enc_chan_a = FNGR_POINTER_ENC_A;
+        fngr_pointer.enc_chan_b = FNGR_POINTER_ENC_B;
+        fngr_middle.enc_chan_a = FNGR_MIDDLE_ENC_A;
+        fngr_middle.enc_chan_b = FNGR_MIDDLE_ENC_B;
+        fngr_ring.enc_chan_a = FNGR_RING_ENC_A;
+        fngr_ring.enc_chan_b = FNGR_RING_ENC_B;
+        fngr_pinky.enc_chan_a = FNGR_PINKY_ENC_A;
+        fngr_pinky.enc_chan_b = FNGR_PINKY_ENC_B;
+
+
+
+        // Program start terminal verification 
+        UART1_Write_Text("\n\n\rProgram Has Started!\n\n\r");
+        delay_ms(500);
+        
+        //Begin Timers and input capture
+        init_timer3();
+        init_input_capture();
+        
+        // Infinite Loop
+        while(1) {
+
+             if (poll_flag) {                                              //Calculate finger state values
+             poll_flag = 0;
+             calc_finger_state(&fngr_pointer);
+             //calc_finger_state(&fngr_middle);
+             //calc_finger_state(&fngr_ring);
+             //calc_finger_state(&fngr_pinky);
+             
+             }
+
+
+             if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {                                // Set number of polling events has occured => Print statistics to terminal
+
+                  print_finger_info(&fngr_pointer);
+                  //print_finger_info(&fngr_middle);
+                  //print_finger_info(&fngr_ring);
+                  //print_finger_info(&fngr_pinky);
+                }        
+        }
 } // Main ends here 
 
 
@@ -143,58 +174,64 @@ void main() {
 /**************  Interrupt Handlers  **************/
 
 // Interrupt handler for Timer 2
-void timer2_ISR() iv IVT_INT_TIM2 {															
+void timer2_ISR() iv IVT_INT_TIM2 {                                                                                                                        
 
-    //NVIC_IntDisable(IVT_INT_TIM2);                                   		// Disable timer 2 interrupts
+    //NVIC_IntDisable(IVT_INT_TIM2);                                                   // Disable timer 2 interrupts
 
-	// Timer 2 Overflow 
+        // Timer 2 Overflow 
     if(TIM2_SR.UIF == 1) {                                                     
-		TIM2_SR.UIF = 0;                                                  	// Clear timer 2 interrupt bit
-        overflow_count++;                                               	// Increment overflow counter
+        TIM2_SR.UIF = 0;                                                          // Clear timer 2 interrupt bit
+        overflow_count++;                                                       // Increment overflow counter
     }
 
-	// Channel 1 (Pin A0) Pointer finger input capture event 
-    if (TIM2_SR.CC1IF == 1) {                                               
-        fngr_pointer.enc_end_time = TIM2_CCR1;                         		// Read stored input capture time
-		fngr_pointer.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
-        fngr_pointer.position_actual++;                                		// Increment total input capture event counter
+        // Channel 1 (Pin A0) Pointer finger input capture event 
+    if (TIM2_SR.CC1IF == 1) {    
+        fngr_pointer.enc_start_time = fngr_pointer.enc_end_time;
+        fngr_pointer.enc_end_time = TIM2_CCR1;                                         // Read stored input capture time
+        fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;
+        fngr_pointer.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
+        fngr_pointer.position_actual++;                                                // Increment total input capture event counter
     }
-	
-	
-//All other channels disabled for initial testing. Start with testing only a single channel, then expand. 
-/*
-	// Channel 2 (Middle finger) input capture event 
+        
+
+        // Channel 2 (Middle finger) input capture event 
     if (TIM2_SR.CC2IF == 1) {                                               
-        fngr_middle.enc_end_time = TIM2_CCR2;                         		// Read stored input capture time
-		fngr_middle.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
-        fngr_middle.position_actual++;                                		// Increment total input capture event counter
-    }	
-	
-	// Channel 3 (Ring finger) input capture event 
-    if (TIM2_SR.CC13F == 1) {                                               
-        fngr_ring.enc_end_time = TIM2_CCR3;                         		// Read stored input capture time
-		fngr_ring.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
-        fngr_ring.position_actual++;                                		// Increment total input capture event counter
-    }	
-	
-	// Channel 4 (Pinky) input capture event 
+        fngr_middle.enc_start_time = fngr_middle.enc_end_time;
+        fngr_middle.enc_end_time = TIM2_CCR2;                                         // Read stored input capture time
+        fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;
+        fngr_middle.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
+        fngr_middle.position_actual++;                                                // Increment total input capture event counter
+    }        
+        
+        // Channel 3 (Ring finger) input capture event 
+    if (TIM2_SR.CC2IF == 1) {
+        fngr_ring.enc_start_time = fngr_ring.enc_end_time;
+        fngr_ring.enc_end_time = TIM2_CCR3;                                         // Read stored input capture time
+        fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;
+        fngr_ring.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
+        fngr_ring.position_actual++;                                                // Increment total input capture event counter
+    }        
+        
+        // Channel 4 (Pinky) input capture event 
     if (TIM2_SR.CC4IF == 1) {                                               
-        fngr_pinky.enc_end_time = TIM2_CCR4;                         		// Read stored input capture time
-		fngr_pinky.enc_overflow_end = overflow_count;						// Store number of timer 2 overflows for this finger 
-        fngr_pinky.position_actual++;                                		// Increment total input capture event counter
-    }	
-*/	
-    //NVIC_IntEnable(IVT_INT_TIM2);                                	    	// Re-enable timer 2 interrupt
+        fngr_pinky.enc_start_time = fngr_pinky.enc_end_time;
+        fngr_pinky.enc_end_time = TIM2_CCR4;                                         // Read stored input capture time
+        fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;
+        fngr_pinky.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
+        fngr_pinky.position_actual++;                                                // Increment total input capture event counter
+    }        
+
+    //NVIC_IntEnable(IVT_INT_TIM2);                                                    // Re-enable timer 2 interrupt
 }
 
 
 // Interrupt handler for Timer 3
-void timer3_ISR() iv IVT_INT_EXTI15_10 ics ICS_AUTO {
+void timer3_ISR() iv IVT_INT_TIM3 {
 
-	TIM3_SR.UIF = 0;														// Clear timer 3 interrupt bit 
-	poll_flag = 1;															// Set poll flag for main loop 
-	terminal_print_count++;													// Increment the print counter 
-}								
+        TIM3_SR.UIF = 0;                                                                                                                // Clear timer 3 interrupt bit 
+        poll_flag = 1;                                                                                                                        // Set poll flag for main loop 
+        terminal_print_count++;                                                                                                        // Increment the print counter 
+}                                                                
 
 
 
@@ -205,71 +242,69 @@ void timer3_ISR() iv IVT_INT_EXTI15_10 ics ICS_AUTO {
 //Initialize MCU GPIO's and other hardware 
 void init_GPIO() {
 
-	//Configure GPIO's for secondary motor encoder channels 
-	GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | GPIO_PINMASK_6 | GPIO_PINMASK_7);
-
-	GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);                   	// ** DEBUG ** Enable digital output on E10
-    GPIOE_ODR.B10 = 0;                                                      // ** DEBUG ** Set pin E10 low
+        //Configure GPIO's for secondary motor encoder channels 
+        GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | _GPIO_PINMASK_6 | _GPIO_PINMASK_7);                                                   // ** DEBUG ** Set pin E10 low
 }
 
 
 
 //Initialize UART 
 void init_UART() {
-	
-	UART1_Init(UART_BAUD_RATE);                                       		// Configure UART 1
-    Delay_ms(200);                                                 			// Wait for UART to stabilize	
-}							
+        
+        UART1_Init(UART_BAUD_RATE);                                                       // Configure UART 1
+    Delay_ms(200);                                                                         // Wait for UART to stabilize   
+    UART_Write_Text("\rUART Init Complete\r\n");
+}                                                        
 
 
 
 //Initialize Input Capture on Timer 2 Channel 1 
 void init_input_capture() {
 
-	//Configure timer 2 
-	RCC_APB1ENR.TIM2EN = 1;                                               	// Enable clock gating for timer module 2
-	TIM2_CR1.CEN = 0;                                                       // Disable timer/counter
-	TIM2_PSC = ENCODER_TIM_PSC;                                             // Set timer 2 prescaler (need to determine value)
-	TIM2_ARR = ENCODER_TIM_RELOAD;                                          // Set timer 2 overflow (Auto Reload) value 
-	TIM2_CR1 |= 0x10;                                                       // Set counter direction as upcounting (DIR bit)
-	
-	//Configure pointer finger (Pin A0, Channel 1) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);				// Configure alternate function for A0 as Timer 2 Channel 1 
-	TIM2_CCMR1_Input |= 0x01;                                               // Set capture channel 1 as input on TI2 (CC1S = 01)
-	TIM2_CCER.CC1P = 0;                                                     // Set capture on rising edge event
-	TIM2_CCER.CC1E = 1;                                                     // Enable capture on channel 1
-	TIM2_DIER.CC1IE = 1;                                                    // Enable interrupt on capture channel 1 
-	
-	//Configure middle finger (Pin A1, Channel 2) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH2_PA1);				// Configure alternate function for pin A1 as Timer 2 Channel 2 
-	TIM2_CCMR1_Input |= 0x200;												// Set capture channel 2 as input on TI1 (CC2S = 10)
-	TIM2_CCER.CC2P = 0;														// Set capture on rising edge event 
-	TIM2_CCER.CC2E = 1;														// Enable capture on channel 2 
-	TIM2_DIER.CC2IE = 1;													// Enable interrupt on capture channel 2
-	
-	//Configure ring finger (Pin A2, Channel 3) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH3_PA2);				// Configure alternate function for pin A2 as Timer 2 Channel 3 
-	TIM2_CCMR2_Input |= 0x01;												// Set capture channel 3 as input on TI2 (CC3S = 01)
-	TIM2_CCER.CC3P = 0;														// Set capture on rising edge event 
-	TIM2_CCER.CC3E = 1;														// Enable capture on channel 3 
-	TIM2_DIER.CC3IE = 1;													// Enable interrupt on capture channel 3	
-	
-	//Configure pinky finger (Pin A3, Channel 4) input capture 
-	GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH4_PA3);				// Configure alternate function for pin A3 as Timer 2 Channel 4 
-	TIM2_CCMR2_Input |= 0x200;												// Set capture channel 4 as input on TI1 (CC4S = 10)
-	TIM2_CCER.CC3P = 0;														// Set capture on rising edge event 
-	TIM2_CCER.CC3E = 1;														// Enable capture on channel 4
-	TIM2_DIER.CC4IE = 1;													// Enable interrupt on capture channel 4
-	
-	//Configure timer interrupts 
-	TIM2_DIER.UIE = 1;                                                      // Enable overflow interrupt 
-	NVIC_IntEnable(IVT_INT_TIM2);                                           // Enable timer 2 interrupt
-	//EnableInterrupts();                                                   // Probably unneeded due to previous line??????
-	//TIM2_CNT = 0x00;														// Set counter value to 0 (Probably not needed) 
-	TIM2_CR1.CEN = 1;                                                       // Enable timer/counter
+        //Configure timer 2 
+        RCC_APB1ENR.TIM2EN = 1;                                                       // Enable clock gating for timer module 2
+        TIM2_CR1.CEN = 0;                                                       // Disable timer/counter
+        TIM2_PSC = ENCODER_TIM_PSC;                                             // Set timer 2 prescaler (need to determine value)
+        TIM2_ARR = ENCODER_TIM_RELOAD;                                          // Set timer 2 overflow (Auto Reload) value 
+        TIM2_CR1 |= 0x10;                                                       // Set counter direction as upcounting (DIR bit)
+        
+        //Configure pointer finger (Pin A0, Channel 1) input capture 
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);                                // Configure alternate function for A0 as Timer 2 Channel 1 
+        TIM2_CCMR1_Input |= 0x01;                                               // Set capture channel 1 as input on TI2 (CC1S = 01)
+        TIM2_CCER.CC1P = 0;                                                     // Set capture on rising edge event
+        TIM2_CCER.CC1E = 1;                                                     // Enable capture on channel 1
+        TIM2_DIER.CC1IE = 1;                                                    // Enable interrupt on capture channel 1 
 
-	//Calculate the time per timer 2 tick 
-	timer_period_ms = (long double) 1000.0 / (clk_freq / (tim_psc + 1));	// Calculate period of TIM2_CLK in ms 
+        //Configure middle finger (Pin A1, Channel 2) input capture 
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH2_PA1);                                // Configure alternate function for pin A1 as Timer 2 Channel 2 
+        TIM2_CCMR1_Input |= 0x200;                                                                                                // Set capture channel 2 as input on TI1 (CC2S = 10)
+        TIM2_CCER.CC2P = 0;                                                                                                                // Set capture on rising edge event 
+        TIM2_CCER.CC2E = 1;                                                                                                                // Enable capture on channel 2 
+        TIM2_DIER.CC2IE = 1;                                                                                                        // Enable interrupt on capture channel 2
+        
+        //Configure ring finger (Pin A2, Channel 3) input capture 
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH3_PA2);                                // Configure alternate function for pin A2 as Timer 2 Channel 3 
+        TIM2_CCMR2_Input |= 0x01;                                                                                                // Set capture channel 3 as input on TI2 (CC3S = 01)
+        TIM2_CCER.CC3P = 0;                                                                                                                // Set capture on rising edge event 
+        TIM2_CCER.CC3E = 1;                                                                                                                // Enable capture on channel 3 
+        TIM2_DIER.CC3IE = 1;                                                                                                        // Enable interrupt on capture channel 3        
+        
+        //Configure pinky finger (Pin A3, Channel 4) input capture 
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH4_PA3);                                // Configure alternate function for pin A3 as Timer 2 Channel 4 
+        TIM2_CCMR2_Input |= 0x200;                                                                                                // Set capture channel 4 as input on TI1 (CC4S = 10)
+        TIM2_CCER.CC3P = 0;                                                                                                                // Set capture on rising edge event 
+        TIM2_CCER.CC3E = 1;                                                                                                                // Enable capture on channel 4
+        TIM2_DIER.CC4IE = 1;                                                                                                        // Enable interrupt on capture channel 4
+
+        //Configure timer interrupts 
+        TIM2_DIER.UIE = 1;                                                      // Enable overflow interrupt 
+        NVIC_IntEnable(IVT_INT_TIM2);                                           // Enable timer 2 interrupt
+        //EnableInterrupts();                                                   // Probably unneeded due to previous line??????
+        TIM2_CNT = 0x00;                                                                                                                // Set counter value to 0 (Probably not needed)
+        TIM2_CR1.CEN = 1;                                                       // Enable timer/counter
+
+        //Calculate the time per timer 2 tick 
+        timer2_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));        // Calculate period of TIM2_CLK in ms
 }
 
 
@@ -277,13 +312,13 @@ void init_input_capture() {
 //Initialize Timer 3 (Interrupts ever 100ms to poll encoder state)
 void init_timer3() {
 
-	RCC_APB1ENR.TIM3EN = 1;													// Enable clock for timer 3
-	TIM3_CR1.CEN = 0;														// Disable timer/counter 
-	TIM3_PSC = 279;															// Set timer 3 prescaler 
-	TIM3_ARR = 59999;														// Set timer 3 overflow value 
-	NVIC_IntEnable(IVT_INT_TIM3);											// Enable timer 3 interrupt 
-	TIM3_DIER.UIE = 1;														// Timer 3 update interrupt enable 
-	TIM3_CR1.CEN = 1;														// Enable timer/counter 
+        RCC_APB1ENR.TIM3EN = 1;                                                                                                        // Enable clock for timer 3
+        TIM3_CR1.CEN = 0;                                                                                                                // Disable timer/counter 
+        TIM3_PSC = 279;                                                                                                                        // Set timer 3 prescaler 
+        TIM3_ARR = 59999;                                                                                                                // Set timer 3 overflow value 
+        NVIC_IntEnable(IVT_INT_TIM3);                                                                                        // Enable timer 3 interrupt 
+        TIM3_DIER.UIE = 1;                                                                                                                // Timer 3 update interrupt enable 
+        TIM3_CR1.CEN = 1;                                                                                                                // Enable timer/counter 
 }
 
 
@@ -292,130 +327,106 @@ void init_timer3() {
 
 // Function to calculate statistics finger encoder 
 void calc_finger_state( struct finger *fngr) {
-	
-	// Calculate number of timer overflows between previous and current capture events 
-	fngr->enc_overflow_delta = fngr->enc_overflow_end - fngr->enc_overflow_start;
-	
-	// Calculate timer ticks for the delta number of overflows 
-	fngr->enc_overflow_ticks = fngr->enc_overflow_delta * ENCODER_TIMER_ARR;
-	
-	// Calculate number of timer ticks (minus overflows) between previous and current capture events 
-	fngr->enc_delta_ticks = fngr->enc_end_time - enc_start_time;
-	
-	// Calculate total timer ticks between previous and current capture events 
-	fngr->enc_total_ticks = fngr->enc_overflow_ticks + fngr->enc_delta_ticks;
-	
-	// Calculate period of captured signal (ms)
-	fngr->period = (unsigned long) fngr->enc_total_ticks * time_per_tick;
-	
-	// Calculate frequency of captured signal (Hz)
-	fngr->frequency = 1000000.0 / fngr->period;
-	
-	// Store current overflow and timer values for next cycle
-	fngr->enc_overflow_start = fngr->enc_overflow_end;
-	fngr->enc_start_time = fngr->enc_end_time;
-	
-	// Check direction of motor movement 
-	if (FNGR_POINTER_ENC_A && !FNGR_POINTER_ENC_B) {
-		fngr->direction_actual = 1;								// Clockwise
-	}
-	
-	else if (!FNGR_POINTER_ENC_A && FNGR_POINTER_ENC_B) {
-		fngr->direction_actual = 0;								// Counter Clockwise 
-	}
-	
-	else {
-		fngr->direction_actual = 7;								// ERROR DIRECTION
-	}
+        
+        
+        // Calculate number of timer overflows between previous and current capture events 
+        fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
+        
+        // Calculate timer ticks for the delta number of overflows 
+        fngr->enc_overflow_ticks = (unsigned long) fngr->enc_overflow_delta * (ENCODER_TIM_RELOAD - 3);
+        
+        // Calculate number of timer ticks (minus overflows) between previous and current capture events 
+        fngr->enc_delta_ticks = (unsigned long) fngr->enc_start_time - fngr->enc_end_time;
+        
+        // Calculate total timer ticks between previous and current capture events 
+        fngr->enc_total_ticks = (unsigned long) fngr->enc_overflow_ticks + fngr->enc_delta_ticks;
+        
+        // Calculate period of captured signal (ms)
+        fngr->input_sig_period = (long double) fngr->enc_total_ticks * timer2_period_ms;
+        
+        // Calculate frequency of captured signal (Hz)
+        fngr->input_sig_frequency = (long double) 1000.0 / fngr->input_sig_period;
+
+        
+        // Check direction of motor movement 
+        if ((fngr->reg_bit->addr0 & fngr->enc_chan_a) && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+                fngr->direction_actual = 1;                                                                // Clockwise
+        }
+        
+        else if (!(fngr->reg_bit->addr0 & fngr->enc_chan_a) && (fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+                fngr->direction_actual = 0;                                                                // Counter Clockwise 
+        }
+        
+        else {
+                fngr->direction_actual = 7;                                                                // ERROR
+        }
 }
 
 
 
 // Function to print all statistics to terminal 
 void print_finger_info( struct finger *fngr) {
-	
-	//Local strings
-	char timer_per_tick_text[STR_MAX];
-	char overflow_delta_text[STR_MAX];
-	char overflow_time_text[STR_MAX];
-	char enc_delta_ticks_text[STR_MAX];
-	char total_ticks_text[STR_MAX];
-	char period_text[STR_MAX];
-	char frequency_text[STR_MAX];
-	char position_text[STR_MAX];
-	char direction_text[STR_MAX];
-	
-	
-	UART1_Write_Text("\n\rFinger Name: ");							//Print name of current finger to terminal 
-	UART1_Write_Text(fngr->name);
-	UART1_Write_Text("\n\r");
-	
-	FloatToStr(time_per_tick, time_per_tick_text);      			// Print calculated time per tick to terminal 
-	UART1_Write_Text("Time per tick: ");
-	UART1_Write_Text(time_per_tick_text);
-	UART1_Write_Text("\n\r");
+        
+        //Local strings
+        char time_per_tick_text[STR_MAX];
+        char overflow_delta_text[STR_MAX];
+        char overflow_time_text[STR_MAX];
+        char enc_delta_ticks_text[STR_MAX];
+        char total_ticks_text[STR_MAX];
+        char period_text[STR_MAX];
+        char frequency_text[STR_MAX];
+        char position_text[STR_MAX];
+        char direction_text[STR_MAX];
+        
+        
+        UART1_Write_Text("\n\rFinger Name: ");                                                        //Print name of current finger to terminal 
+        UART1_Write_Text(fngr->name);
+        UART1_Write_Text("\n\r");
+        
+        LongDoubleToStr(timer2_period_ms, time_per_tick_text);                      // Print calculated time per tick to terminal
+        UART1_Write_Text("Time per tick: ");
+        UART1_Write_Text(time_per_tick_text);
+        UART1_Write_Text("\n\r");
 
-	LongToStr(fngr->enc_overflow_delta, overflow_delta_text);      	// Print number of timer 2 overflow events to terminal 
-	UART1_Write_Text("Total number of timer overflows: ");
-	UART1_Write_Text(overflow_delta_text);
-	UART1_Write_Text("\n\r");	
+        LongWordToStr(fngr->enc_overflow_delta, overflow_delta_text);              // Print number of timer 2 overflow events to terminal 
+        UART1_Write_Text("Total number of timer overflows: ");
+        UART1_Write_Text(overflow_delta_text);
+        UART1_Write_Text("\n\r");        
 
-	LongToStr(fngr->enc_overflow_ticks, overflow_time_text);        // Print total calculated time from timer 2 overflows to terminal 
-	UART1_Write_Text("Calculated Overflow Ticks : ");
-	UART1_Write_Text(overflow_time_text);
-	UART1_Write_Text("\n\r");		
+        LongWordToStr(fngr->enc_overflow_ticks, overflow_time_text);        // Print total calculated time from timer 2 overflows to terminal 
+        UART1_Write_Text("Calculated Overflow Ticks : ");
+        UART1_Write_Text(overflow_time_text);
+        UART1_Write_Text("\n\r");                
 
-	LongToStr(fngr->enc_delta_ticks, enc_delta_ticks_text);         // Print input capture delta time to terminal 
-	UART1_Write_Text("Input Capture Delta Ticks: ");
-	UART1_Write_Text(enc_delta_ticks_text);
-	UART1_Write_Text("\n\r");			
+        LongWordToStr(fngr->enc_delta_ticks, enc_delta_ticks_text);         // Print input capture delta time to terminal 
+        UART1_Write_Text("Input Capture Delta Ticks: ");
+        UART1_Write_Text(enc_delta_ticks_text);
+        UART1_Write_Text("\n\r");                        
 
-	LongToStr(fngr->enc_total_ticks, total_ticks_text;             	// Print total number of ticks between input capture events to terminal 
-	UART1_Write_Text("Total timer ticks between input captures: ");
-	UART1_Write_Text(total_ticks_text);
-	UART1_Write_Text("\n\r");			
+        LongWordToStr(fngr->enc_total_ticks, total_ticks_text);                     // Print total number of ticks between input capture events to terminal
+        UART1_Write_Text("Total timer ticks between input captures: ");
+        UART1_Write_Text(total_ticks_text);
+        UART1_Write_Text("\n\r");                        
 
-	LongToStr(fngr->period, period_text);                  			// Print input capture signal period to terminal 
-	UART1_Write_Text("Period of incoming signal (ms): ");
-	UART1_Write_Text(period_text);
-	UART1_Write_Text("\n\r");			
+        LongDoubleToStr(fngr->input_sig_period, period_text);                                          // Print input capture signal period to terminal 
+        UART1_Write_Text("Period of incoming signal (ms): ");
+        UART1_Write_Text(period_text);
+        UART1_Write_Text("\n\r");                        
 
-	LongToStr(fngr->frequency, frequency_text);            			// Print input capture signal frequency to terminal
-	UART1_Write_Text("Frequency of incoming signal (Hz): ");
-	UART1_Write_Text(frequency_text);
-	UART1_Write_Text("\n\r");			
+        LongDoubleToStr(fngr->input_sig_frequency, frequency_text);                                    // Print input capture signal frequency to terminal
+        UART1_Write_Text("Frequency of incoming signal (Hz): ");
+        UART1_Write_Text(frequency_text);
+        UART1_Write_Text("\n\r");                        
 
-	IntToStr(fngr->direction_actual, direction_text);            	// Print direction of movement to terminal
-	UART1_Write_Text("Direction of movement: ");
-	UART1_Write_Text(direction_text);
-	UART1_Write_Text("\n\r");			
-	
-	LongToStr(fngr->position_actual, position_text);               // Print total number of input events (position) to terminal 
-	UART1_Write_Text("Position of finger: ");
-	UART1_Write_Text(position_text);
-	UART1_Write_Text("\n\n\n\r");	
+        IntToStr(fngr->direction_actual, direction_text);                    // Print direction of movement to terminal
+        UART1_Write_Text("Direction of movement: ");
+        UART1_Write_Text(direction_text);
+        UART1_Write_Text("\n\r");                        
+        
+        LongToStr(fngr->position_actual, position_text);               // Print total number of input events (position) to terminal 
+        UART1_Write_Text("Position of finger: ");
+        UART1_Write_Text(position_text);
+        UART1_Write_Text("\n\n\n\r");        
 
-	terminal_print_count = 0;										// Reset counter for terminal printing 	
+        terminal_print_count = 0;                                                                                // Reset counter for terminal printing         
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

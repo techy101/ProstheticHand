@@ -1,41 +1,57 @@
 main
 	__CC2DW
 	__FillZeros
-	init_hardware
-		GPIO_Digital_Output
-			GPIO_Config
-				GPIO_Clk_Enable
-		GPIO_Alternate_Function_Enable
-			GPIO_Config_Pin_Alternate_Function
-				GPIO_Config
-	init_timer3
-		NVIC_IntEnable
-	init_tim2_input_capture
-		NVIC_IntEnable
-		_UnsignedIntegralToLongDouble
-		_Div_DP
-	init_serial_comm
+	init_UART
 		UART1_Init
 			UARTx_Init_Advanced
 				RCC_GetClocksFrequency
 					Get_Fosc_kHz
 				GPIO_Alternate_Function_Enable
-	strncpy
+					GPIO_Config_Pin_Alternate_Function
+						GPIO_Config
+							GPIO_Clk_Enable
+		UART_Write_Text
+			UART_Write
+				UART1_Write
+					UARTx_Write
+				UART2_Write
+					UARTx_Write
+				UART3_Write
+					UARTx_Write
+				UART4_Write
+					UARTx_Write
+				UART5_Write
+					UARTx_Write
+				UART6_Write
+					UARTx_Write
+	init_GPIO
+		GPIO_Digital_Input
+			GPIO_Config
+	strcpy
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
-	_UnsignedIntegralToLongDouble
-	_Mul_DP
-	_Div_DP
-	LongDoubleToStr
-		strcpy
-		_Compare_DP
+	init_timer3
+		NVIC_IntEnable
+	init_input_capture
+		NVIC_IntEnable
+		GPIO_Alternate_Function_Enable
+		_UnsignedIntegralToLongDouble
+		_Div_DP
+	calc_finger_state
+		_UnsignedIntegralToLongDouble
 		_Mul_DP
-	IntToStr
-		WordToStr
-	LongWordToStr
-	LongToStr
+		_Div_DP
+	print_finger_info
+		UART1_Write_Text
+		LongDoubleToStr
+			strcpy
+			_Compare_DP
+			_Mul_DP
 		LongWordToStr
-Timer3_interrupt
-external_interrupt
-timer2_interrupt
+		IntToStr
+			WordToStr
+		LongToStr
+			LongWordToStr
+timer3_ISR
+timer2_ISR
