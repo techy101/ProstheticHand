@@ -2,7 +2,7 @@
 #line 25 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
-unsigned int ENCODER_TIM_PSC = 0;
+unsigned int ENCODER_TIM_PSC = 100;
 unsigned int TERMINAL_PRINT_THRESH = 40;
 
 
@@ -56,7 +56,7 @@ struct finger {
  unsigned long enc_overflow_start;
  unsigned long enc_overflow_end;
  long double input_sig_period;
- long double input_sig_frequency;
+ unsigned long input_sig_frequency;
  unsigned long enc_overflow_delta;
  unsigned long enc_overflow_ticks;
  unsigned long enc_delta_ticks;
@@ -90,7 +90,6 @@ void main() {
  strcpy(fngr_ring.name, "Ring");
  strcpy(fngr_pinky.name, "Pinky");
 
- UART1_Write_Text("Test point 2\n\r");
 
 
  fngr_pointer.reg_bit = GPIOA_IDR_LOC;
@@ -98,8 +97,6 @@ void main() {
  fngr_ring.reg_bit = GPIOA_IDR_LOC;
  fngr_pinky.reg_bit = GPIOA_IDR_LOC;
 
-
- UART1_Write_Text("Test point 3\n\r");
 
 
  fngr_pointer.enc_chan_a =  0x00 ;
@@ -140,6 +137,7 @@ void main() {
  print_finger_info(&fngr_middle);
  print_finger_info(&fngr_ring);
  print_finger_info(&fngr_pinky);
+ UART1_Write_Text("\n\n\n\n\n\n\n\r");
  }
  }
 }
@@ -153,8 +151,6 @@ void main() {
 
 
 void timer2_ISR() iv IVT_INT_TIM2 {
-
-
 
 
  if(TIM2_SR.UIF == 1) {
@@ -198,8 +194,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_pinky.enc_overflow_end = overflow_count;
  fngr_pinky.position_actual++;
  }
-
-
 }
 
 
@@ -222,6 +216,7 @@ void init_GPIO() {
 
 
  GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | _GPIO_PINMASK_6 | _GPIO_PINMASK_7);
+ GPIO_Digital_Input(&GPIOD_Base, _GPIO_PINMASK_1);
 }
 
 
@@ -326,11 +321,11 @@ void calc_finger_state( struct finger *fngr) {
  fngr->input_sig_period = (long double) fngr->enc_total_ticks * timer2_period_ms;
 
 
- fngr->input_sig_frequency = (long double) 1000.0 / fngr->input_sig_period;
+ fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
 
 
 
- if ((fngr->reg_bit->addr0 & fngr->enc_chan_a) && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+ if (GPIOD_IDR.B1 && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
  fngr->direction_actual = 1;
  }
 
@@ -341,6 +336,7 @@ void calc_finger_state( struct finger *fngr) {
  else {
  fngr->direction_actual = 7;
  }
+#line 376 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
 }
 
 
@@ -349,63 +345,26 @@ void calc_finger_state( struct finger *fngr) {
 void print_finger_info( struct finger *fngr) {
 
 
- char time_per_tick_text[ 15 ];
- char overflow_delta_text[ 15 ];
- char overflow_time_text[ 15 ];
- char enc_delta_ticks_text[ 15 ];
- char total_ticks_text[ 15 ];
- char period_text[ 15 ];
  char frequency_text[ 15 ];
  char position_text[ 15 ];
  char direction_text[ 15 ];
-
 
  UART1_Write_Text("\n\rFinger Name: ");
  UART1_Write_Text(fngr->name);
  UART1_Write_Text("\n\r");
 
- LongDoubleToStr(timer2_period_ms, time_per_tick_text);
- UART1_Write_Text("Time per tick: ");
- UART1_Write_Text(time_per_tick_text);
- UART1_Write_Text("\n\r");
-
- LongWordToStr(fngr->enc_overflow_delta, overflow_delta_text);
- UART1_Write_Text("Total number of timer overflows: ");
- UART1_Write_Text(overflow_delta_text);
- UART1_Write_Text("\n\r");
-
- LongWordToStr(fngr->enc_overflow_ticks, overflow_time_text);
- UART1_Write_Text("Calculated Overflow Ticks : ");
- UART1_Write_Text(overflow_time_text);
- UART1_Write_Text("\n\r");
-
- LongWordToStr(fngr->enc_delta_ticks, enc_delta_ticks_text);
- UART1_Write_Text("Input Capture Delta Ticks: ");
- UART1_Write_Text(enc_delta_ticks_text);
- UART1_Write_Text("\n\r");
-
- LongWordToStr(fngr->enc_total_ticks, total_ticks_text);
- UART1_Write_Text("Total timer ticks between input captures: ");
- UART1_Write_Text(total_ticks_text);
- UART1_Write_Text("\n\r");
-
- LongDoubleToStr(fngr->input_sig_period, period_text);
- UART1_Write_Text("Period of incoming signal (ms): ");
- UART1_Write_Text(period_text);
- UART1_Write_Text("\n\r");
-
- LongDoubleToStr(fngr->input_sig_frequency, frequency_text);
+ LongWordToStr(fngr->input_sig_frequency, frequency_text);
  UART1_Write_Text("Frequency of incoming signal (Hz): ");
  UART1_Write_Text(frequency_text);
  UART1_Write_Text("\n\r");
 
  IntToStr(fngr->direction_actual, direction_text);
- UART1_Write_Text("Direction of movement: ");
+ UART1_Write_Text("Direction of movement:             ");
  UART1_Write_Text(direction_text);
  UART1_Write_Text("\n\r");
 
- LongToStr(fngr->position_actual, position_text);
- UART1_Write_Text("Position of finger: ");
+ LongWordToStr(fngr->position_actual, position_text);
+ UART1_Write_Text("Position of finger:                ");
  UART1_Write_Text(position_text);
  UART1_Write_Text("\n\n\n\r");
 

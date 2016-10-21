@@ -9,11 +9,11 @@
 
 
 
-#define FNGR_POINTER_ENC_A                                                 0x00                                        // Pin A0 IDR bit offset: Pointer finger encoder channel A (Tim2 CH1 input capture)
-#define FNGR_POINTER_ENC_B                                                0x10                                        // Pin A4 IDR bit offset: Pointer finger encoder channel B (Direction only)
-#define FNGR_MIDDLE_ENC_A                                                0x02                                        // Pin A1 IDR bit offset: Middle finger encoder channel A (Tim2 CH2 input capture)
-#define FNGR_MIDDLE_ENC_B                                                0x20                                        // Pin A5 IDR bit offset: Middle finger encoder channel B (Direction only)  
-#define FNGR_RING_ENC_A                                                        0x04                                        // Pin A2 IDR bit offset: Ring finger encoder channel A (Tim2 CH3 input capture) 
+#define FNGR_POINTER_ENC_A                                              0x00                                        // Pin A0 IDR bit offset: Pointer finger encoder channel A (Tim2 CH1 input capture)
+#define FNGR_POINTER_ENC_B                                              0x10                                        // Pin A4 IDR bit offset: Pointer finger encoder channel B (Direction only)
+#define FNGR_MIDDLE_ENC_A                                               0x02                                        // Pin A1 IDR bit offset: Middle finger encoder channel A (Tim2 CH2 input capture)
+#define FNGR_MIDDLE_ENC_B                                               0x20                                        // Pin A5 IDR bit offset: Middle finger encoder channel B (Direction only)
+#define FNGR_RING_ENC_A                                                 0x04                                        // Pin A2 IDR bit offset: Ring finger encoder channel A (Tim2 CH3 input capture)
 #define FNGR_RING_ENC_B                                                 0x40                                        // Pin A6 IDR bit offset: Ring finger encoder channel B (Direction only) 
 #define FNGR_PINKY_ENC_A                                                0x08                                        // Pin A3 IDR bit offset: Pinky finger encoder channel A (Tim2 CH4 input capture)
 #define FNGR_PINKY_ENC_B                                                0x80                                        // Pin A7 IDR bit offset: Pinky finger encoder channel B (Direction only)
@@ -24,7 +24,7 @@
 /**************  Constants  **************/
 unsigned long MCU_FREQUENCY = 168000000;                        // Microcontroller clock speed in Hz
 unsigned long ENCODER_TIM_RELOAD = 65535;                                        // Auto Reload value for Timer 2 (16 bit register)
-unsigned int ENCODER_TIM_PSC = 0;                                                // Prescaler for timer 2 (Used for encoder CCP timing)
+unsigned int ENCODER_TIM_PSC = 100;                                                // Prescaler for timer 2 (Used for encoder CCP timing)
 unsigned int TERMINAL_PRINT_THRESH = 40;                        // Number of polling events before a terminal print is executed
 
 
@@ -66,7 +66,7 @@ struct GPIOx_t {
 
 struct finger {
         struct GPIOx_t *reg_bit;                                                                // Base address of IDR for GPIO 
-        char name[STR_MAX];                                                                                        // Name of finger 
+        char name[STR_MAX];                                                                     // Name of finger
         unsigned int direction_actual;                                                        // Actual direction of motor movement as read from encoder 
         unsigned int speed_actual;                                                                // Actual speed of the motor (calculated from encoder data)
         unsigned int enc_chan_a;                                                                // ?????? Encoder channel A Pin definition 
@@ -78,7 +78,7 @@ struct finger {
         unsigned long enc_overflow_start;                                                // Value of timer overflow counter when previous capture event occured 
         unsigned long enc_overflow_end;                                                        // Value of timer overflow counter when current capture event occured 
         long double input_sig_period;                                                        // Period of motor encoder signal (in ms)
-        long double input_sig_frequency;                                                // Frequency of motor encoder signal (in Hz)
+        unsigned long input_sig_frequency;                                                // Frequency of motor encoder signal (in Hz)
         unsigned long enc_overflow_delta;                                                // Calculated number of timer overflows between capture events 
         unsigned long enc_overflow_ticks;                                                // Total number of timer ticks for the timer overflows between events 
         unsigned long enc_delta_ticks;                                                        // Number of timer ticks between previous/current capture events (Minus overflows)
@@ -112,7 +112,6 @@ void main() {
         strcpy(fngr_ring.name, "Ring");
         strcpy(fngr_pinky.name, "Pinky");
         
-        UART1_Write_Text("Test point 2\n\r");
         
         //Define GPIO Base addresses for finger I/O 
         fngr_pointer.reg_bit = GPIOA_IDR_LOC;
@@ -120,9 +119,7 @@ void main() {
         fngr_ring.reg_bit = GPIOA_IDR_LOC;
         fngr_pinky.reg_bit = GPIOA_IDR_LOC;
         
-        
-        UART1_Write_Text("Test point 3\n\r");
-        
+
         //Define specific bits for encoder channels 
         fngr_pointer.enc_chan_a = FNGR_POINTER_ENC_A;
         fngr_pointer.enc_chan_b = FNGR_POINTER_ENC_B;
@@ -162,6 +159,7 @@ void main() {
                   print_finger_info(&fngr_middle);
                   print_finger_info(&fngr_ring);
                   print_finger_info(&fngr_pinky);
+                  UART1_Write_Text("\n\n\n\n\n\n\n\r");
                 }        
         }
 } // Main ends here 
@@ -239,7 +237,8 @@ void timer3_ISR() iv IVT_INT_TIM3 {
 void init_GPIO() {
 
         //Configure GPIO's for secondary motor encoder channels 
-        GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | _GPIO_PINMASK_6 | _GPIO_PINMASK_7);                                                   // ** DEBUG ** Set pin E10 low
+        GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | _GPIO_PINMASK_6 | _GPIO_PINMASK_7);
+        GPIO_Digital_Input(&GPIOD_Base, _GPIO_PINMASK_1);
 }
 
 
@@ -308,7 +307,7 @@ void init_input_capture() {
 
 
 
-//Initialize Timer 3 (Interrupts ever 100ms to poll encoder state)
+//Initialize Timer 3 (Interrupts every 100ms to poll encoder state)
 void init_timer3() {
 
         RCC_APB1ENR.TIM3EN = 1;                                                                                                        // Enable clock for timer 3
@@ -344,9 +343,24 @@ void calc_finger_state( struct finger *fngr) {
         fngr->input_sig_period = (long double) fngr->enc_total_ticks * timer2_period_ms;
         
         // Calculate frequency of captured signal (Hz)
-        fngr->input_sig_frequency = (long double) 1000.0 / fngr->input_sig_period;
+        fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
 
         
+// Check direction of motor movement
+        if (GPIOD_IDR.B1 && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+                fngr->direction_actual = 1;                                                                // Clockwise
+        }
+
+        else if (!(fngr->reg_bit->addr0 & fngr->enc_chan_a) && (fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+                fngr->direction_actual = 0;                                                                // Counter Clockwise
+        }
+
+        else {
+                fngr->direction_actual = 7;                                                                // ERROR
+        }
+        
+        
+        /*   OLD. Above is just for testing concept
         // Check direction of motor movement 
         if ((fngr->reg_bit->addr0 & fngr->enc_chan_a) && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
                 fngr->direction_actual = 1;                                                                // Clockwise
@@ -358,7 +372,7 @@ void calc_finger_state( struct finger *fngr) {
         
         else {
                 fngr->direction_actual = 7;                                                                // ERROR
-        }
+        }  */
 }
 
 
@@ -367,63 +381,26 @@ void calc_finger_state( struct finger *fngr) {
 void print_finger_info( struct finger *fngr) {
         
         //Local strings
-        char time_per_tick_text[STR_MAX];
-        char overflow_delta_text[STR_MAX];
-        char overflow_time_text[STR_MAX];
-        char enc_delta_ticks_text[STR_MAX];
-        char total_ticks_text[STR_MAX];
-        char period_text[STR_MAX];
         char frequency_text[STR_MAX];
         char position_text[STR_MAX];
         char direction_text[STR_MAX];
         
-        
-        UART1_Write_Text("\n\rFinger Name: ");                                                        //Print name of current finger to terminal 
+        UART1_Write_Text("\n\rFinger Name: ");                                                        //Print name of current finger to terminal
         UART1_Write_Text(fngr->name);
         UART1_Write_Text("\n\r");
-        
-        LongDoubleToStr(timer2_period_ms, time_per_tick_text);                      // Print calculated time per tick to terminal
-        UART1_Write_Text("Time per tick: ");
-        UART1_Write_Text(time_per_tick_text);
-        UART1_Write_Text("\n\r");
 
-        LongWordToStr(fngr->enc_overflow_delta, overflow_delta_text);              // Print number of timer 2 overflow events to terminal 
-        UART1_Write_Text("Total number of timer overflows: ");
-        UART1_Write_Text(overflow_delta_text);
-        UART1_Write_Text("\n\r");        
-
-        LongWordToStr(fngr->enc_overflow_ticks, overflow_time_text);        // Print total calculated time from timer 2 overflows to terminal 
-        UART1_Write_Text("Calculated Overflow Ticks : ");
-        UART1_Write_Text(overflow_time_text);
-        UART1_Write_Text("\n\r");                
-
-        LongWordToStr(fngr->enc_delta_ticks, enc_delta_ticks_text);         // Print input capture delta time to terminal 
-        UART1_Write_Text("Input Capture Delta Ticks: ");
-        UART1_Write_Text(enc_delta_ticks_text);
-        UART1_Write_Text("\n\r");                        
-
-        LongWordToStr(fngr->enc_total_ticks, total_ticks_text);                     // Print total number of ticks between input capture events to terminal
-        UART1_Write_Text("Total timer ticks between input captures: ");
-        UART1_Write_Text(total_ticks_text);
-        UART1_Write_Text("\n\r");                        
-
-        LongDoubleToStr(fngr->input_sig_period, period_text);                                          // Print input capture signal period to terminal 
-        UART1_Write_Text("Period of incoming signal (ms): ");
-        UART1_Write_Text(period_text);
-        UART1_Write_Text("\n\r");                        
-
-        LongDoubleToStr(fngr->input_sig_frequency, frequency_text);                                    // Print input capture signal frequency to terminal
+        LongWordToStr(fngr->input_sig_frequency, frequency_text);                                    // Print input capture signal frequency to terminal
         UART1_Write_Text("Frequency of incoming signal (Hz): ");
         UART1_Write_Text(frequency_text);
         UART1_Write_Text("\n\r");                        
 
         IntToStr(fngr->direction_actual, direction_text);                    // Print direction of movement to terminal
-        UART1_Write_Text("Direction of movement: ");
+        UART1_Write_Text("Direction of movement:             ");
         UART1_Write_Text(direction_text);
         UART1_Write_Text("\n\r");                        
         
-        LongToStr(fngr->position_actual, position_text);               // Print total number of input events (position) to terminal 
-        UART1_Write_Text("Position of finger: ");
+        LongWordToStr(fngr->position_actual, position_text);               // Print total number of input events (position) to terminal
+        UART1_Write_Text("Position of finger:                ");
         UART1_Write_Text(position_text);
         UART1_Write_Text("\n\n\n\r");        
 

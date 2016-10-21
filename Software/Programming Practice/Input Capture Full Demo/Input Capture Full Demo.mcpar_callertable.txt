@@ -42,16 +42,12 @@ main
 		_UnsignedIntegralToLongDouble
 		_Mul_DP
 		_Div_DP
+		_LongDoubleToUnsignedIntegral
+			_LongDoubleToSignedIntegral
 	print_finger_info
 		UART1_Write_Text
-		LongDoubleToStr
-			strcpy
-			_Compare_DP
-			_Mul_DP
 		LongWordToStr
 		IntToStr
 			WordToStr
-		LongToStr
-			LongWordToStr
 timer3_ISR
 timer2_ISR
