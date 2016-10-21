@@ -149,9 +149,9 @@ void main() {
              if (poll_flag) {                                              //Calculate finger state values
              poll_flag = 0;
              calc_finger_state(&fngr_pointer);
-             //calc_finger_state(&fngr_middle);
-             //calc_finger_state(&fngr_ring);
-             //calc_finger_state(&fngr_pinky);
+             calc_finger_state(&fngr_middle);
+             calc_finger_state(&fngr_ring);
+             calc_finger_state(&fngr_pinky);
              
              }
 
@@ -159,9 +159,9 @@ void main() {
              if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {                                // Set number of polling events has occured => Print statistics to terminal
 
                   print_finger_info(&fngr_pointer);
-                  //print_finger_info(&fngr_middle);
-                  //print_finger_info(&fngr_ring);
-                  //print_finger_info(&fngr_pinky);
+                  print_finger_info(&fngr_middle);
+                  print_finger_info(&fngr_ring);
+                  print_finger_info(&fngr_pinky);
                 }        
         }
 } // Main ends here 
@@ -176,52 +176,48 @@ void main() {
 // Interrupt handler for Timer 2
 void timer2_ISR() iv IVT_INT_TIM2 {                                                                                                                        
 
-    //NVIC_IntDisable(IVT_INT_TIM2);                                                   // Disable timer 2 interrupts
-
         // Timer 2 Overflow 
     if(TIM2_SR.UIF == 1) {                                                     
-        TIM2_SR.UIF = 0;                                                          // Clear timer 2 interrupt bit
+        TIM2_SR.UIF = 0;                                                        // Clear timer 2 interrupt bit
         overflow_count++;                                                       // Increment overflow counter
     }
 
         // Channel 1 (Pin A0) Pointer finger input capture event 
     if (TIM2_SR.CC1IF == 1) {    
-        fngr_pointer.enc_start_time = fngr_pointer.enc_end_time;
-        fngr_pointer.enc_end_time = TIM2_CCR1;                                         // Read stored input capture time
-        fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;
-        fngr_pointer.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
-        fngr_pointer.position_actual++;                                                // Increment total input capture event counter
+        fngr_pointer.enc_start_time = fngr_pointer.enc_end_time;                // Store previous captured value for next calculation
+        fngr_pointer.enc_end_time = TIM2_CCR1;                                  // Read stored input capture time
+        fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;        // Store previous overflow value for next calculation
+        fngr_pointer.enc_overflow_end = overflow_count;                         // Store number of timer 2 overflows for this finger
+        fngr_pointer.position_actual++;                                         // Increment total input capture event counter
     }
         
 
         // Channel 2 (Middle finger) input capture event 
     if (TIM2_SR.CC2IF == 1) {                                               
-        fngr_middle.enc_start_time = fngr_middle.enc_end_time;
-        fngr_middle.enc_end_time = TIM2_CCR2;                                         // Read stored input capture time
-        fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;
-        fngr_middle.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
-        fngr_middle.position_actual++;                                                // Increment total input capture event counter
+        fngr_middle.enc_start_time = fngr_middle.enc_end_time;                  // Store previous captured value for next calculation
+        fngr_middle.enc_end_time = TIM2_CCR2;                                   // Read stored input capture time
+        fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;          // Store previous overflow value for next calculation
+        fngr_middle.enc_overflow_end = overflow_count;                          // Store number of timer 2 overflows for this finger
+        fngr_middle.position_actual++;                                          // Increment total input capture event counter
     }        
         
         // Channel 3 (Ring finger) input capture event 
-    if (TIM2_SR.CC2IF == 1) {
-        fngr_ring.enc_start_time = fngr_ring.enc_end_time;
-        fngr_ring.enc_end_time = TIM2_CCR3;                                         // Read stored input capture time
-        fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;
-        fngr_ring.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
-        fngr_ring.position_actual++;                                                // Increment total input capture event counter
+    if (TIM2_SR.CC3IF == 1) {
+        fngr_ring.enc_start_time = fngr_ring.enc_end_time;                      // Store previous captured value for next calculation
+        fngr_ring.enc_end_time = TIM2_CCR3;                                     // Read stored input capture time
+        fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;              // Store previous overflow value for next calculation
+        fngr_ring.enc_overflow_end = overflow_count;                            // Store number of timer 2 overflows for this finger
+        fngr_ring.position_actual++;                                            // Increment total input capture event counter
     }        
         
         // Channel 4 (Pinky) input capture event 
     if (TIM2_SR.CC4IF == 1) {                                               
-        fngr_pinky.enc_start_time = fngr_pinky.enc_end_time;
-        fngr_pinky.enc_end_time = TIM2_CCR4;                                         // Read stored input capture time
-        fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;
-        fngr_pinky.enc_overflow_end = overflow_count;                                                // Store number of timer 2 overflows for this finger
-        fngr_pinky.position_actual++;                                                // Increment total input capture event counter
+        fngr_pinky.enc_start_time = fngr_pinky.enc_end_time;                    // Store previous captured value for next calculation
+        fngr_pinky.enc_end_time = TIM2_CCR4;                                    // Read stored input capture time
+        fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;            // Store previous overflow value for next calculation
+        fngr_pinky.enc_overflow_end = overflow_count;                           // Store number of timer 2 overflows for this finger
+        fngr_pinky.position_actual++;                                           // Increment total input capture event counter
     }        
-
-    //NVIC_IntEnable(IVT_INT_TIM2);                                                    // Re-enable timer 2 interrupt
 }
 
 
@@ -262,45 +258,48 @@ void init_UART() {
 void init_input_capture() {
 
         //Configure timer 2 
-        RCC_APB1ENR.TIM2EN = 1;                                                       // Enable clock gating for timer module 2
+        RCC_APB1ENR.TIM2EN = 1;                                                 // Enable clock gating for timer module 2
         TIM2_CR1.CEN = 0;                                                       // Disable timer/counter
-        TIM2_PSC = ENCODER_TIM_PSC;                                             // Set timer 2 prescaler (need to determine value)
-        TIM2_ARR = ENCODER_TIM_RELOAD;                                          // Set timer 2 overflow (Auto Reload) value 
+        TIM2_CR2.TI1S = 0;                                                      // TIM2_CH1 connected to TI1 Input (1 would be Ch1, 2, 3 XOR to TI1)
+        TIM2_PSC = ENCODER_TIM_PSC;                                             // Set timer 2 prescaler
+        TIM2_ARR = ENCODER_TIM_RELOAD;                                          // Set timer 2 Auto Reload value
         TIM2_CR1 |= 0x10;                                                       // Set counter direction as upcounting (DIR bit)
         
         //Configure pointer finger (Pin A0, Channel 1) input capture 
-        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);                                // Configure alternate function for A0 as Timer 2 Channel 1 
-        TIM2_CCMR1_Input |= 0x01;                                               // Set capture channel 1 as input on TI2 (CC1S = 01)
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA0);             // Configure alternate function for A0 as Timer 2 Channel 1
+        TIM2_CCMR1_Input |= 0x01;                                               // Set capture channel 1 as input on TI1 (CC1S = 01)
         TIM2_CCER.CC1P = 0;                                                     // Set capture on rising edge event
+        TIM2_CCER.CC1NP = 0;
         TIM2_CCER.CC1E = 1;                                                     // Enable capture on channel 1
         TIM2_DIER.CC1IE = 1;                                                    // Enable interrupt on capture channel 1 
 
         //Configure middle finger (Pin A1, Channel 2) input capture 
-        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH2_PA1);                                // Configure alternate function for pin A1 as Timer 2 Channel 2 
-        TIM2_CCMR1_Input |= 0x200;                                                                                                // Set capture channel 2 as input on TI1 (CC2S = 10)
-        TIM2_CCER.CC2P = 0;                                                                                                                // Set capture on rising edge event 
-        TIM2_CCER.CC2E = 1;                                                                                                                // Enable capture on channel 2 
-        TIM2_DIER.CC2IE = 1;                                                                                                        // Enable interrupt on capture channel 2
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH2_PA1);             // Configure alternate function for pin A1 as Timer 2 Channel 2
+        TIM2_CCMR1_Input |= 0x100;                                              // Set capture channel 2 as input on TI2 (CC2S = 01)
+        TIM2_CCER.CC2P = 0;                                                     // Set capture on rising edge event
+        TIM2_CCER.CC2NP = 0;
+        TIM2_CCER.CC2E = 1;                                                     // Enable capture on channel 2
+        TIM2_DIER.CC2IE = 1;                                                    // Enable interrupt on capture channel 2
         
         //Configure ring finger (Pin A2, Channel 3) input capture 
-        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH3_PA2);                                // Configure alternate function for pin A2 as Timer 2 Channel 3 
-        TIM2_CCMR2_Input |= 0x01;                                                                                                // Set capture channel 3 as input on TI2 (CC3S = 01)
-        TIM2_CCER.CC3P = 0;                                                                                                                // Set capture on rising edge event 
-        TIM2_CCER.CC3E = 1;                                                                                                                // Enable capture on channel 3 
-        TIM2_DIER.CC3IE = 1;                                                                                                        // Enable interrupt on capture channel 3        
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH3_PA2);             // Configure alternate function for pin A2 as Timer 2 Channel 3
+        TIM2_CCMR2_Input |= 0x01;                                               // Set capture channel 3 as input on TI3 (CC3S = 01)
+        TIM2_CCER.CC3P = 0;                                                     // Set capture on rising edge event
+        TIM2_CCER.CC3NP = 0;
+        TIM2_CCER.CC3E = 1;                                                     // Enable capture on channel 2
+        TIM2_DIER.CC3IE = 1;                                                    // Enable interrupt on capture channel 3
         
         //Configure pinky finger (Pin A3, Channel 4) input capture 
-        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH4_PA3);                                // Configure alternate function for pin A3 as Timer 2 Channel 4 
-        TIM2_CCMR2_Input |= 0x200;                                                                                                // Set capture channel 4 as input on TI1 (CC4S = 10)
-        TIM2_CCER.CC3P = 0;                                                                                                                // Set capture on rising edge event 
-        TIM2_CCER.CC3E = 1;                                                                                                                // Enable capture on channel 4
-        TIM2_DIER.CC4IE = 1;                                                                                                        // Enable interrupt on capture channel 4
+        GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH4_PA3);             // Configure alternate function for pin A3 as Timer 2 Channel 4
+        TIM2_CCMR2_Input |= 0x100;                                              // Set capture channel 4 as input on TI4 (CC4S = 01)
+        TIM2_CCER.CC3P = 0;                                                     // Set capture on rising edge event
+        TIM2_CCER.CC3NP = 0;
+        TIM2_CCER.CC4E = 1;                                                     // Enable capture on channel 2
+        TIM2_DIER.CC4IE = 1;                                                    // Enable interrupt on capture channel 4
 
         //Configure timer interrupts 
         TIM2_DIER.UIE = 1;                                                      // Enable overflow interrupt 
         NVIC_IntEnable(IVT_INT_TIM2);                                           // Enable timer 2 interrupt
-        //EnableInterrupts();                                                   // Probably unneeded due to previous line??????
-        TIM2_CNT = 0x00;                                                                                                                // Set counter value to 0 (Probably not needed)
         TIM2_CR1.CEN = 1;                                                       // Enable timer/counter
 
         //Calculate the time per timer 2 tick 
