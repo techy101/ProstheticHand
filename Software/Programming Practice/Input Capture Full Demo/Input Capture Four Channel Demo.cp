@@ -1,5 +1,5 @@
-#line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
-#line 25 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
+#line 1 "C:/GitHub Repos/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
+#line 16 "C:/GitHub Repos/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
@@ -29,50 +29,30 @@ void calc_timer_values(struct finger *fngr);
 
 
 
-
-
-
-
-struct GPIOx_t {
- unsigned long addr0;
-};
-
-
-
-
-
-
 struct finger {
- struct GPIOx_t *reg_bit;
  char name[ 15 ];
+ long position_temp;
+ long position_actual;
  unsigned int direction_actual;
- unsigned int speed_actual;
- unsigned int enc_chan_a;
  unsigned int enc_chan_b;
  unsigned long enc_start_time;
  unsigned long enc_end_time;
-
- unsigned long enc_total_ticks;
+ unsigned long enc_delta_ticks;
  unsigned long enc_overflow_start;
  unsigned long enc_overflow_end;
- long double input_sig_period;
- unsigned long input_sig_frequency;
  unsigned long enc_overflow_delta;
  unsigned long enc_overflow_ticks;
- unsigned long enc_delta_ticks;
- unsigned long position_actual;
+ unsigned long enc_total_ticks;
+ unsigned long input_sig_frequency;
+ long double input_sig_period;
 };
 
 
 
- struct finger fngr_pointer;
- struct finger fngr_middle;
- struct finger fngr_ring;
- struct finger fngr_pinky;
-
-
- struct GPIOx_t * GPIOA_IDR_LOC = 0x40020000 + 0x10;
-
+struct finger fngr_pointer;
+struct finger fngr_middle;
+struct finger fngr_ring;
+struct finger fngr_pinky;
 
 
 
@@ -84,34 +64,13 @@ void main() {
  init_GPIO();
 
 
-
  strcpy(fngr_pointer.name, "Pointer");
  strcpy(fngr_middle.name, "Middle");
  strcpy(fngr_ring.name, "Ring");
  strcpy(fngr_pinky.name, "Pinky");
 
 
-
- fngr_pointer.reg_bit = GPIOA_IDR_LOC;
- fngr_middle.reg_bit = GPIOA_IDR_LOC;
- fngr_ring.reg_bit = GPIOA_IDR_LOC;
- fngr_pinky.reg_bit = GPIOA_IDR_LOC;
-
-
-
- fngr_pointer.enc_chan_a =  0x00 ;
- fngr_pointer.enc_chan_b =  0x10 ;
- fngr_middle.enc_chan_a =  0x02 ;
- fngr_middle.enc_chan_b =  0x20 ;
- fngr_ring.enc_chan_a =  0x04 ;
- fngr_ring.enc_chan_b =  0x40 ;
- fngr_pinky.enc_chan_a =  0x08 ;
- fngr_pinky.enc_chan_b =  0x80 ;
-
-
-
-
- UART1_Write_Text("\n\n\rProgram Has Started!\n\n\r");
+ UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
  delay_ms(500);
 
 
@@ -129,7 +88,6 @@ void main() {
  calc_finger_state(&fngr_pinky);
 
  }
-
 
  if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
 
@@ -164,7 +122,8 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_pointer.enc_end_time = TIM2_CCR1;
  fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;
  fngr_pointer.enc_overflow_end = overflow_count;
- fngr_pointer.position_actual++;
+ fngr_pointer.enc_chan_b =  GPIOA_IDR.B4 ;
+ fngr_pointer.position_temp++;
  }
 
 
@@ -174,6 +133,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_middle.enc_end_time = TIM2_CCR2;
  fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;
  fngr_middle.enc_overflow_end = overflow_count;
+ fngr_pointer.enc_chan_b =  GPIOA_IDR.B5 ;
  fngr_middle.position_actual++;
  }
 
@@ -183,6 +143,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_ring.enc_end_time = TIM2_CCR3;
  fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;
  fngr_ring.enc_overflow_end = overflow_count;
+ fngr_pointer.enc_chan_b =  GPIOA_IDR.B6 ;
  fngr_ring.position_actual++;
  }
 
@@ -192,6 +153,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_pinky.enc_end_time = TIM2_CCR4;
  fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;
  fngr_pinky.enc_overflow_end = overflow_count;
+ fngr_pointer.enc_chan_b =  GPIOA_IDR.B7 ;
  fngr_pinky.position_actual++;
  }
 }
@@ -210,13 +172,11 @@ void timer3_ISR() iv IVT_INT_TIM3 {
 
 
 
-
-
 void init_GPIO() {
 
 
  GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_4 | _GPIO_PINMASK_5 | _GPIO_PINMASK_6 | _GPIO_PINMASK_7);
- GPIO_Digital_Input(&GPIOD_Base, _GPIO_PINMASK_1);
+ GPIO_Digital_Output(&GPIOD_Base, _GPIO_PINMASK_1);
 }
 
 
@@ -305,7 +265,6 @@ void init_timer3() {
 void calc_finger_state( struct finger *fngr) {
 
 
-
  fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
 
 
@@ -324,21 +283,23 @@ void calc_finger_state( struct finger *fngr) {
  fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
 
 
-
- if (GPIOD_IDR.B1 && !(fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+ if (fngr->enc_chan_b == 1) {
  fngr->direction_actual = 1;
+ fngr->position_actual += fngr->position_temp;
  }
 
- else if (!(fngr->reg_bit->addr0 & fngr->enc_chan_a) && (fngr->reg_bit->addr0 & fngr->enc_chan_b)) {
+ else if (fngr->enc_chan_b == 0) {
  fngr->direction_actual = 0;
+ fngr->position_actual -= fngr->position_temp;
  }
 
  else {
  fngr->direction_actual = 7;
  }
-#line 376 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
-}
 
+
+ fngr->position_temp = 0;
+}
 
 
 
@@ -363,7 +324,7 @@ void print_finger_info( struct finger *fngr) {
  UART1_Write_Text(direction_text);
  UART1_Write_Text("\n\r");
 
- LongWordToStr(fngr->position_actual, position_text);
+ LongToStr(fngr->position_actual, position_text);
  UART1_Write_Text("Position of finger:                ");
  UART1_Write_Text(position_text);
  UART1_Write_Text("\n\n\n\r");

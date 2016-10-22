@@ -13190,10 +13190,6 @@ enarp
 enarp_bit
 enarp_i2c1_cr1_bit
 enarp_i2c2_cr1_bit
-enc_chan_a
-enc_chan_a
-enc_chan_a
-enc_chan_a
 enc_chan_b
 enc_chan_b
 enc_chan_b
@@ -23445,7 +23441,6 @@ gpioa_base
 gpioa_bsrr
 gpioa_bsrrbits
 gpioa_idr
-gpioa_idr_loc
 gpioa_idrbits
 gpioa_lckr
 gpioa_lckrbits
@@ -37495,6 +37490,10 @@ position_actual
 position_actual
 position_actual
 position_actual
+position_temp
+position_temp
+position_temp
+position_temp
 ppre1
 ppre10
 ppre10_bit
@@ -39299,10 +39298,6 @@ recalpf_bit
 refckon
 refckon
 refckon_bit
-reg_bit
-reg_bit
-reg_bit
-reg_bit
 reload
 reload0
 reload0_bit
@@ -41419,10 +41414,6 @@ spe_i2s2ext_cr1_bit
 spe_i2s3ext_cr1_bit
 spe_spi2_cr1_bit
 spe_spi3_cr1_bit
-speed_actual
-speed_actual
-speed_actual
-speed_actual
 spi1_cr1
 spi1_cr1bits
 spi1_cr2

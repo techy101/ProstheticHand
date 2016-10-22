@@ -27,6 +27,8 @@ main
 	init_GPIO
 		GPIO_Digital_Input
 			GPIO_Config
+		GPIO_Digital_Output
+			GPIO_Config
 	strcpy
 	UART1_Write_Text
 		UARTx_Write_Text
@@ -49,5 +51,7 @@ main
 		LongWordToStr
 		IntToStr
 			WordToStr
+		LongToStr
+			LongWordToStr
 timer3_ISR
 timer2_ISR
