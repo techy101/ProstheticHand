@@ -256,8 +256,6 @@ void init_UART() {
 // Initialize Input Capture on Timer 3 Channel 1
 void init_input_capture() {
 
-
-
     // Configure timer 3 (Used for pointer, middle, ring, pinky)
     RCC_APB1ENR.TIM3EN = 1;                                                 // Enable clock gating for timer module 3
     TIM3_CR1.CEN = 0;                                                       // Disable timer/counter
@@ -324,7 +322,7 @@ void init_input_capture() {
     TIM3_CR1.CEN = 1;                                                       // Enable timer 3
     TIM2_CR1.CEN = 1;                                                       // Enable Timer 2
 
-    // Calculate period of TIM2_CLK in ms
+    // Calculate period of TIM2_CLK and TIM3_CLK in ms
     timer3_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));
 }
 
