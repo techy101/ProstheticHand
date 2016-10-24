@@ -11085,6 +11085,7 @@ direction_actual
 direction_actual
 direction_actual
 direction_actual
+direction_actual
 disableinterrupts
 discen
 discen
@@ -13194,6 +13195,8 @@ enc_chan_b
 enc_chan_b
 enc_chan_b
 enc_chan_b
+enc_chan_b
+enc_delta_ticks
 enc_delta_ticks
 enc_delta_ticks
 enc_delta_ticks
@@ -13202,6 +13205,8 @@ enc_end_time
 enc_end_time
 enc_end_time
 enc_end_time
+enc_end_time
+enc_overflow_delta
 enc_overflow_delta
 enc_overflow_delta
 enc_overflow_delta
@@ -13210,6 +13215,8 @@ enc_overflow_end
 enc_overflow_end
 enc_overflow_end
 enc_overflow_end
+enc_overflow_end
+enc_overflow_start
 enc_overflow_start
 enc_overflow_start
 enc_overflow_start
@@ -13218,10 +13225,13 @@ enc_overflow_ticks
 enc_overflow_ticks
 enc_overflow_ticks
 enc_overflow_ticks
+enc_overflow_ticks
 enc_start_time
 enc_start_time
 enc_start_time
 enc_start_time
+enc_start_time
+enc_total_ticks
 enc_total_ticks
 enc_total_ticks
 enc_total_ticks
@@ -22516,6 +22526,7 @@ fngr_middle
 fngr_pinky
 fngr_pointer
 fngr_ring
+fngr_thumb
 fnsof
 fnsof
 fnsof0
@@ -26444,6 +26455,8 @@ input_sig_frequency
 input_sig_frequency
 input_sig_frequency
 input_sig_frequency
+input_sig_frequency
+input_sig_period
 input_sig_period
 input_sig_period
 input_sig_period
@@ -32568,6 +32581,7 @@ name
 name
 name
 name
+name
 nart
 nart
 nart
@@ -37490,6 +37504,8 @@ position_actual
 position_actual
 position_actual
 position_actual
+position_actual
+position_temp
 position_temp
 position_temp
 position_temp
@@ -43997,6 +44013,7 @@ tim2_egr
 tim2_egrbits
 tim2_or
 tim2_orbits
+tim2_overflow_count
 tim2_psc
 tim2_pscbits
 tim2_smcr
@@ -44046,6 +44063,7 @@ tim3_dmar
 tim3_dmarbits
 tim3_egr
 tim3_egrbits
+tim3_overflow_count
 tim3_psc
 tim3_pscbits
 tim3_smcr
@@ -44494,6 +44512,7 @@ timeout
 timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
+timer2_isr
 timer2_period_ms
 timer3_isr
 timer3_period_ms

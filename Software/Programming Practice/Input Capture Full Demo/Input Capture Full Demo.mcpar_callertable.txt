@@ -55,3 +55,4 @@ main
 			LongWordToStr
 timer4_ISR
 timer3_ISR
+timer2_ISR
