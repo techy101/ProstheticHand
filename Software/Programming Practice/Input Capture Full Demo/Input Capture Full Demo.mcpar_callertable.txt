@@ -33,7 +33,7 @@ main
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
-	init_timer3
+	init_timer4
 		NVIC_IntEnable
 	init_input_capture
 		NVIC_IntEnable
@@ -53,5 +53,5 @@ main
 			WordToStr
 		LongToStr
 			LongWordToStr
+timer4_ISR
 timer3_ISR
-timer2_ISR

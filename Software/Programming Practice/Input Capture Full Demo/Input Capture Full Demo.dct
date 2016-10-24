@@ -26432,7 +26432,7 @@ init
 init_bit
 init_gpio
 init_input_capture
-init_timer3
+init_timer4
 init_uart
 initf
 initf
@@ -44494,9 +44494,10 @@ timeout
 timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
-timer2_isr
 timer2_period_ms
 timer3_isr
+timer3_period_ms
+timer4_isr
 tjtie
 tjtie
 tjtie_bit

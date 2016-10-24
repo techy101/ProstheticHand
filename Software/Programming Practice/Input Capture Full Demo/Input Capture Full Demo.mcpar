@@ -36,9 +36,8 @@ Count=0
 Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path2=C:\GitHub Repos\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
-Path3=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
-Path4=C:\GitHub Repos\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
+Path2=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
+Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
 Count=0
 [HEADERS]
