@@ -1,0 +1,372 @@
+Started.                                                                        
+                                                                                
+Disturbed PV = -9.358751                                                        
+Corrected PV = 100.0623                                                         
+                                                                                
+** PV stabilized.                                                               
+New disturbance =     935                                                       
+                                                                                
+                                                                                
+Started.                                                                        
+Notes:                                                                          
+- process: PV = disturbance*((PV/disturbance) - 36)/577                         
+- K =    150                                                                    
+- setpoint = 100.0                                                                
+- margin = 10.0                                                                   
+- disturbance = rand%990                                                        
+                                                                                
+Disturbed PV = -9.358751                                                        
+Corrected PV = 100.0623                                                         
+** PV stabilized.                                                               
+New disturbance =     935                                                       
+                                                                                
+Disturbed PV = -58.16279                                                        
+Corrected PV = 100.3877                                                         
+** PV stabilized.                                                               
+New disturbance =     172                                                       
+                                                                                
+Disturbed PV = -10.55738                                                        
+Corrected PV = 100.0703                                                         
+** PV stabilized.                                                               
+New disturbance =      14                                                       
+                                                                                
+Disturbed PV = -7.000512e-1                                                     
+Corrected PV = 100.0046                                                         
+** PV stabilized.                                                               
+New disturbance =     483                                                       
+                                                                                
+Disturbed PV = -29.96186                                                        
+Corrected PV = 100.1997                                                         
+** PV stabilized.                                                               
+New disturbance =      64                                                       
+                                                                                
+Disturbed PV = -3.81941                                                         
+Corrected PV = 100.0254                                                         
+** PV stabilized.                                                               
+New disturbance =     365                                                       
+                                                                                
+Disturbed PV = -22.5996                                                         
+Corrected PV = 100.1506                                                         
+** PV stabilized.                                                               
+New disturbance =      37                                                       
+                                                                                
+Disturbed PV = -2.13492                                                         
+Corrected PV = 100.0142                                                         
+** PV stabilized.                                                               
+New disturbance =     429                                                       
+                                                                                
+Disturbed PV = -26.59269                                                        
+Corrected PV = 100.1772                                                         
+** PV stabilized.                                                               
+New disturbance =     955                                                       
+                                                                                
+Disturbed PV = -59.41041                                                        
+Corrected PV = 100.396                                                          
+** PV stabilized.                                                               
+New disturbance =     210                                                       
+                                                                                
+
+Disturbed PV = -12.92825
+Corrected PV = 100.0861
+** PV stabilized. 
+New disturbance =     649
+
+Disturbed PV = -40.31873
+Corrected PV = 100.2687
+** PV stabilized. 
+New disturbance =     898
+
+Disturbed PV = -55.85394
+Corrected PV = 100.3723
+** PV stabilized. 
+New disturbance =     244
+
+Disturbed PV = -15.04961
+Corrected PV = 100.1003
+** PV stabilized. 
+New disturbance =     513
+
+Disturbed PV = -31.83344
+Corrected PV = 100.2122
+** PV stabilized. 
+New disturbance =     685
+
+Disturbed PV = -42.56461
+Corrected PV = 100.2837
+** PV stabilized. 
+New disturbance =     976
+
+Disturbed PV = -60.72046
+Corrected PV = 100.4047
+** PV stabilized. 
+New disturbance =     297
+
+Disturbed PV = -18.35631
+Corrected PV = 100.1223
+** PV stabilized. 
+New disturbance =     287
+
+Disturbed PV = -17.73288
+Corrected PV = 100.1182
+** PV stabilized. 
+New disturbance =     832
+
+Disturbed PV = -51.73635
+Corrected PV = 100.3448
+** PV stabilized. 
+New disturbance =     271
+
+Disturbed PV = -16.73423
+Corrected PV = 100.1115
+** PV stabilized. 
+New disturbance =     927
+
+Disturbed PV = -57.66357
+Corrected PV = 100.3844
+** PV stabilized. 
+New disturbance =     297
+
+Disturbed PV = -18.35634
+Corrected PV = 100.1223
+** PV stabilized. 
+New disturbance =     721
+
+Disturbed PV = -44.81087
+Corrected PV = 100.2987
+** PV stabilized. 
+New disturbance =     127
+
+Disturbed PV = -7.749914
+Corrected PV = 100.0516
+** PV stabilized. 
+New disturbance =     550
+
+Disturbed PV = -34.14201
+Corrected PV = 100.2275
+** PV stabilized. 
+New disturbance =     815
+
+Disturbed PV = -50.6755
+Corrected PV = 100.3378
+** PV stabilized. 
+New disturbance =     100
+
+Disturbed PV = -6.065271
+Corrected PV = 100.0404
+** PV stabilized. 
+New disturbance =     274
+
+Disturbed PV = -16.92193
+Corrected PV = 100.1127
+** PV stabilized. 
+New disturbance =     716
+
+Disturbed PV = -44.49892
+Corrected PV = 100.2966
+** PV stabilized. 
+New disturbance =       5
+
+Disturbed PV = -1.38134e-1
+Corrected PV = 100.0009
+** PV stabilized. 
+New disturbance =     125
+
+Disturbed PV = -7.625647
+Corrected PV = 100.0508
+** PV stabilized. 
+New disturbance =     493
+
+Disturbed PV = -30.58569
+Corrected PV = 100.2038
+** PV stabilized. 
+New disturbance =      16
+
+Disturbed PV = -8.246031e-1
+Corrected PV = 100.0054
+** PV stabilized. 
+New disturbance =     323
+
+Disturbed PV = -19.97919
+Corrected PV = 100.1331
+** PV stabilized. 
+New disturbance =     373
+
+Disturbed PV = -23.09855
+Corrected PV = 100.1539
+** PV stabilized. 
+New disturbance =     563
+
+Disturbed PV = -34.95293
+Corrected PV = 100.233
+** PV stabilized. 
+New disturbance =     595
+
+Disturbed PV = -36.94933
+Corrected PV = 100.2463
+** PV stabilized. 
+New disturbance =     220
+
+Disturbed PV = -13.55243
+Corrected PV = 100.0903
+** PV stabilized. 
+New disturbance =     440
+
+Disturbed PV = -27.27886
+Corrected PV = 100.1818
+** PV stabilized. 
+New disturbance =     616
+
+Disturbed PV = -38.25964
+Corrected PV = 100.255
+** PV stabilized. 
+New disturbance =     232
+
+Disturbed PV = -14.30111
+Corrected PV = 100.0953
+** PV stabilized. 
+New disturbance =     863
+
+Disturbed PV = -53.67053
+Corrected PV = 100.3577
+** PV stabilized. 
+New disturbance =     802
+
+Disturbed PV = -49.86418
+Corrected PV = 100.3324
+** PV stabilized. 
+New disturbance =     225
+
+Disturbed PV = -13.86424
+Corrected PV = 100.0924
+** PV stabilized. 
+New disturbance =     976
+
+Disturbed PV = -60.7208
+Corrected PV = 100.4047
+** PV stabilized. 
+New disturbance =     372
+
+Disturbed PV = -23.03568
+Corrected PV = 100.1535
+** PV stabilized. 
+New disturbance =     492
+
+Disturbed PV = -30.52312
+Corrected PV = 100.2034
+** PV stabilized. 
+New disturbance =     579
+
+Disturbed PV = -35.95111
+Corrected PV = 100.2396
+** PV stabilized. 
+New disturbance =     394
+
+Disturbed PV = -24.40859
+Corrected PV = 100.1627
+** PV stabilized. 
+New disturbance =     650
+
+Disturbed PV = -40.38099
+Corrected PV = 100.2691
+** PV stabilized. 
+New disturbance =     331
+
+Disturbed PV = -20.47786
+Corrected PV = 100.1365
+** PV stabilized. 
+New disturbance =     292
+
+Disturbed PV = -18.04482
+Corrected PV = 100.1202
+** PV stabilized. 
+New disturbance =     102
+
+Disturbed PV = -6.190431
+Corrected PV = 100.0412
+** PV stabilized. 
+New disturbance =     208
+
+Disturbed PV = -12.80408
+Corrected PV = 100.0853
+** PV stabilized. 
+New disturbance =      96
+
+Disturbed PV = -5.816143
+Corrected PV = 100.0387
+** PV stabilized. 
+New disturbance =     515
+
+Disturbed PV = -31.95833
+Corrected PV = 100.213
+** PV stabilized. 
+New disturbance =     110
+
+Disturbed PV = -6.689404
+Corrected PV = 100.0445
+** PV stabilized. 
+New disturbance =     857
+
+Disturbed PV = -53.29627
+Corrected PV = 100.3552
+** PV stabilized. 
+New disturbance =     691
+
+Disturbed PV = -42.93871
+Corrected PV = 100.2862
+** PV stabilized. 
+New disturbance =     929
+
+Disturbed PV = -57.78805
+Corrected PV = 100.3852
+** PV stabilized. 
+New disturbance =     215
+
+Disturbed PV = -13.24023
+Corrected PV = 100.0882
+** PV stabilized. 
+New disturbance =     117
+
+Disturbed PV = -7.126362
+Corrected PV = 100.0474
+** PV stabilized. 
+New disturbance =     479
+
+Disturbed PV = -29.71221
+Corrected PV = 100.198
+** PV stabilized. 
+New disturbance =     309
+
+Disturbed PV = -19.10537
+Corrected PV = 100.1273
+** PV stabilized. 
+New disturbance =     631
+
+Disturbed PV = -39.1956
+Corrected PV = 100.2612
+** PV stabilized. 
+New disturbance =     933
+
+Disturbed PV = -58.03766
+Corrected PV = 100.3869
+** PV stabilized. 
+New disturbance =     392
+
+Disturbed PV = -24.28355
+Corrected PV = 100.1618
+** PV stabilized. 
+New disturbance =      33
+
+Disturbed PV = -1.885334
+Corrected PV = 100.0125
+** PV stabilized. 
+New disturbance =     730
+
+Disturbed PV = -45.37259
+Corrected PV = 100.3024
+** PV stabilized. 
+New disturbance =     579
+
+Disturbed PV = -35.95094
+Corrected PV = 100.2396
+** PV stabilized. 
+New disturbance =     378
