@@ -1,78 +1,92 @@
 
-float Pcontrol(float PV);
-float process(float, int);
+int Pcontrol(int, int);
+void moveFinger(int, int, int);
 
-float const setP = 100.0;       // setpoint - what PV should be
-float const startP = 0.0;       // initial value for PV
-int const K = 150;              // proportion constant for P control
-float const margin = 10.0;      // accuracy of PV
+int const setP = 100;       // setpoint - what PV should be
+int const startP = 0;       // initial value for PV
+int const K = 150;          // proportion constant for P control
+int const margin = 10;      // accuracy of PV
 
-float PV;                       // process variable
-int disturbance;                // modifies PV - random
-int i = 0;
+int MPV;                    // measured process variable
+int disturbance;            // modifies PV - random
+int direction = 0;
+int dutyCycle;
+//int i = 0;
 
 char ToStr[15];
 
 void main()
 {
-   PV = startP;                 // initially
-   disturbance = 150;
-   process(PV, disturbance);    // disturb the process variable
+   MPV = startP;              // will go away in hardware
+   disturbance = 150;         // will go away in hardware
+
    srand(50);
    
-   UART1_Init(115200);          // set up UART1
+   UART1_Init(115200);        // set up UART1
    delay_ms(100);
    UART_Write_Text("\r\nStarted. ");
    
+   // stuff for logs
    UART1_Write_Text("\nNotes:");
-   UART1_Write_Text("\n- process: PV = disturbance*((PV/disturbance) - 36)/577");
    UART1_Write_Text("\n- K = ");
    IntToStr(K, ToStr);
    UART1_Write_Text(ToStr);
-   UART1_Write_Text("\n- setpoint = ");
+   UART1_Write_Text("\n- SP = ");
    FloatToStr(setP, ToStr);
    UART1_Write_Text(ToStr);
-   UART1_Write_Text("\n- margin = ");
+   UART1_Write_Text("\n- Margin = ");
    FloatToStr(margin, ToStr);
    UART1_Write_Text(ToStr);
    UART1_Write_Text("\n- disturbance = rand%990 \n");
    
-   
    while(1)
-   {
-       PV = process(PV, disturbance);        // disturb PV
-       
-       UART1_Write_Text("\nDisturbed PV = ");
-       FloatToStr(PV, ToStr);
-       UART1_Write_Text(ToStr);          // display current PV value
-       
-       PV = PControl(PV);
-       
-       UART1_Write_Text("\nCorrected PV = ");
-       FloatToStr(PV, ToStr);
-       UART1_Write_Text(ToStr);          // display current PV value
+   {    
+        // MPV = getForce();
+        
+       UART1_Write_Text("\nCurrent position = ");
+       IntToStr(MPV, ToStr);
+       UART1_Write_Text(ToStr);
+        
+       dutyCycle = Pcontrol(setP, MPV);
+   
+       UART1_Write_Text("\nPID control returns ");
+       IntToStr(dutyCycle, toStr);
+       UART1_Write_Text(ToStr);
+   
+       UART1_Write_Text("\nDirection = ");
+       IntToStr(direction, ToStr);
+       UART1_Write_Text(ToStr);
+   
+       UART1_Write_Text("\nMoving finger...");
+        
+       moveFinger(dutyCycle, direction, disturbance);
 
-       if(abs(PV - setP) < margin) {
+       if(abs(MPV - setP) < margin) {
            UART_Write_Text("\n** PV stabilized. ");
+
+           // generate a new disturbance
            disturbance = rand()%990;
-           
-           UART_Write_Text("\nNew disturbance =  ");
-           IntToStr(disturbance, ToStr);
-           UART1_Write_Text(ToStr);
-           UART1_Write_Text("\n");
+           //UART_Write_Text("\nNew disturbance =  ");
+           //IntToStr(disturbance, ToStr);
+           //UART1_Write_Text(ToStr);
+           //UART1_Write_Text("\n");
        }
        delay_ms(500);             // print twice per second
    }
 }
 
 
-float Pcontrol(float PV)
+int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
 {
-      return (-PV / K) + setP;
+      return K*(setP - MPV);         // direction calibration...
 }
 
-float process(float PV, int disturbance)
+void moveFinger(int dutyCycle, int direction, int disturbance)
 {
-       //return PV - disturbance;        // ANY OPERATION YOU WANT
-       return disturbance*((PV/disturbance) - 36)/577;
+       if(dutyCycle < 0)
+           direction = ~direction;
+       dutyCycle = abs(dutyCycle);
+       //PWM(dutyCycle);          need to actually modify position
+                                  // which would be time better spent
+                                  // implementing
 }

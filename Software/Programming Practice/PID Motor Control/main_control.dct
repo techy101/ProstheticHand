@@ -11084,6 +11084,7 @@ dir1_dma2_s4cr_bit
 dir1_dma2_s5cr_bit
 dir1_dma2_s6cr_bit
 dir1_dma2_s7cr_bit
+direction
 disableinterrupts
 discen
 discen
@@ -12935,6 +12936,7 @@ duty
 duty_bit
 duty_i2c1_ccr_bit
 duty_i2c2_ccr_bit
+dutycycle
 dvbusp
 dvbusp
 dvbusp0
@@ -24643,7 +24645,6 @@ hubaddr6_otg_hs_hcsplt9_bit
 hwfc_en
 hwfc_en
 hwfc_en_bit
-i
 i2c1_ccr
 i2c1_ccrbits
 i2c1_cr1
@@ -31609,6 +31610,7 @@ moe_tim8_bdtr_bit
 monitoract
 monitoract
 monitoract_bit
+movefinger
 mpe
 mpe
 mpe_bit
@@ -32079,6 +32081,7 @@ mpsiz9_otg_hs_hcchar6_bit
 mpsiz9_otg_hs_hcchar7_bit
 mpsiz9_otg_hs_hcchar8_bit
 mpsiz9_otg_hs_hcchar9_bit
+mpv
 mr
 mr0
 mr0
@@ -37699,7 +37702,6 @@ prigroup1
 prigroup1_bit
 prigroup2
 prigroup2_bit
-process
 product_id
 product_id
 product_id0
@@ -39034,7 +39036,6 @@ pupdr91_gpioe_pupdr_bit
 pupdr91_gpiof_pupdr_bit
 pupdr91_gpiog_pupdr_bit
 pupdr91_gpioh_pupdr_bit
-pv
 pvde
 pvde
 pvde_bit

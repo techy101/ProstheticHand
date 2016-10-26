@@ -1,79 +1,91 @@
 #line 1 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 
-float Pcontrol(float PV);
-float process(float, int);
+int Pcontrol(int, int);
+void moveFinger(int, int, int);
 
-float const setP = 100.0;
-float const startP = 0.0;
+int const setP = 100;
+int const startP = 0;
 int const K = 150;
-float const margin = 10.0;
+int const margin = 10;
 
-float PV;
+int MPV;
 int disturbance;
-int i = 0;
+int direction = 0;
+int dutyCycle;
+
 
 char ToStr[15];
 
 void main()
 {
- PV = startP;
+ MPV = startP;
  disturbance = 150;
- process(PV, disturbance);
+
  srand(50);
 
  UART1_Init(115200);
  delay_ms(100);
  UART_Write_Text("\r\nStarted. ");
 
+
  UART1_Write_Text("\nNotes:");
- UART1_Write_Text("\n- process: PV = disturbance*((PV/disturbance) - 36)/577");
  UART1_Write_Text("\n- K = ");
  IntToStr(K, ToStr);
  UART1_Write_Text(ToStr);
- UART1_Write_Text("\n- setpoint = ");
+ UART1_Write_Text("\n- SP = ");
  FloatToStr(setP, ToStr);
  UART1_Write_Text(ToStr);
- UART1_Write_Text("\n- margin = ");
+ UART1_Write_Text("\n- Margin = ");
  FloatToStr(margin, ToStr);
  UART1_Write_Text(ToStr);
  UART1_Write_Text("\n- disturbance = rand%990 \n");
 
-
  while(1)
  {
- PV = process(PV, disturbance);
 
- UART1_Write_Text("\nDisturbed PV = ");
- FloatToStr(PV, ToStr);
+
+ UART1_Write_Text("\nCurrent position = ");
+ IntToStr(MPV, ToStr);
  UART1_Write_Text(ToStr);
 
- PV = PControl(PV);
+ dutyCycle = Pcontrol(setP, MPV);
 
- UART1_Write_Text("\nCorrected PV = ");
- FloatToStr(PV, ToStr);
+ UART1_Write_Text("\nPID control returns ");
+ IntToStr(dutyCycle, toStr);
  UART1_Write_Text(ToStr);
 
- if(abs(PV - setP) < margin) {
+ UART1_Write_Text("\nDirection = ");
+ IntToStr(direction, ToStr);
+ UART1_Write_Text(ToStr);
+
+ UART1_Write_Text("Moving finger...");
+
+ moveFinger(dutyCycle, direction, disturbance);
+
+ if(abs(MPV - setP) < margin) {
  UART_Write_Text("\n** PV stabilized. ");
+
+
  disturbance = rand()%990;
 
- UART_Write_Text("\nNew disturbance =  ");
- IntToStr(disturbance, ToStr);
- UART1_Write_Text(ToStr);
- UART1_Write_Text("\n");
+
+
+
  }
  delay_ms(500);
  }
 }
 
 
-float Pcontrol(float PV)
+int Pcontrol(int setP, int MPV)
 {
- return (-PV / K) + setP;
+ return K*(setP - MPV);
 }
 
-float process(float PV, int disturbance)
+void moveFinger(int dutyCycle, int direction, int disturbance)
 {
-
- return disturbance*((PV/disturbance) - 36)/577;
+ if(dutyCycle < 0)
+ direction = ~direction;
+ dutyCycle = abs(dutyCycle);
+ MPV += abs(dutyCycle);
 }
