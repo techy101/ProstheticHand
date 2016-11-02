@@ -1,12 +1,4 @@
-Started.                                                                        
-                                                                                
-Disturbed PV = -9.358751                                                        
-Corrected PV = 100.0623                                                         
-                                                                                
-** PV stabilized.                                                               
-New disturbance =     935                                                       
-                                                                                
-                                                                                
+                                                                    
 Started.                                                                        
 Notes:                                                                          
 - process: PV = disturbance*((PV/disturbance) - 36)/577                         
