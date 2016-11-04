@@ -2431,6 +2431,7 @@ attwaitx7
 attwaitx7_bit
 attwaitx7_fsmc_patt3_bit
 attwaitx7_fsmc_patt4_bit
+averageforcereading
 awd
 awd
 awd
@@ -11090,7 +11091,6 @@ dir1_dma2_s4cr_bit
 dir1_dma2_s5cr_bit
 dir1_dma2_s6cr_bit
 dir1_dma2_s7cr_bit
-direction
 disableinterrupts
 discen
 discen
@@ -11123,7 +11123,6 @@ discnum2
 discnum2_adc2_cr1_bit
 discnum2_adc3_cr1_bit
 discnum2_bit
-disturbance
 div
 div_0_trp
 div_0_trp
@@ -13191,6 +13190,7 @@ enable_
 enable_
 enable_bit
 enable_stk_ctrl_bit
+enableint
 enableinterrupts
 enarp
 enarp
@@ -23253,6 +23253,7 @@ gencall_bit
 gencall_i2c1_sr2_bit
 gencall_i2c2_sr2_bit
 get_fosc_khz
+getforce
 ginakeff
 ginakeff
 ginakeff
@@ -24651,6 +24652,7 @@ hubaddr6_otg_hs_hcsplt9_bit
 hwfc_en
 hwfc_en
 hwfc_en_bit
+i
 i2c1_ccr
 i2c1_ccrbits
 i2c1_cr1
@@ -40492,6 +40494,7 @@ samp
 samp
 samp_bit
 samp_can1_msr_bit
+sampleflag
 sb
 sb
 sb
@@ -42271,7 +42274,6 @@ start
 start_bit
 start_i2c1_cr1_bit
 start_i2c2_cr1_bit
-startp
 stbiterr
 stbiterr
 stbiterr_bit
@@ -44502,6 +44504,7 @@ timeout
 timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
+timer4_isr
 tjtie
 tjtie
 tjtie_bit

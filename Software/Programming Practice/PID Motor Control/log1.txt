@@ -1,0 +1,929 @@
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+
+Started. 
+Notes:
+- K = 1.6
+- SP =     60
+- Margin =      2
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns  0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0
+
+Current force =      0
+PID control returns     96
+Direction =      0

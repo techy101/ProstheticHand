@@ -3,9 +3,11 @@
     Notes:
     - PE15 button is enable.
     - PE14 button is direction.
-    - PD13 is motor PWM output.
+    - PE9 is motor PWM output.
+    - PB0 is Flexiforce analog input.
 */
 
+#define analogIn GPIOB_IDR.B0
 #define motorDirection GPIOE_ODR.B14
 #define motorEnable GPIOE_ODR.B15
 
@@ -20,9 +22,11 @@ float const K = 1.6;      // proportion constant for P control
 
 int MPV;                  // measured process variable
 int dutyCycle = 30;       // initial
+float averageForceReading = 0;
 
 int sampleFlag = 0;
 char ToStr[15];
+int i;
 
 // 10 Hz timer handler
 void timer4_ISR() iv IVT_INT_TIM4 {
@@ -46,6 +50,9 @@ void main()
    motorDirection = 0;
    motorEnable = 1;
    
+   // set up B0 for analog input
+   GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
+   
    // set up 10 Hz timer
     RCC_APB1ENR.TIM4EN = 1;                                                     // Enable clock for timer 4
     TIM4_CR1.CEN = 0;                                                           // Disable timer/counter
@@ -54,9 +61,9 @@ void main()
     NVIC_IntEnable(IVT_INT_TIM4);                                               // Enable timer 4 interrupt
     TIM4_DIER.UIE = 1;                                                          // Enable timer/counter
 
-   // set up PWM on PD13 @ 1 kHz
-   PWM_TIM4_Init(1000);
-   PWM_TIM4_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL2);  // Set current duty for PWM_TIM4
+   // set up PWM on PE9 @ 1 kHz
+   PWM_TIM1_Init(1000);
+   PWM_TIM1_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL1);  // Set current duty for PWM_TIM4
 
    // set up enable (external interrupt)
    SYSCFGEN_bit = 1;                    // Enable clock for alternate pin functions
@@ -84,7 +91,10 @@ void main()
    UART1_Write_Text(ToStr);
 
    TIM4_CR1.CEN = 1;    // start 10 Hz timer
-   PWM_TIM4_Start(_PWM_CHANNEL2, &_GPIO_MODULE_TIM4_CH2_PD13);
+   PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
+   
+   for(i = 0; i < 100; i++)
+         MPV = getForce();   // set up the first 100 samples
    
    while(1)
    {  
@@ -93,10 +103,9 @@ void main()
         if(sampleFlag)
         {
            sampleFlag = 0;   // reset interrupt flag
-           //MPV = getForce();
-           // maybe hack by starting at 0 and incrementing by 10s? gah...
+           MPV = getForce();   // sample
 
-           UART1_Write_Text("\n\nCurrent position = ");
+           UART1_Write_Text("\n\nCurrent force = ");
            IntToStr(MPV, ToStr);
            UART1_Write_Text(ToStr);
 
@@ -116,7 +125,10 @@ void main()
                UART_Write_Text("\n** PV stabilized at ");
                IntToStr(MPV, toStr);
                UART1_Write_Text(ToStr);
-               //break;     // stop since user input for a new SP isn't possible
+               setP = rand() % 100;    // put in a new setpoint
+               UART_Write_Text("\n** New SP = ");   // display it
+               IntToStr(setP, toStr);
+               UART1_Write_Text(ToStr);
            }
          }
       }
@@ -131,17 +143,23 @@ int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
       if(abs(setP-MPV) > 60)
            return 100;       // cap duty cycle
       else if(abs(setP-MPV) > 10)
-           return int(K*abs(setP - MPV));
+           return (int)(K*abs(setP - MPV));
       else
            return 20;         // boost duty cycle
 }
 
 void moveFinger(int dutyCycle)
 {
-     PWM_TIM4_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL2);       // set new duty cycle
+     PWM_TIM1_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL1);       // set new duty cycle
 }
 
 int getForce() 
 {
+    float measure;
 
+    //Moving average over 100 samples
+    measure = analogIn;
+    averageForceReading = (((averageForceReading * 99) + measure) / 100);
+
+    return (int)(averageForceReading * 100);       //Converts read value to value between 0 and 100
 }
