@@ -142,9 +142,9 @@ int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
            motorDirection = ~motorDirection; // handle direction change
       if(abs(setP-MPV) > 60)
            return 100;       // cap duty cycle
-      else if(abs(setP-MPV) > 10)
+      else if(abs(setP-MPV) >= 10)
            return (int)(K*abs(setP - MPV));
-      else
+      else 
            return 20;         // boost duty cycle
 }
 
