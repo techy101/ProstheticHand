@@ -27,6 +27,7 @@ float averageForceReading = 0;
 int sampleFlag = 0;
 char ToStr[15];
 int i;
+int stabilized = 0;
 
 // 10 Hz timer handler
 void timer4_ISR() iv IVT_INT_TIM4 {
@@ -125,10 +126,15 @@ void main()
                UART_Write_Text("\n** PV stabilized at ");
                IntToStr(MPV, toStr);
                UART1_Write_Text(ToStr);
-               setP = rand() % 100;    // put in a new setpoint
-               UART_Write_Text("\n** New SP = ");   // display it
-               IntToStr(setP, toStr);
-               UART1_Write_Text(ToStr);
+               if(stabilized == 5) {
+                 setP = rand() % 100;    // generate a new setpoint
+                 UART_Write_Text("\n** New SP = ");   // display it
+                 IntToStr(setP, toStr);
+                 UART1_Write_Text(ToStr);
+                 stabilized = 0;
+               }
+               else
+                   stabilized++;
            }
          }
       }
