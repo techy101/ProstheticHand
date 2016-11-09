@@ -46,13 +46,14 @@ Count=0
 [PLDS]
 Count=0
 [Useses]
-Count=6
+Count=7
 File0=UART
 File1=C_String
 File2=C_Type
 File3=Conversions
 File4=C_Stdlib
 File5=PWM
+File6=ADC
 [EXPANDED_NODES]
 Count=0
 [PROGRAMMER_OPTIONS]

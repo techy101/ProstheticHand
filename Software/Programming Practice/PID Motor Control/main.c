@@ -1,15 +1,15 @@
 
 /*
     Notes:
-    - PE15 button is enable.
-    - PE14 button is direction.
-    - PE9 is motor PWM output.
+    - PD0 button is enable.
+    - PE14 pin is direction.
+    - PE9 pin is motor PWM output.
     - PB0 is Flexiforce analog input.
 */
 
 #define analogIn GPIOB_IDR.B0
 #define motorDirection GPIOE_ODR.B14
-#define motorEnable GPIOE_ODR.B15
+#define motorEnable GPIOD_ODR.B0
 
 
 int Pcontrol(int, int);
@@ -22,7 +22,7 @@ float const K = 1.6;      // proportion constant for P control
 
 int MPV;                  // measured process variable
 int dutyCycle = 30;       // initial
-float averageForceReading = 0;
+float averageForceReading = 0.0;
 
 int sampleFlag = 0;
 char ToStr[15];
@@ -46,10 +46,11 @@ void main()
 {
    srand(50);
    
-   // prepare E14 and E15 for digital output
-   GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_14 | _GPIO_PINMASK_15);
+   // prepare E14 for digital output
+   GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_14);
+   GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_0);
    motorDirection = 0;
-   motorEnable = 1;
+   motorEnable = 0;        // disabled initially
    
    // set up B0 for analog input
    GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
@@ -73,6 +74,10 @@ void main()
    EXTI_FTSR = 0x00000000;              // Set Interrupt on Falling edge (none)
    EXTI_IMR |= 0x00000001;              // Unmask bit 0 to interrupt on tht line
    NVIC_IntEnable(IVT_INT_EXTI0);       //Enable external interrupt for enable pin
+   
+   // set up ADC1
+   ADC_Set_Input_Channel(_ADC_CHANNEL_0);
+   ADC1_Init();
    
    // set up UART1
    UART1_Init(115200);
@@ -99,7 +104,7 @@ void main()
    
    while(1)
    {  
-      if(motorEnable)
+      if(~motorEnable)                 // active low
       {
         if(sampleFlag)
         {
@@ -159,13 +164,13 @@ void moveFinger(int dutyCycle)
      PWM_TIM1_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL1);       // set new duty cycle
 }
 
-int getForce() 
+int getForce()
 {
-    float measure;
+    unsigned measure;
 
     //Moving average over 100 samples
-    measure = analogIn;
-    averageForceReading = (((averageForceReading * 99) + measure) / 100);
+    measure = ADC1_Get_Sample(0);         // read analog value from channel 0
+    //averageForceReading = (((averageForceReading * 4) + measure) / 5);
 
-    return (int)(averageForceReading * 100);       //Converts read value to value between 0 and 100
+    return (int)(measure);//averageForceReading * 100);       //Converts read value to value between 0 and 100
 }

@@ -8,13 +8,14 @@ int setP = 60;
 int const margin = 2;
 float const K = 1.6;
 
-float MPV;
+int MPV;
 int dutyCycle = 30;
-float averageForceReading = 0;
+float averageForceReading = 0.0;
 
 int sampleFlag = 0;
 char ToStr[15];
 int i;
+int stabilized = 0;
 
 
 void timer4_ISR() iv IVT_INT_TIM4 {
@@ -25,7 +26,7 @@ void timer4_ISR() iv IVT_INT_TIM4 {
 
 void EnableInt() iv IVT_INT_EXTI0 ics ICS_AUTO {
  EXTI_PR.B0 = 1;
-  GPIOE_ODR.B15  = ~ GPIOE_ODR.B15 ;
+  GPIOD_ODR.B0  = ~ GPIOD_ODR.B0 ;
 }
 
 
@@ -34,9 +35,10 @@ void main()
  srand(50);
 
 
- GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_14 | _GPIO_PINMASK_15);
+ GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_14);
+ GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_0);
   GPIOE_ODR.B14  = 0;
-  GPIOE_ODR.B15  = 1;
+  GPIOD_ODR.B0  = 0;
 
 
  GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
@@ -60,6 +62,10 @@ void main()
  EXTI_FTSR = 0x00000000;
  EXTI_IMR |= 0x00000001;
  NVIC_IntEnable(IVT_INT_EXTI0);
+
+
+ ADC_Set_Input_Channel(_ADC_CHANNEL_0);
+ ADC1_Init();
 
 
  UART1_Init(115200);
@@ -86,14 +92,43 @@ void main()
 
  while(1)
  {
- if( GPIOE_ODR.B15 )
+ if(~ GPIOD_ODR.B0 )
  {
  if(sampleFlag)
  {
- MPV =  GPIOB_IDR.B0 ;
- FloatToStr(MPV, ToStr);
+ sampleFlag = 0;
+ MPV = getForce();
+
+ UART1_Write_Text("\n\nCurrent force = ");
+ IntToStr(MPV, ToStr);
  UART1_Write_Text(ToStr);
-#line 136 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+
+ dutyCycle = Pcontrol(setP, MPV);
+
+ UART1_Write_Text("\nPID control returns ");
+ IntToStr(dutyCycle, toStr);
+ UART1_Write_Text(ToStr);
+
+ UART1_Write_Text("\nDirection = ");
+ IntToStr( GPIOE_ODR.B14 , ToStr);
+ UART1_Write_Text(ToStr);
+
+ moveFinger(dutyCycle);
+
+ if(abs(MPV - setP) < margin) {
+ UART_Write_Text("\n** PV stabilized at ");
+ IntToStr(MPV, toStr);
+ UART1_Write_Text(ToStr);
+ if(stabilized == 5) {
+ setP = rand() % 100;
+ UART_Write_Text("\n** New SP = ");
+ IntToStr(setP, toStr);
+ UART1_Write_Text(ToStr);
+ stabilized = 0;
+ }
+ else
+ stabilized++;
+ }
  }
  }
  }
@@ -106,7 +141,7 @@ int Pcontrol(int setP, int MPV)
   GPIOE_ODR.B14  = ~ GPIOE_ODR.B14 ;
  if(abs(setP-MPV) > 60)
  return 100;
- else if(abs(setP-MPV) > 10)
+ else if(abs(setP-MPV) >= 10)
  return (int)(K*abs(setP - MPV));
  else
  return 20;
@@ -119,11 +154,11 @@ void moveFinger(int dutyCycle)
 
 int getForce()
 {
- float measure;
+ unsigned measure;
 
 
- measure =  GPIOB_IDR.B0 ;
- averageForceReading = (((averageForceReading * 99) + measure) / 100);
+ measure = ADC1_Get_Sample(0);
 
- return (int)(averageForceReading * 100);
+
+ return (int)(measure);
 }

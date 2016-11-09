@@ -13,10 +13,15 @@ main
 			Get_Fosc_kHz
 	PWM_TIM1_Set_Duty
 		PWM_TIMx_Set_Duty
+	ADC_Set_Input_Channel
+		GPIO_Analog_Input
+	ADC1_Init
+		ADCx_Init
+			RCC_GetClocksFrequency
+				Get_Fosc_kHz
 	UART1_Init
 		UARTx_Init_Advanced
 			RCC_GetClocksFrequency
-				Get_Fosc_kHz
 			GPIO_Alternate_Function_Enable
 				GPIO_Config_Pin_Alternate_Function
 					GPIO_Config
@@ -45,5 +50,15 @@ main
 		PWM_TIMx_Start
 			GPIO_Alternate_Function_Enable
 	getForce
+		ADC1_Get_Sample
+			ADCx_Get_Sample
+				Delay_1us
+	Pcontrol
+		abs
+	moveFinger
+		PWM_TIM1_Set_Duty
+	abs
+	rand
+		srand
 EnableInt
 timer4_ISR
