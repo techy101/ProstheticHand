@@ -5,7 +5,7 @@ void moveFinger(int);
 int getForce();
 
 int setP = 60;
-int const margin = 2;
+int const margin = 4;
 float const K = 1.6;
 
 int MPV;
@@ -41,7 +41,7 @@ void main()
   GPIOD_ODR.B0  = 0;
 
 
- GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
+
 
 
  RCC_APB1ENR.TIM4EN = 1;
@@ -119,8 +119,8 @@ void main()
  UART_Write_Text("\n** PV stabilized at ");
  IntToStr(MPV, toStr);
  UART1_Write_Text(ToStr);
- if(stabilized == 5) {
- setP = rand() % 100;
+ if(stabilized == 2) {
+ setP = (rand() % 95) + 20;
  UART_Write_Text("\n** New SP = ");
  IntToStr(setP, toStr);
  UART1_Write_Text(ToStr);
@@ -158,7 +158,7 @@ int getForce()
 
 
  measure = ADC1_Get_Sample(0);
+ averageForceReading = (((averageForceReading * 4) + measure) / 5);
 
-
- return (int)(measure);
+ return (int)(averageForceReading*100/(3700-350));
 }

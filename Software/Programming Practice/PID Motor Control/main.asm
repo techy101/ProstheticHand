@@ -52,20 +52,15 @@ MOVW	R0, #lo_addr(GPIOD_BASE+0)
 MOVT	R0, #hi_addr(GPIOD_BASE+0)
 BL	_GPIO_Digital_Output+0
 ;main.c,52 :: 		motorDirection = 0;
-MOVS	R1, #0
-SXTB	R1, R1
+MOVS	R2, #0
+SXTB	R2, R2
 MOVW	R0, #lo_addr(GPIOE_ODR+0)
 MOVT	R0, #hi_addr(GPIOE_ODR+0)
-STR	R1, [R0, #0]
+STR	R2, [R0, #0]
 ;main.c,53 :: 		motorEnable = 0;        // disabled initially
 MOVW	R0, #lo_addr(GPIOD_ODR+0)
 MOVT	R0, #hi_addr(GPIOD_ODR+0)
-STR	R1, [R0, #0]
-;main.c,56 :: 		GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
-MOVW	R1, #1
-MOVW	R0, #lo_addr(GPIOB_BASE+0)
-MOVT	R0, #hi_addr(GPIOB_BASE+0)
-BL	_GPIO_Analog_Input+0
+STR	R2, [R0, #0]
 ;main.c,59 :: 		RCC_APB1ENR.TIM4EN = 1;                                                     // Enable clock for timer 4
 MOVS	R1, #1
 SXTB	R1, R1
@@ -73,11 +68,9 @@ MOVW	R0, #lo_addr(RCC_APB1ENR+0)
 MOVT	R0, #hi_addr(RCC_APB1ENR+0)
 STR	R1, [R0, #0]
 ;main.c,60 :: 		TIM4_CR1.CEN = 0;                                                           // Disable timer/counter
-MOVS	R1, #0
-SXTB	R1, R1
 MOVW	R0, #lo_addr(TIM4_CR1+0)
 MOVT	R0, #hi_addr(TIM4_CR1+0)
-STR	R1, [R0, #0]
+STR	R2, [R0, #0]
 ;main.c,61 :: 		TIM4_PSC = 279;                                                             // Set timer 4 prescaler
 MOVW	R1, #279
 MOVW	R0, #lo_addr(TIM4_PSC+0)
@@ -203,7 +196,7 @@ BL	_UART1_Write_Text+0
 ;main.c,96 :: 		IntToStr(margin, ToStr);
 MOVW	R1, #lo_addr(_ToStr+0)
 MOVT	R1, #hi_addr(_ToStr+0)
-MOVW	R0, #2
+MOVW	R0, #4
 SXTH	R0, R0
 BL	_IntToStr+0
 ;main.c,97 :: 		UART1_Write_Text(ToStr);
@@ -348,7 +341,7 @@ MOVT	R0, #hi_addr(_MPV+0)
 LDRSH	R0, [R0, #0]
 SUB	R0, R0, R1
 BL	_abs+0
-CMP	R0, #2
+CMP	R0, #4
 IT	GE
 BGE	L_main9
 ;main.c,131 :: 		UART_Write_Text("\n** PV stabilized at ");
@@ -366,19 +359,21 @@ BL	_IntToStr+0
 MOVW	R0, #lo_addr(_ToStr+0)
 MOVT	R0, #hi_addr(_ToStr+0)
 BL	_UART1_Write_Text+0
-;main.c,134 :: 		if(stabilized == 5) {
+;main.c,134 :: 		if(stabilized == 2) {
 MOVW	R0, #lo_addr(_stabilized+0)
 MOVT	R0, #hi_addr(_stabilized+0)
 LDRSH	R0, [R0, #0]
-CMP	R0, #5
+CMP	R0, #2
 IT	NE
 BNE	L_main10
-;main.c,135 :: 		setP = rand() % 100;    // generate a new setpoint
+;main.c,135 :: 		setP = (rand() % 95) + 20;    // generate a new setpoint
 BL	_rand+0
-MOVS	R2, #100
+MOVS	R2, #95
 SXTH	R2, R2
 SDIV	R1, R0, R2
 MLS	R1, R2, R1, R0
+SXTH	R1, R1
+ADDS	R1, #20
 MOVW	R0, #lo_addr(_setP+0)
 MOVT	R0, #hi_addr(_setP+0)
 STRH	R1, [R0, #0]
@@ -533,7 +528,29 @@ STR	LR, [SP, #0]
 ;main.c,172 :: 		measure = ADC1_Get_Sample(0);         // read analog value from channel 0
 MOVS	R0, #0
 BL	_ADC1_Get_Sample+0
-;main.c,175 :: 		return (int)(measure);//averageForceReading * 100);       //Converts read value to value between 0 and 100
+;main.c,173 :: 		averageForceReading = (((averageForceReading * 4) + measure) / 5);
+MOVW	R1, #lo_addr(_averageForceReading+0)
+MOVT	R1, #hi_addr(_averageForceReading+0)
+VLDR	#1, S1, [R1, #0]
+VMOV.F32	S0, #4
+VMUL.F32	S1, S1, S0
+VMOV	S0, R0
+VCVT.F32	#0, S0, S0
+VADD.F32	S1, S1, S0
+VMOV.F32	S0, #5
+VDIV.F32	S1, S1, S0
+VSTR	#1, S1, [R1, #0]
+;main.c,175 :: 		return (int)(averageForceReading*100/(3700-350));       //Converts read value to value between 0 and 100
+MOVW	R0, #0
+MOVT	R0, #17096
+VMOV	S0, R0
+VMUL.F32	S1, S1, S0
+MOVW	R0, #24576
+MOVT	R0, #17745
+VMOV	S0, R0
+VDIV.F32	S0, S1, S0
+VCVT	#1, .F32, S0, S0
+VMOV	R0, S0
 SXTH	R0, R0
 ;main.c,176 :: 		}
 L_end_getForce:

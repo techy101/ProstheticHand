@@ -6,8 +6,6 @@ main
 	GPIO_Digital_Output
 		GPIO_Config
 			GPIO_Clk_Enable
-	GPIO_Analog_Input
-		GPIO_Config
 	PWM_TIM1_Init
 		PWM_TIMx_Init
 			Get_Fosc_kHz
@@ -15,6 +13,7 @@ main
 		PWM_TIMx_Set_Duty
 	ADC_Set_Input_Channel
 		GPIO_Analog_Input
+			GPIO_Config
 	ADC1_Init
 		ADCx_Init
 			RCC_GetClocksFrequency

@@ -7,7 +7,7 @@
     - PB0 is Flexiforce analog input.
 */
 
-#define analogIn GPIOB_IDR.B0
+#define analogIn GPIOA_IDR.B0
 #define motorDirection GPIOE_ODR.B14
 #define motorEnable GPIOD_ODR.B0
 
@@ -17,7 +17,7 @@ void moveFinger(int);
 int getForce();
 
 int setP = 60;            // setpoint - what PV should be
-int const margin = 2;     // accuracy of PV - 2%
+int const margin = 4;     // accuracy of PV - 5%
 float const K = 1.6;      // proportion constant for P control
 
 int MPV;                  // measured process variable
@@ -53,7 +53,7 @@ void main()
    motorEnable = 0;        // disabled initially
    
    // set up B0 for analog input
-   GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
+   //GPIO_Analog_Input(&GPIOB_BASE, _GPIO_PINMASK_0);
    
    // set up 10 Hz timer
     RCC_APB1ENR.TIM4EN = 1;                                                     // Enable clock for timer 4
@@ -99,8 +99,8 @@ void main()
    TIM4_CR1.CEN = 1;    // start 10 Hz timer
    PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
    
-   for(i = 0; i < 100; i++)
-         MPV = getForce();   // set up the first 100 samples
+   for(i = 0; i < 5; i++)
+         MPV = getForce();   // set up the first 5 samples
    
    while(1)
    {  
@@ -131,8 +131,8 @@ void main()
                UART_Write_Text("\n** PV stabilized at ");
                IntToStr(MPV, toStr);
                UART1_Write_Text(ToStr);
-               if(stabilized == 5) {
-                 setP = rand() % 100;    // generate a new setpoint
+               if(stabilized == 2) {
+                 setP = (rand() % 95) + 20;    // generate a new setpoint
                  UART_Write_Text("\n** New SP = ");   // display it
                  IntToStr(setP, toStr);
                  UART1_Write_Text(ToStr);
@@ -168,9 +168,9 @@ int getForce()
 {
     unsigned measure;
 
-    //Moving average over 100 samples
+    //Moving average over 5 samples
     measure = ADC1_Get_Sample(0);         // read analog value from channel 0
-    //averageForceReading = (((averageForceReading * 4) + measure) / 5);
+    averageForceReading = (((averageForceReading * 4) + measure) / 5);
 
-    return (int)(measure);//averageForceReading * 100);       //Converts read value to value between 0 and 100
+    return (int)(averageForceReading*100/(3700-350));       //Converts read value to value between 0 and 100
 }

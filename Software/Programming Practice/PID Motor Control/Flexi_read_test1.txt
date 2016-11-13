@@ -1,0 +1,1140 @@
+
+Sampling every 100 ms. Analog values from Flexiforce (RAW, not averaged/converted) 
+range from about 350 to 3700 with a 1M resistor.
+
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    624
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    626
+PID control returns    100
+Direction =      0
+
+Current force =    623
+PID control returns    100
+Direction =      1
+
+Current force =    698
+PID control returns    100
+Direction =      0
+
+Current force =    697
+PID control returns    100
+Direction =      1
+
+Current force =    700
+PID control returns    100
+Direction =      0
+
+Current force =    627
+PID control returns    100
+Direction =      1
+
+Current force =    624
+PID control returns    100
+Direction =      0
+
+Current force =    625
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    699
+PID control returns    100
+Direction =      1
+
+Current force =    699
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    618
+PID control returns    100
+Direction =      0
+
+Current force =    609
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    691
+PID control returns    100
+Direction =      1
+
+Current force =    628
+PID control returns    100
+Direction =      0
+
+Current force =    624
+PID control returns    100
+Direction =      1
+
+Current force =    611
+PID control returns    100
+Direction =      0
+
+Current force =    702
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    621
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    622
+PID control returns    100
+Direction =      1
+
+Current force =    690
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    613
+PID control returns  0
+
+Current force =    618
+PID control returns    100
+Direction =      1
+
+Current force =    628
+PID control returns    100
+Direction =      0
+
+Current force =    629
+PID control returns    100
+Direction =      1
+
+Current force =    633
+PID control returns    100
+Direction =      0
+
+Current force =    708
+PID control returns    100
+Direction =      1
+
+Current force =    694
+PID control returns    100
+Direction =      0
+
+Current force =    617
+PID control returns    100
+Direction =      1
+
+Current force =    705
+PID control returns    100
+Direction =      0
+
+Current force =    704
+PID control returns    100
+Direction =      1
+
+Current force =    635
+PID control returns    100
+Direction =      0
+
+Current force =    703
+PID control returns    100
+Direction =      1
+
+Current force =    705
+PID control returns    100
+Direction =      0
+
+Current force =    633
+PID control returns    100
+Direction =      1
+
+Current force =    615
+PID control returns    100
+Direction =      0
+
+Current force =    703
+PID control returns    100
+Direction =      1
+
+Current force =    633
+PID control returns    100
+Direction =      0
+
+Current force =    617
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    621
+PID control returns    100
+Direction =      1
+
+Current force =    613
+PID control returns    100
+Direction =      0
+
+Current force =    618
+PID control returns    100
+Direction =      1
+
+Current force =    630
+PID control returns    100
+Direction =      0
+
+Current force =    705
+PID control returns    100
+Direction =      1
+
+Current force =    615
+PID control returns    100
+Direction =      0
+
+Current force =    634
+PID control returns    100
+Direction =      1
+
+Current force =    617
+PID control returns    100
+Direction =      0
+
+Current force =    619
+PID control returns    100
+Direction =      1
+
+Current force =    627
+PID control returns    100
+Direction =      0
+
+Current force =    617
+PID control returns    100
+Direction =      1
+
+Current force =    617
+PID control returns    100
+Direction =      0
+*************************** Note the voltage starts dropping here before getting higher
+Current force =    623
+PID control returns    100
+Direction =      1
+
+Current force =    621
+PID control returns    100
+Direction =      0
+
+Current force =    637
+PID control returns    100
+Direction =      1
+
+Current force =    549
+PID control returns    100
+Direction =      0
+
+Current force =    488
+PID control returns    100
+Direction =      1
+
+Current force =    409
+PID control returns    100
+Direction =      0
+
+Current force =    491
+PID control returns    100
+Direction =      1
+
+Current force =    515
+PID control returns    100
+Direction =      0
+
+Current force =    526
+PID control returns    100
+Direction =      1
+
+Current force =    555
+PID control returns    100
+Direction =      0
+
+Current force =    520
+PID control returns    100
+Direction =      1
+
+Current force =    540
+PID control returns    100
+Direction =      0
+
+Current force =    475
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    694
+PID control returns    100
+Direction =      1
+*************************** Started squeezing around here
+Current force =   1056
+PID control returns    100
+Direction =      0
+
+Current force =    625
+PID control returns    100
+Direction =      1
+
+Current force =   1192
+PID control returns    100
+Direction =      0
+
+Current force =   1195
+PID control returns    100
+Direction =      1
+
+Current force =   1654
+PID control returns    100
+Direction =      0
+
+Current force =   1906
+PID control returns    100
+Direction =      1
+
+Current force =   2274
+PID control returns    100
+Direction =      0
+
+Current force =   2780
+PID control returns    100
+Direction =      1
+
+Current force =   2862
+PID control returns    100
+Direction =      0
+
+Current force =   2996
+PID control returns    100
+Direction =      1
+
+Current force =   3230
+PID control returns    100
+Direction =      0
+
+Current force =   3301
+PID control returns    100
+Direction =      1
+
+Current force =   3368
+PID control returns    100
+Direction =      0
+
+Current force =   3421
+PID control returns    100
+Direction =      1
+
+Current force =   3509
+PID control returns    100
+Direction =      0
+
+Current force =   3521
+PID control returns    100
+Direction =      1
+
+Current force =   3578
+PID control returns    100
+Direction =      0
+
+Current force =   3623
+PID control returns    100
+Direction =      1
+
+Current force =   3635
+PID control returns    100
+Direction =      0
+
+Current force =   3652
+PID control returns    100
+Direction =      1
+
+Current force =   3674
+PID control returns    100
+Direction =      0
+
+Current force =   3695
+PID control returns    100
+Direction =      1
+
+Current force =   3677
+PID control returns    100
+Direction =      0
+
+Current force =   3705
+PID control returns    100
+Direction =      1
+
+Current force =   3681
+PID control returns    100
+Direction =      0
+
+Current force =   3717
+PID control returns    100
+Direction =      1
+
+Current force =   3639
+PID control returns    100
+Direction =      0
+
+Current force =   3690
+PID control returns    100
+Direction =      1
+
+Current force =   3702
+PID control returns    100
+Direction =      0
+
+Current force =   3654
+PID control returns    100
+Direction =      1
+
+Current force =   3666
+PID control returns    100
+Direction =      0
+
+Current force =   3677
+PID control returns    100
+Direction =      1
+
+Current force =   3665
+PID control returns    100
+Direction =      0
+
+Current force =   3663
+PID control returns    100
+Direction =      1
+
+Current force =   3619
+PID control returns    100
+Direction =      0
+
+Current force =   3630
+PID control returns    100
+Direction =      1
+
+Current force =   3662
+PID control returns    100
+Direction =      0
+
+Current force =   3668
+PID control returns    100
+Direction =      1
+
+Current force =   3612
+PID control returns    100
+Direction =      0
+*************************** Letting off pressure
+Current force =   3587
+PID control returns    100
+Direction =      1
+
+Current force =   3577
+PID control returns    100
+Direction =      0
+
+Current force =   3623
+PID control returns    100
+Direction =      1
+
+Current force =   3588
+PID control returns    100
+Direction =      0
+
+Current force =   3539
+PID control returns    100
+Direction =      1
+
+Current force =   3534
+PID control returns    100
+Direction =      0
+
+Current force =   3546
+PID control returns    100
+Direction =      1
+
+Current force =   3550
+PID control returns    100
+Direction =      0
+
+Current force =   3543
+PID control returns    100
+Direction =      1
+
+Current force =   3550
+PID control returns    100
+Direction =      0
+
+Current force =   3560
+PID control returns    100
+Direction =      1
+
+Current force =   3565
+PID control returns    100
+Direction =      0
+
+Current force =   3560
+PID control returns    100
+Direction =      1
+
+Current force =   3566
+PID control returns    100
+Direction =      0
+
+Current force =   3525
+PID control returns    100
+Direction =      1
+
+Current force =   3417
+PID control returns    100
+Direction =      0
+
+Current force =   3374
+PID control returns    100
+Direction =      1
+
+Current force =   3244
+PID control returns    100
+Direction =      0
+
+Current force =   3271
+PID control returns    100
+Direction =      1
+
+Current force =   3101
+PID control returns    100
+Direction =      0
+
+Current force =   3236
+PID control returns    100
+Direction =      1
+
+Current force =   3271
+PID control returns    100
+Direction =      0
+
+Current force =   2889
+PID control returns    100
+Direction =      1
+
+Current force =   2981
+PID control returns    100
+Direction =      0
+
+Current force =   3187
+PID control returns    100
+Direction =      1
+
+Current force =   1443
+PID control returns    100
+Direction =      0
+
+Current force =   1137
+PID control returns    100
+Direction =      1
+
+Current force =    751
+PID control returns    100
+Direction =      0
+
+Current force =    528
+PID control returns    100
+Direction =      1
+*************************** Voltage dips down again
+Current force =    480
+PID control returns    100
+Direction =      0
+
+Current force =    386
+PID control returns    100
+Direction =      1
+
+Current force =    400
+PID control returns    100
+Direction =      0
+
+Current force =    402
+PID control returns    100
+Direction =      1
+
+Current force =    428
+PID control returns    100
+Direction =      0
+
+Current force =    441
+PID control returns    100
+Direction =      1
+
+Current force =    529
+PID control returns    100
+Direction =      0
+
+Current force =    552
+PID control returns    100
+Direction =      1
+
+Current force =    513
+PID control returns    100
+Direction =      0
+
+Current force =    596
+PID control returns    100
+Direction =      1
+
+Current force =    532
+PID control returns    100
+Direction =      0
+
+Current force =    559
+PID control returns    100
+Direction =      1
+
+Current force =    652
+PID control returns    100
+Direction =      0
+
+Current force =    661
+PID control returns    100
+Direction =      1
+
+Current force =    659
+PID control returns    100
+Direction =      0
+
+Current force =    678
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    593
+PID control returns    100
+Direction =      1
+
+Current force =    594
+PID control returns    100
+Direction =      0
+
+Current force =    609
+PID control returns    100
+Direction =      1
+
+Current force =    685
+PID control returns    100
+Direction =      0
+
+Current force =    597
+PID control returns    100
+Direction =      1
+
+Current force =    687
+PID control returns    100
+Direction =      0
+
+Current force =    681
+PID control returns    100
+Direction =      1
+
+Current force =    602
+PID control returns    100
+Direction =      0
+
+Current force =    618
+PID control returns    100
+Direction =      1
+*************************** Stabilizes
+Current force =    605
+PID control returns    100
+Direction =      0
+
+Current force =    604
+PID control returns    100
+Direction =      1
+
+Current force =    606
+PID control returns    100
+Direction =      0
+
+Current force =    692
+PID control returns    100
+Direction =      1
+
+Current force =    606
+PID control returns    100
+Direction =      0
+
+Current force =    696
+PID control returns    100
+Direction =      1
+
+Current force =    605
+PID control returns    100
+Direction =      0
+
+Current force =    620
+PID control returns    100
+Direction =      1
+
+Current force =    618
+PID control returns    100
+Direction =      0
+
+Current force =    618
+PID control returns    100
+Direction =      1
+
+Current force =    621
+PID control returns    100
+Direction =      0
+
+Current force =    607
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    611
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    698
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    609
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    621
+PID control returns    100
+Direction =      1
+
+Current force =    607
+PID control returns    100
+Direction =      0
+
+Current force =    625
+PID control returns    100
+Direction =      1
+
+Current force =    621
+PID control returns    100
+Direction =      0
+
+Current force =    686
+PID control returns    100
+Direction =      1
+
+Current force =    624
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    619
+PID control returns    100
+Direction =      1
+
+Current force =    622
+PID control returns    100
+Direction =      0
+
+Current force =    611
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    696
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    697
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1 
+
+
+Current force =    690
+PID control returns    100
+Direction =      0
+
+Current force =    609
+PID control returns    100
+Direction =      1
+
+Current force =    611
+PID control returns    100
+Direction =      0
+
+Current force =    611
+PID control returns    100
+Direction =      1
+
+Current force =    623
+PID control returns    100
+Direction =      0
+
+Current force =    622
+PID control returns    100
+Direction =      1
+
+Current force =    622
+PID control returns    100
+Direction =      0
+
+Current force =    611
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    621
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    701
+PID control returns    100
+Direction =      1
+
+Current force =    613
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    699
+PID control returns    100
+Direction =      0
+
+Current force =    627
+PID control returns    100
+Direction =      1
+
+Current force =    626
+PID control returns    100
+Direction =      0
+
+Current force =    624
+PID control returns    100
+Direction =      1
+
+Current force =    622
+PID control returns    100
+Direction =      0
+
+Current force =    624
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    626
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    613
+PID control returns    100
+Direction =      1
+
+Current force =    626
+PID control returns    100
+Direction =      0
+
+Current force =    613
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    627
+PID control returns    100
+Direction =      1
+
+Current force =    698
+PID control returns    100
+Direction =      0
+
+Current force =    620
+PID control returns    100
+Direction =      1
+
+Current force =    629
+PID control returns    100
+Direction =      0
+
+Current force =    614
+PID control returns    100
+Direction =      1
+
+Current force =    692
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    610
+PID control returns    100
+Direction =      0
+
+Current force =    619
+PID control returns    100
+Direction =      1
+
+Current force =    691
+PID control returns    100
+Direction =      0
+
+Current force =    691
+PID control returns    100
+Direction =      1
+
+Current force =    611
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    701
+PID control returns    100
+Direction =      0
+
+Current force =    623
+PID control returns    100
+Direction =      1
+
+Current force =    623
+PID control returns    100
+Direction =      0
+
+Current force =    609
+PID control returns    100
+Direction =      1
+
+Current force =    699
+PID control returns    100
+Direction =      0
+
+Current force =    623
+PID control returns    100
+Direction =      1
+
+Current force =    609
+PID control returns    100
+Direction =      0
+
+Current force =    610
+PID control returns    100
+Direction =      1
+
+Current force =    628
+PID control returns    100
+Direction =      0
+
+Current force =    689
+PID control returns    100
+Direction =      1
+
+Current force =    627
+PID control returns    100
+Direction =      0
+
+Current force =    612
+PID control returns    100
+Direction =      1
+
+Current force =    608
+PID control returns    100
+Direction =      0
+
+Current force =    623
+PID control returns    100
+Direction =      1
+
+Current force =    613
+PID control returns    100
+Direction =      0
+
+Current force =    701
+PID control returns    100
+Direction =      1
+
+Current force =    701
+PID control returns    100
+Direction =      0
+
+Current force =    630
+PID control returns    100
+Direction =      1
+
+Current force =    629
+PID control returns    100
+Direction =      0
+
+Current force =    701
+PID control returns    100
+Direction =      1
+
+Current force =    612
+PID control returns    100
+Direction =      0
+
+Current force =    690
+PID control returns    100
+Direction =      1
+
+Current force =    614
+PID control returns    100
+Direction =      0
+
+Current force =    624
+PID control returns    100
+Direction =      1
+
+Current force =    629
+PID control returns    100
+Direction =      0
+
+Current force =    611
+PID control returns    100
+Direction =      1
+
+Current force =    613
+PID control returns    100
+Direction =      0
+
+Current force =    700
+PID control returns    100
+Direction =      1
+
+Current force =    624
+PID control returns    100
+Direction =      0
+
+Current force =    691
+PID control returns    100
+Direction =      1
+
+Current force =    701
+PID control returns    100
+Direction =      0

@@ -4,11 +4,11 @@ hint: 0	1004	interrupt handler (timer4_ISR at 0x002E)	main.c
 hint: 0	1004	interrupt handler (EnableInt at 0x0016)	main.c
 diagnostics: 176	123	Compiled Successfully	main.c
 hint: 169	1164	Variable 'measure' has been eliminated by optimizer	main.c
-diagnostics: 0	127	All files Compiled in 453 ms	 
+diagnostics: 0	127	All files Compiled in 219 ms	 
 hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
-hint: 0	1144	Static RAM (bytes): 228   Dynamic RAM (bytes): 130837	Static RAM (bytes): 228   Dynamic RAM (bytes): 130837
-hint: 0	1144	Used ROM (bytes): 7963 (1%)  Free ROM (bytes): 1040613 (99%)	Used ROM (bytes): 7963 (1%)  Free ROM (bytes): 1040613 (99%)
+hint: 0	1144	Static RAM (bytes): 232   Dynamic RAM (bytes): 130833	Static RAM (bytes): 232   Dynamic RAM (bytes): 130833
+hint: 0	1144	Used ROM (bytes): 8029 (1%)  Free ROM (bytes): 1040547 (99%)	Used ROM (bytes): 8029 (1%)  Free ROM (bytes): 1040547 (99%)
 diagnostics: 0	125	Project Linked Successfully	main_control.mcpar
-diagnostics: 0	128	Linked in 2250 ms	 
-diagnostics: 0	129	Project 'main_control.mcpar' completed: 3750 ms	 
-diagnostics: 0	103	Finished successfully: 09 Nov 2016, 11:43:46	main_control.mcpar
+diagnostics: 0	128	Linked in 2000 ms	 
+diagnostics: 0	129	Project 'main_control.mcpar' completed: 3141 ms	 
+diagnostics: 0	103	Finished successfully: 09 Nov 2016, 15:42:40	main_control.mcpar
