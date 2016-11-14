@@ -1,5 +1,6 @@
 main
 	NVIC_IntEnable
+	NVIC_IntDisable
 	__CC2DW
 	__FillZeros
 	srand
@@ -52,12 +53,13 @@ main
 		ADC1_Get_Sample
 			ADCx_Get_Sample
 				Delay_1us
+	abs
 	Pcontrol
 		abs
 	moveFinger
 		PWM_TIM1_Set_Duty
-	abs
+	PWM_TIM1_Stop
+		PWM_TIMx_Stop
 	rand
 		srand
-EnableInt
 timer4_ISR
