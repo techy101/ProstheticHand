@@ -32413,6 +32413,7 @@ mwid1_bit
 mwid1_fsmc_bcr2_bit
 mwid1_fsmc_bcr3_bit
 mwid1_fsmc_bcr4_bit
+myflag
 nack
 nack
 nack

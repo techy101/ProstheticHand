@@ -17,6 +17,8 @@ char ToStr[15];
 int i;
 int stabilized = 0;
 
+int myFlag = 0;
+
 
 void timer4_ISR() iv IVT_INT_TIM4 {
  TIM4_SR.UIF = 0;
@@ -106,10 +108,12 @@ void main()
  }
  else
  {
+ myFlag = 1;
  if(stabilized == 2)
  {
  moveFinger(0);
  PWM_TIM1_Stop(_PWM_CHANNEL1);
+ TIM1_CR1.CEN = 0;
  sampleFlag = 0;
  NVIC_IntDisable(IVT_INT_TIM4);
  UART_Write_Text("\n** PV stabilized at ");
@@ -123,9 +127,11 @@ void main()
  IntToStr(setP, toStr);
  UART1_Write_Text(ToStr);
  moveFinger(60);
+ TIM1_CR1.CEN = 1;
  PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
  NVIC_IntEnable(IVT_INT_TIM4);
  stabilized = 0;
+ myFlag = 0;
  }
  else
  {
@@ -146,7 +152,7 @@ int Pcontrol(int setP, int MPV)
   GPIOE_ODR.B14  =  1 ;
 
  if(abs(setP-MPV) > 60)
- return 60;
+ return 80;
  else if(abs(setP-MPV) >= 10)
  return (int)(K*abs(setP - MPV));
  else
@@ -155,6 +161,7 @@ int Pcontrol(int setP, int MPV)
 
 void moveFinger(int dutyCycle)
 {
+ if(!myFlag)
  PWM_TIM1_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL1);
 }
 
