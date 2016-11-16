@@ -1,0 +1,1540 @@
+
+Started. 
+Notes:
+- K = 5
+- SP =     60
+- MARGIN =      2
+- PWM period =  16800
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      0
+PID control returns    300
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      1
+PID control returns    295
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      2
+PID control returns    290
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      6
+PID control returns    270
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      8
+PID control returns    260
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     10
+PID control returns    250
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     13
+PID control returns    235
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     15
+PID control returns    225
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     17
+PID control returns    215
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     20
+PID control returns    200
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     22
+PID control returns    190
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     24
+PID control returns    180
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     26
+PID control returns    170
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     28
+PID control returns    160
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     30
+PID control returns    150
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     32
+PID control returns    140
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     33
+PID control returns    135
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     34
+PID control returns    130
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     35
+PID control returns    125
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     35
+PID control returns    125
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     36
+PID control returns    120
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     36
+PID control returns    120
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     36
+PID control returns    120
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     37
+PID control returns    115
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     39
+PID control returns    105
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     39
+PID control returns    105
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     40
+PID control returns    100
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     41
+PID control returns     95
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     42
+PID control returns     90
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     43
+PID control returns     85
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     44
+PID control returns     80
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     45
+PID control returns     75
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     46
+PID control returns     70
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     48
+PID control returns     60
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     50
+PID control returns     50
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     52
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     54
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     59
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+** PV stabilized at     59
+
+Current force =     64
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     65
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     66
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     67
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     68
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     69
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     69
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     70
+PID control returns     50
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     70
+PID control returns     50
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     70
+PID control returns     50
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     70
+PID control returns     50
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     71
+PID control returns     55
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     70
+PID control returns     50
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     68
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     66
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     64
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     62
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+
+Current force =     61
+PID control returns      0
+Direction = EXTEND
+Setpoint =     60
+** PV stabilized at     61
+
+Current force =     59
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+** PV stabilized at     59
+
+Current force =     58
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     57
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     57
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     57
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     56
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     55
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     55
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     55
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     54
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     54
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     53
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     53
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     52
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     52
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     51
+PID control returns      0
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     50
+PID control returns     50
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     49
+PID control returns     55
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     48
+PID control returns     60
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     47
+PID control returns     65
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     46
+PID control returns     70
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     46
+PID control returns     70
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     45
+PID control returns     75
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     44
+PID control returns     80
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     44
+PID control returns     80
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     43
+PID control returns     85
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     42
+PID control returns     90
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     42
+PID control returns     90
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     41
+PID control returns     95
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     39
+PID control returns    105
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     38
+PID control returns    110
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     36
+PID control returns    120
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     34
+PID control returns    130
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     32
+PID control returns    140
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     30
+PID control returns    150
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     28
+PID control returns    160
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     25
+PID control returns    175
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     22
+PID control returns    190
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     20
+PID control returns    200
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     17
+PID control returns    215
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     15
+PID control returns    225
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     12
+PID control returns    240
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =     11
+PID control returns    245
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      9
+PID control returns    255
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      8
+PID control returns    260
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      8
+PID control returns    260
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      7
+PID control returns    265
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      6
+PID control returns    270
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      6
+PID control returns    270
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      6
+PID control returns    270
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      5
+PID control returns    275
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      5
+PID control returns    275
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      5
+PID control returns    275
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      5
+PID control returns    275
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      5
+PID control returns    275
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60
+
+Current force =      4
+PID control returns    280
+Direction = CONTRACT
+Setpoint =     60

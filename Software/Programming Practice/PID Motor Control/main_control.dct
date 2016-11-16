@@ -582,6 +582,7 @@ active9
 active9_bit
 active9_nvic_iabr1_bit
 active9_nvic_iabr2_bit
+adc_awd
 adc_ccr
 adc_ccrbits
 adc_cdr
@@ -590,6 +591,7 @@ adc_csr
 adc_csrbits
 adc_get_sample_ptr
 adc_set_input_channel
+adc_setup
 adc1_cr1
 adc1_cr1bits
 adc1_cr2
@@ -1901,6 +1903,7 @@ alst2
 alst2
 alst2_bit
 alst2_can1_tsr_bit
+analoggo
 aoe
 aoe
 aoe
@@ -26432,6 +26435,8 @@ initf_bit
 inits
 inits
 inits_bit
+inittimer3
+inittimer4
 inrq
 inrq
 inrq
@@ -31645,6 +31650,8 @@ moe_tim8_bdtr_bit
 monitoract
 monitoract
 monitoract_bit
+motor_1_init
+motor_1_pwm_init
 movefinger
 mpe
 mpe
@@ -42173,7 +42180,6 @@ st2
 st2_bit
 st2_rtc_alrmar_bit
 st2_rtc_alrmbr_bit
-stabilized
 stall
 stall
 stall
@@ -44533,7 +44539,8 @@ timeout
 timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
-timer4_isr
+timer3_interrupt
+timer4_interrupt
 tjtie
 tjtie
 tjtie_bit
@@ -45952,6 +45959,7 @@ txunderrie
 txunderrie
 txunderrie_bit
 uart_data_ready
+uart_print_values
 uart_rd_ptr
 uart_rdy_ptr
 uart_read
@@ -45967,6 +45975,7 @@ uart1_disable
 uart1_enable
 uart1_init
 uart1_init_advanced
+uart1_init_and_log
 uart1_read
 uart1_read_text
 uart1_tx_idle
