@@ -1,0 +1,17 @@
+main
+	__CC2DW
+	__FillZeros
+	InitMain
+		GPIO_Digital_Input
+			GPIO_Config
+				GPIO_Clk_Enable
+	PWM_TIM1_Init
+		PWM_TIMx_Init
+			Get_Fosc_kHz
+	PWM_TIM1_Set_Duty
+		PWM_TIMx_Set_Duty
+	PWM_TIM1_Start
+		PWM_TIMx_Start
+			GPIO_Alternate_Function_Enable
+				GPIO_Config_Pin_Alternate_Function
+					GPIO_Config

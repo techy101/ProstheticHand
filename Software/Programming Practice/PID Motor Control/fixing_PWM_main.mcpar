@@ -12,7 +12,7 @@ Value=0
 [USE_HEAP]
 Value=0
 [HEAP_SIZE]
-Value=2000
+Value=0
 [EEPROM_DEFINITION]
 Value=
 [FILES]
@@ -22,7 +22,7 @@ File0=PWM.c
 Count=0
 [IMAGES]
 Count=1
-File0=..\mcu_card_with_stm32f407.jpg
+File0=mcu_card_with_stm32f407.jpg
 ActiveImageIndex=0
 [OPENED_FILES]
 Count=1
@@ -36,9 +36,9 @@ Count=0
 [SEARCH_PATH]
 Count=4
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
-Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
-Path2=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path3=C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\MikroC Programming Examples\Internal MCU modules\STM32F407VG\PWM\
+Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
+Path2=C:\Users\Rachel\Documents\GitHub\ProstheticHand\Software\Programming Practice\PID Motor Control\
+Path3=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
 Count=0
 [HEADERS]
@@ -49,10 +49,9 @@ Count=0
 Count=1
 File0=PWM
 [EXPANDED_NODES]
-Node0=Sources
-Count=1
+Count=0
 [PROGRAMMER_OPTIONS]
-Value=SWD
+Value=JTAG
 [PROGRAMMER_TYPE]
 Value=mE
 [DEBUGGER_TYPE]

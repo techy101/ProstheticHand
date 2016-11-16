@@ -55,7 +55,8 @@ File4=C_Stdlib
 File5=PWM
 File6=ADC
 [EXPANDED_NODES]
-Count=0
+Node0=Sources
+Count=1
 [PROGRAMMER_OPTIONS]
 Value=JTAG
 [PROGRAMMER_TYPE]

@@ -1,23 +1,22 @@
 #line 1 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
-#line 17 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
-int Pcontrol(int, int);
-void moveFinger(int);
+#line 18 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+unsigned int Pcontrol(int, int);
+void moveFinger(unsigned int);
 int getForce();
 
 int setP = 60;
-int const margin = 4;
-float const K = 1.6;
+int const margin = 2;
+float const K = 5.0;
+unsigned int PWM_PERIOD;
 
 int MPV;
-int dutyCycle;
+unsigned int dutyCycle;
 float averageForceReading = 0.0;
 
 int sampleFlag = 0;
 char ToStr[15];
 int i;
 int stabilized = 0;
-
-int myFlag = 0;
 
 
 void timer4_ISR() iv IVT_INT_TIM4 {
@@ -45,8 +44,8 @@ void main()
  TIM4_DIER.UIE = 1;
 
 
- PWM_TIM1_Init(1000);
- PWM_TIM1_Set_Duty(30, _PWM_NON_INVERTED, _PWM_CHANNEL1);
+ PWM_PERIOD = PWM_TIM1_Init( 10000 );
+ PWM_TIM1_Set_Duty(50, _PWM_NON_INVERTED, _PWM_CHANNEL1);
 
 
  ADC_Set_Input_Channel(_ADC_CHANNEL_0);
@@ -68,6 +67,9 @@ void main()
  UART1_Write_Text("\n- Margin = ");
  IntToStr(margin, ToStr);
  UART1_Write_Text(ToStr);
+ UART1_Write_Text("\n- PWM period = ");
+ IntToStr(PWM_PERIOD, ToStr);
+ UART1_Write_Text(ToStr);
 
  TIM4_CR1.CEN = 1;
  PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
@@ -80,8 +82,6 @@ void main()
  if(~ GPIOD_ODR.B0 )
  {
  if(sampleFlag)
- {
- if(abs(MPV - setP) >= margin)
  {
  sampleFlag = 0;
  MPV = getForce();
@@ -97,46 +97,34 @@ void main()
  UART1_Write_Text(ToStr);
 
  UART1_Write_Text("\nDirection = ");
- IntToStr( GPIOE_ODR.B14 , ToStr);
- UART1_Write_Text(ToStr);
+ if( GPIOE_ODR.B14  ==  0 )
+ UART1_Write_Text("EXTEND");
+ else
+ UART1_Write_Text("CONTRACT");
 
  UART1_Write_Text("\nSetpoint = ");
  IntToStr(setP, ToStr);
  UART1_Write_Text(ToStr);
 
  moveFinger(dutyCycle);
- }
- else
+
+ if(abs(MPV - setP) < margin)
  {
- myFlag = 1;
- if(stabilized == 2)
- {
+#line 130 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  moveFinger(0);
- PWM_TIM1_Stop(_PWM_CHANNEL1);
- TIM1_CR1.CEN = 0;
+#line 133 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  sampleFlag = 0;
  NVIC_IntDisable(IVT_INT_TIM4);
  UART_Write_Text("\n** PV stabilized at ");
  IntToStr(MPV, toStr);
  UART1_Write_Text(ToStr);
-
- delay_ms(2000);
-
- setP = (rand() % 95) + 20;
- UART_Write_Text("\n** New SP = ");
- IntToStr(setP, toStr);
- UART1_Write_Text(ToStr);
- moveFinger(60);
- TIM1_CR1.CEN = 1;
- PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
+#line 143 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+ moveFinger(100);
+#line 146 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  NVIC_IntEnable(IVT_INT_TIM4);
+ MPV = getForce();
  stabilized = 0;
- myFlag = 0;
- }
- else
- {
- stabilized++;
- }
+#line 154 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  }
  }
  }
@@ -144,7 +132,7 @@ void main()
 }
 
 
-int Pcontrol(int setP, int MPV)
+unsigned int Pcontrol(int setP, int MPV)
 {
  if((setP-MPV) < 0)
   GPIOE_ODR.B14  =  0 ;
@@ -152,17 +140,16 @@ int Pcontrol(int setP, int MPV)
   GPIOE_ODR.B14  =  1 ;
 
  if(abs(setP-MPV) > 60)
- return 80;
+ return 100;
  else if(abs(setP-MPV) >= 10)
- return (int)(K*abs(setP - MPV));
+ return (unsigned int)(K*abs(setP - MPV));
  else
- return 20;
+ return 0;
 }
 
-void moveFinger(int dutyCycle)
+void moveFinger(unsigned int dutyCycle)
 {
- if(!myFlag)
- PWM_TIM1_Set_Duty(dutyCycle, _PWM_NON_INVERTED, _PWM_CHANNEL1);
+ PWM_TIM1_Set_Duty((dutyCycle*(PWM_PERIOD/100)), _PWM_NON_INVERTED, _PWM_CHANNEL1);
 }
 
 int getForce()
