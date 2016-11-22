@@ -591,7 +591,6 @@ adc_csr
 adc_csrbits
 adc_get_sample_ptr
 adc_set_input_channel
-adc_setup
 adc1_cr1
 adc1_cr1bits
 adc1_cr2
@@ -26436,7 +26435,6 @@ inits
 inits
 inits_bit
 inittimer3
-inittimer4
 inrq
 inrq
 inrq
@@ -31652,6 +31650,7 @@ monitoract
 monitoract_bit
 motor_1_init
 motor_1_pwm_init
+motorstate
 movefinger
 mpe
 mpe
@@ -44540,7 +44539,8 @@ timeout_bit
 timeout_i2c1_sr1_bit
 timeout_i2c2_sr1_bit
 timer3_interrupt
-timer4_interrupt
+timer4_init
+timer4_isr
 tjtie
 tjtie
 tjtie_bit
@@ -45959,7 +45959,6 @@ txunderrie
 txunderrie
 txunderrie_bit
 uart_data_ready
-uart_print_values
 uart_rd_ptr
 uart_rdy_ptr
 uart_read
@@ -45975,7 +45974,6 @@ uart1_disable
 uart1_enable
 uart1_init
 uart1_init_advanced
-uart1_init_and_log
 uart1_read
 uart1_read_text
 uart1_tx_idle
