@@ -1,6 +1,6 @@
-#line 1 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 1 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 #line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for arm/include/built_in.h"
-#line 28 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 28 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 void motor_1_init();
 void motor_1_pwm_init();
 void ADC_AWD();
@@ -135,7 +135,7 @@ void main()
  UART_Write_Text("\n** PV stabilized at ");
  IntToStr(MPV, toStr);
  UART1_Write_Text(ToStr);
-#line 166 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 166 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  UART1_Write_Text(ToStr);
  moveFinger(60);
  NVIC_IntEnable(IVT_INT_TIM4);

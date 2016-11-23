@@ -75,8 +75,7 @@ void main()
    //PWM_TIM1_Set_Duty(30*(PWM_PERIOD/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);  // Set current duty for PWM_TIM1
 
    // set up ADC1
-   ADC_Set_Input_Channel(_ADC_CHANNEL_7);                    // set up for Flexiforce input
-   ADC_Set_Input_Channel(_ADC_CHANNEL_3);                    // set up for EMG input
+   ADC_Set_Input_Channel(_ADC_CHANNEL_3 | _ADC_CHANNEL_7); // 3 for Flexi, 7 for EMG
    ADC1_Init();
    
    // set up UART1
@@ -163,7 +162,7 @@ void main()
                    /*setP = (rand() % 95) + 20;    // generate a new setpoint
                    UART_Write_Text("\n** New SP = ");   // display it
                    IntToStr(setP, toStr);*/
-                   UART1_Write_Text(ToStr);
+              //     UART1_Write_Text(ToStr);            //Commented out by Matthew. Not needed since previous 3 lines commented
                    moveFinger(60);       // start the motor
                    NVIC_IntEnable(IVT_INT_TIM4);            // start sampling again
             }
@@ -225,7 +224,7 @@ void ADC_AWD() iv IVT_INT_ADC ics ICS_AUTO {
             TIM3_SR.UIF = 0;        // Clear timer 3 interrupt bit
             TIM3_CNT = 0x00;        // Reset timer value to 0
             ADC1_HTR = high_level2; // Set high threshold to MAX
-            ADC1_LTR = low_level2;  // Set high threshold to 400
+            ADC1_LTR = low_level2;  // Set low threshold to 400
             TIM3_DIER.UIE = 1;      // CC1 Update Interrupt Enable
       }else {
             TIM3_DIER.UIE = 0;      // Disable timer interrupt
@@ -267,4 +266,3 @@ void motor_1_pwm_init() {
      PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          // PWM duty cycle to "current_duty" on Timer 1, channel 1
      PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);       // Start PWM
 }
-
