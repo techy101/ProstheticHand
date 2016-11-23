@@ -25,7 +25,7 @@
 
 
 /* --------------------------- FUNCTION PROTOTYPES  ---------------------------- */
-void motor_1_init();          //Initialize I/O for motor 1
+//void motor_1_init();          //Initialize I/O for motor 1
 void motor_1_pwm_init();      //Initialize PWM Timer config for motor 1
 void ADC_AWD();               // ADC interrupt handler
 void InitTimer3();            // Timer 3 init
@@ -33,7 +33,7 @@ void Timer3_interrupt();      // Timer 3 interrupt handler
 int motorState = 1;           // Motor 1 state variable
 int analogGo = 0;
 
-int Pcontrol(int, int);
+unsigned int Pcontrol(int, int);
 void moveFinger(int);
 int getForce();
 void Timer4_init();
@@ -123,6 +123,8 @@ void main()
    
    while(1)
    {
+      GPIOD_ODR = ADC1_Get_Sample(3); // Get ADC value from PA3 and put on LEDs
+      
       if(~motorEnable 
           && sampleFlag
           && analogGo
@@ -172,7 +174,7 @@ void main()
 }
 
 /***************************** P control functions *****************/
-int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
+unsigned int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
 {
       if((setP-MPV) < 0)
            motorDirection = EXTEND; // handle direction change
@@ -182,7 +184,7 @@ int Pcontrol(int setP, int MPV)   // must return duty cycle which is an int
       if(abs(setP-MPV) > 60)
            return 60;       // cap duty cycle
       else if(abs(setP-MPV) >= 10)
-           return (int)(K*abs(setP - MPV));
+           return (unsigned int)(K*abs(setP - MPV));
       else 
            return 20;         // boost duty cycle
 }
@@ -255,11 +257,11 @@ void Timer3_interrupt() iv IVT_INT_TIM3 { // Interrupt handler if 6 s have past
 }
 
 // MOTOR 1 HARDWARE INIT
-void motor_1_init() {
+/*void motor_1_init() {
      GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_0 | _GPIO_PINMASK_1);        //Enable digital output for enable pin (D0) and direction pin (D1)
      GPIOD_ODR.B0 = 0;                                                           //Turn on motor enable (active low)
      GPIOD_ODR.B1 = 1;                                                           //Set initial direction
-}
+}*/
 
 // MOTOR 1 PWM INIT
 void motor_1_pwm_init() {
@@ -267,4 +269,3 @@ void motor_1_pwm_init() {
      PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          // PWM duty cycle to "current_duty" on Timer 1, channel 1
      PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);       // Start PWM
 }
-

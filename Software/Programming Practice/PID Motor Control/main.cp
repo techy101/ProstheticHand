@@ -1,7 +1,6 @@
 #line 1 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 #line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for arm/include/built_in.h"
-#line 28 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
-void motor_1_init();
+#line 29 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 void motor_1_pwm_init();
 void ADC_AWD();
 void InitTimer3();
@@ -9,7 +8,7 @@ void Timer3_interrupt();
 int motorState = 1;
 int analogGo = 0;
 
-int Pcontrol(int, int);
+unsigned int Pcontrol(int, int);
 void moveFinger(int);
 int getForce();
 void Timer4_init();
@@ -99,6 +98,8 @@ void main()
 
  while(1)
  {
+ GPIOD_ODR = ADC1_Get_Sample(3);
+
  if(~ GPIOE_ODR.B15 
  && sampleFlag
  && analogGo
@@ -135,7 +136,7 @@ void main()
  UART_Write_Text("\n** PV stabilized at ");
  IntToStr(MPV, toStr);
  UART1_Write_Text(ToStr);
-#line 166 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 168 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  UART1_Write_Text(ToStr);
  moveFinger(60);
  NVIC_IntEnable(IVT_INT_TIM4);
@@ -145,7 +146,7 @@ void main()
 }
 
 
-int Pcontrol(int setP, int MPV)
+unsigned int Pcontrol(int setP, int MPV)
 {
  if((setP-MPV) < 0)
   GPIOE_ODR.B10  =  0 ;
@@ -155,7 +156,7 @@ int Pcontrol(int setP, int MPV)
  if(abs(setP-MPV) > 60)
  return 60;
  else if(abs(setP-MPV) >= 10)
- return (int)(K*abs(setP - MPV));
+ return (unsigned int)(K*abs(setP - MPV));
  else
  return 20;
 }
@@ -226,15 +227,7 @@ void Timer3_interrupt() iv IVT_INT_TIM3 {
  TIM3_DIER.UIE = 0;
  analogGo = ~analogGo;
 }
-
-
-void motor_1_init() {
- GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_0 | _GPIO_PINMASK_1);
- GPIOD_ODR.B0 = 0;
- GPIOD_ODR.B1 = 1;
-}
-
-
+#line 267 "C:/Users/Rachel/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 void motor_1_pwm_init() {
  PWM_PERIOD = PWM_TIM1_Init(10000);
  PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);

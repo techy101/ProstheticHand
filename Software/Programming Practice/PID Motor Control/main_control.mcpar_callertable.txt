@@ -59,6 +59,7 @@ main
 		ADC1_Get_Sample
 			ADCx_Get_Sample
 				Delay_1us
+	ADC1_Get_Sample
 	Pcontrol
 		abs
 	moveFinger
