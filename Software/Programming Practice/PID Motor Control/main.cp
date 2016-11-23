@@ -1,6 +1,5 @@
-#line 1 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
-#line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for arm/include/built_in.h"
-#line 28 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
+#line 28 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
 void motor_1_init();
 void motor_1_pwm_init();
 void ADC_AWD();
@@ -51,8 +50,7 @@ void main()
 
 
 
- ADC_Set_Input_Channel(_ADC_CHANNEL_7);
- ADC_Set_Input_Channel(_ADC_CHANNEL_3);
+ ADC_Set_Input_Channel(_ADC_CHANNEL_3 | _ADC_CHANNEL_7);
  ADC1_Init();
 
 
@@ -87,8 +85,10 @@ void main()
  ADC1_LTR =  0 ;
  ADC1_HTR =  400 ;
 
+
+ ADC1_CR1bits.AWDCH = 3;
  ADC1_CR1bits.AWDEN = 1;
- ADC1_CR1bits.AWDSGL = 0;
+ ADC1_CR1bits.AWDSGL = 1;
  ADC1_CR1bits.JAWDEN = 0;
  ADC1_CR1bits.AWDIE = 1;
  NVIC_IntEnable(IVT_INT_ADC);
@@ -99,11 +99,9 @@ void main()
 
  while(1)
  {
- if(~ GPIOE_ODR.B15 
- && sampleFlag
- && analogGo
- )
- {
+ if(~ GPIOE_ODR.B15  && sampleFlag && analogGo) {
+
+ analogGo = 0;
  sampleFlag = 0;
  MPV = getForce();
 
@@ -135,8 +133,7 @@ void main()
  UART_Write_Text("\n** PV stabilized at ");
  IntToStr(MPV, toStr);
  UART1_Write_Text(ToStr);
-#line 166 "C:/Users/mvara/Documents/GitHub/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
- UART1_Write_Text(ToStr);
+#line 166 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/main.c"
  moveFinger(60);
  NVIC_IntEnable(IVT_INT_TIM4);
  }
@@ -224,7 +221,7 @@ void Timer3_interrupt() iv IVT_INT_TIM3 {
  ADC1_HTR =  400 ;
  ADC1_LTR =  0 ;
  TIM3_DIER.UIE = 0;
- analogGo = ~analogGo;
+ analogGo = !analogGo;
 }
 
 

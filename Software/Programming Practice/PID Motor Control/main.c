@@ -7,7 +7,7 @@
     - PA7 is Flexiforce analog input.
 */
 
- #include <built_in.h>
+// #include <built_in.h>
 /* ------- DEFINE VARIABLES --------*/
 // Define variables 1 (mode = 0)
 #define high_level        400
@@ -75,14 +75,14 @@ void main()
    //PWM_TIM1_Set_Duty(30*(PWM_PERIOD/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);  // Set current duty for PWM_TIM1
 
    // set up ADC1
-   ADC_Set_Input_Channel(_ADC_CHANNEL_3 | _ADC_CHANNEL_7); // 3 for Flexi, 7 for EMG
+   ADC_Set_Input_Channel(_ADC_CHANNEL_3 | _ADC_CHANNEL_7); // 7 for Flexi, 3 for EMG
    ADC1_Init();
    
    // set up UART1
    UART1_Init(115200);
    delay_ms(100);
    UART_Write_Text("\r\nStarted. ");
-   
+
    // stuff for logs
    UART1_Write_Text("\nNotes:");
    UART1_Write_Text("\n- K = ");
@@ -110,8 +110,10 @@ void main()
     ADC1_LTR = low_level;
     ADC1_HTR = high_level;
     /* ------------ AWD Initialization ------------ */
+    /*=================================================PROBLEM AREA: AWD set to all channels, must be enabled on single channel and have that channel defined============*/
+    ADC1_CR1bits.AWDCH = 3;          // Set AWD channel to ADC1 Channel 3                         **Added by Matthew 11/23
     ADC1_CR1bits.AWDEN = 1;      // Enable Analog watchdog on regular channels (enabled)
-    ADC1_CR1bits.AWDSGL = 0;     // Enable the watchdog on a single channel in scan mode (disabled)
+    ADC1_CR1bits.AWDSGL = 1;     // Enable the watchdog on a single channel in scan mode      **Changed from 0 to 1 by Matthew 11/23
     ADC1_CR1bits.JAWDEN = 0;     // Analog watchdog enable on injected channels (disabled)
     ADC1_CR1bits.AWDIE = 1;      // Enable analog interrupt (enabled)
     NVIC_IntEnable(IVT_INT_ADC); // Enabling interrupt
@@ -122,11 +124,9 @@ void main()
    
    while(1)
    {
-      if(~motorEnable 
-          && sampleFlag
-          && analogGo
-      )
-      {
+      if(~motorEnable && sampleFlag && analogGo) {
+      
+               analogGo = 0;
                sampleFlag = 0;   // reset interrupt flag
                MPV = getForce();   // sample
 
@@ -250,7 +250,7 @@ void Timer3_interrupt() iv IVT_INT_TIM3 { // Interrupt handler if 6 s have past
      ADC1_HTR = high_level;               // Set high threshold to 400
      ADC1_LTR = low_level;                // Set low threshold to 0
      TIM3_DIER.UIE = 0;                   // Disable timer interrupt
-     analogGo = ~analogGo;
+     analogGo = !analogGo;
 }
 
 // MOTOR 1 HARDWARE INIT
