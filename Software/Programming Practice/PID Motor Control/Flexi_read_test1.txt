@@ -1,4 +1,7 @@
 
+created 11/14. this was where the normalization values came from for subsequent tests
+(force values 350-3700).
+
 Sampling every 100 ms. Analog values from Flexiforce (RAW, not averaged/converted) 
 range from about 350 to 3700 with a 1M resistor.
 
