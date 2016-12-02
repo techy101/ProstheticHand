@@ -1,0 +1,30 @@
+Timer List:
+
+Timer 1: 
+	Channel 1: Pointer PWM
+	Channel 2: Middle PWM 
+	Channel 3: Ring PWM 
+	Channel 4: Pinky PWM 
+	
+Timer 2: (Configured in 16-bit mode)
+	Channel 1: Thumb Encoder A
+	Channel 4: Thumb Artic Encoder A 
+	
+Timer 3: 
+	Channel 1: Pointer Encoder A 
+	Channel 2: Middle Encoder A
+	Channel 3: Ring Encoder A 
+	Channel 4: Pinky Encoder A 
+	
+Timer 4: 
+	Channel 1: Thumb PWM 
+	Channel 2: Thumb Artic PWM 
+	
+Timer 10: 
+	EMG trigger delay timer 
+	
+Timer 11: 
+	General purpose sampling timer 
+
+	
+	
