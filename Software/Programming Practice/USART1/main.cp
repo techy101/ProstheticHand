@@ -1,4 +1,4 @@
-#line 1 "C:/Users/SCSUS/Dropbox/Senior Design Team Folder/Software/Programming Practice/USART1/main.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/USART1/main.c"
 char uart2_rd;
 char uart1_rd;
 
@@ -16,8 +16,6 @@ char uart1_rd;
  UART2_Write(uart2_rd);
  }
 }
-
-
 
 
 void main() {
@@ -53,5 +51,5 @@ void main() {
  while (1) {
 
 
-}
+ }
 }

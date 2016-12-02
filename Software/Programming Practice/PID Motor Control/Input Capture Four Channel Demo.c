@@ -12,10 +12,12 @@
    * Pointer finger motor encoder
      * Encoder Channel A: A6
      * Encoder Channel B: D0
+     * PWM: E9
+     * Direction: E10
      
    * Middle finger motor encoder
      * Encoder Channel A: C7
-     * Encoder Challen B: D1
+     * Encoder Channel B: D1
      
    * Ring finger motor encoder
      * Encoder Channel A: B0
@@ -28,7 +30,8 @@
    * Thumb motor encoder
      * Encoder Channel A: A5
      * Encoder Channel B: D4
-     
+     * PWM: B6
+     * Direction: C12
 */
 
 
@@ -49,7 +52,7 @@ unsigned long MCU_FREQUENCY = 168000000;                                        
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int TERMINAL_PRINT_THRESH = 40;                                        // Number of polling events before a terminal print is executed
-
+unsigned int PWM_PERIOD;                                                        // Period in ticks from PWM_Timer1_init
 
 /**************  Global Variables  **************/
 long double timer2_period_ms;                                                   // TIM2_CLK calculated period in ms
@@ -60,13 +63,25 @@ unsigned long tim2_overflow_count;                                              
 unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
 
 
+ /****************** P control variables ********************/
+int setP = 60;            // setpoint - what PV should be
+int const MARGIN = 2;     // accuracy of PV - 2.5%
+float const K = 5.0;      // proportion constant for P control
+
+int MPV_position;                  // measured process variable
+int dutyCycle;                     // to go into motors
+
+char ToStr[15];                    // Handy
+
+
 /*************  Function Prototypes  ************/
 void timer2_ISR();                                                              // Interrupt handler for Timer 2
 void timer3_ISR();                                                              // Interrupt handler for Timer 3
 void init_GPIO();                                                               // Initialization of MCU I/O
 void init_UART();                                                               // Initialization of UART for terminal communication
+void motor_1_pwm_init();
 void init_input_capture();
-void init_timer4();                                                             // Initialization of timer 4 (Used for fixed polling rate)
+//void init_timer4();                                                             // Initialization of timer 4 (Used for fixed polling rate)
 void calc_finger_state(struct finger *fngr);                                    // Function to determine state of finger
 void print_finger_info(struct finger *fngr);                                    // Function to print finger state info to terminal
 void calc_timer_values(struct finger *fngr);                                    // Function to calculate motor speed, etc...
@@ -100,11 +115,10 @@ struct finger fngr_pinky;
 struct finger fngr_thumb;
 
 
-// Main Starts here 
+// ******************************* Main Starts here
 void main() {
         
-        // Initializations 
-        init_UART();                                                            // Configure and Initialize UART serial communications
+        // Initializations
         init_GPIO();                                                            // Configure MCU I/O
 
         // Define names of finger struct instances
@@ -114,37 +128,48 @@ void main() {
         strcpy(fngr_pinky.name, "Pinky");
         strcpy(fngr_thumb.name, "Thumb");
 
-        // Program start terminal verification 
+        // Begin Timers and input capture
+        //init_timer4();                                                          // Initialize timer 4, used for sampling
+        motor_1_pwm_init();                                                // Initialize PWM for thumb
+        init_input_capture();                                                   // Initialize input capture channels
+        
+        // Start motor
+        PWM_TIM4_Set_Duty(80*(PWM_PERIOD/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);          // PWM duty cycle to "current_duty" on Timer 1, channel 1
+        
+        // Program start terminal verification
+        init_UART();                                                            // Configure and Initialize UART serial communications
         UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
         delay_ms(500);
         
-        // Begin Timers and input capture
-        init_timer4();                                                          // Initialize timer 4, used for sampling
-        init_input_capture();                                                   // Initialize input capture channels
         
         // Infinite Loop
         while(1) {
-
-           if (poll_flag) {                                                     // Calculate finger state values (Set by timer 3)
-              poll_flag = 0;                                                    // Clear flag
+            Delay_ms(1000);                                                        // Print once per second
+           /*if (poll_flag) {                                                     // Calculate finger state values (Set by timer 3)
+              poll_flag = 0;*/                                                    // Clear flag
               calc_finger_state(&fngr_pointer);                                 // Call state calculation function for each finger
-              calc_finger_state(&fngr_middle);
+              /*calc_finger_state(&fngr_middle);
               calc_finger_state(&fngr_ring);
-              calc_finger_state(&fngr_pinky);
+              calc_finger_state(&fngr_pinky);*/
               calc_finger_state(&fngr_thumb);
-           }
+           //}
              
-           if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
+           //if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
 
               print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger
-              print_finger_info(&fngr_middle);
+              /*print_finger_info(&fngr_middle);
               print_finger_info(&fngr_ring);
-              print_finger_info(&fngr_pinky);
+              print_finger_info(&fngr_pinky);*/
               print_finger_info(&fngr_thumb);
               UART1_Write_Text("\n\n\n\n\n\n\n\r");
-           }
+           //}
+           
+
+             //...
+           
+           
         }
-} // Main ends here
+} // **************************** Main ends here
 
 
 
@@ -231,13 +256,13 @@ void timer3_ISR() iv IVT_INT_TIM3 {
 }                                                                
 
 
-// Interrupt handler for Timer 4 - Used to set sampling rate
+/*// Interrupt handler for Timer 4 - Used to set sampling rate
 void timer4_ISR() iv IVT_INT_TIM4 {
 
     TIM4_SR.UIF = 0;                                                            // Clear timer 4 interrupt flag
     poll_flag = 1;                                                              // Set poll flag for main loop
     terminal_print_count++;                                                     // Increment the debug print counter
-}
+}*/
 
 
 
@@ -249,6 +274,9 @@ void init_GPIO() {
     // Configure GPIO's for secondary motor encoder channels
     GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_0 | _GPIO_PINMASK_1 | _GPIO_PINMASK_2 | _GPIO_PINMASK_3 | _GPIO_PINMASK_4);
     GPIO_Digital_Output(&GPIOD_Base, _GPIO_PINMASK_5);                          // **DEBUG** For timing interrupt handler
+    // Configure Pointer and Thumb direction output pins: NEW
+    GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);
+    GPIO_Digital_Output(&GPIOC_BASE, _GPIO_PINMASK_12);
 }
 
 
@@ -260,6 +288,13 @@ void init_UART() {
     Delay_ms(200);                                                              // Wait for UART to stabilize
     UART_Write_Text("\rUART Init Complete\r\n");                                // *** DEBUG *** Print test statement to terminal
 }                                                        
+
+// Initialize thumb PWM channel
+void motor_1_pwm_init() {
+     PWM_PERIOD = PWM_TIM4_Init(10000);                               // Set PWM base frequency
+     PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          // PWM duty cycle to "current_duty" on Timer 1, channel 1
+     PWM_TIM4_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM4_CH1_PB6);       // Start PWM
+}
 
 
 // Initialize Input Capture for all fingers
@@ -338,9 +373,9 @@ void init_input_capture() {
 }
 
 
-
+// Using Timer 4 for PWM now
 // Initialize Timer 4 (Interrupts every 100ms to poll encoder state)
-void init_timer4() {
+/*void init_timer4() {
 
     RCC_APB1ENR.TIM4EN = 1;                                                     // Enable clock for timer 4
     TIM4_CR1.CEN = 0;                                                           // Disable timer/counter
@@ -349,7 +384,7 @@ void init_timer4() {
     NVIC_IntEnable(IVT_INT_TIM4);                                               // Enable timer 4 interrupt
     TIM4_DIER.UIE = 1;                                                          // Timer 4 update interrupt enable
     TIM4_CR1.CEN = 1;                                                           // Enable timer/counter
-}
+}*/
 
 
 
