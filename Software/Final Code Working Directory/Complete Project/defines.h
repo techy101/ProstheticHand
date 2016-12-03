@@ -1,161 +1,94 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-//Mapping new names to port/pins
+/*
+Prosthetic Hand Senior Design Project
+12/2/2016
+Matthew Varas
+Donnell Jones
+Rachel Mertz
+
+ * File name:
+    defines.h
+
+ * Description:
+    Creates human readable names for microcontroller pins and other values 	
+*/
+
+
+
+// MISC
+#define STR_MAX									15								// Maximum string size 
+#define UART_BAUD_RATE							115200							// UART baud rate 
+#define CONTRACT								1								// Finger direction contracting 
+#define EXTEND									0								// Finger direction extending 
 
 //EMG 
-#define PIN_EMG_OVERRIDE							GPIO*							//Input  - EMG Signal override button 
-#define PIN_EMG_ACTIVE_LED							GPIO*							//Output - Lit during EMG timer execution 
-#define CHANNEL_EMG_ADC								_ADC_CHANNEL_?					//Chan	 - ADC channel used for EMG 
-#define MASK_AWD_PORT_BASE							GPIO?_BASE 						//Mask   - Base port used for the AWD ADC pin 
-#define MASK_AWD_INPUT_PIN							_GPIO_PINMASK_?					//Mask   - Pin mask for AWD ADC pin 
-#define CHANNEL_ADC_EMG_SIGNAL						?								//Chan   - ADC channel number used for EMG signal input 
-
-
-//UART
-#define WIRED_UART_RX								GPIO*							//Input  - UART1 Recieve pin (Wired FTDI)
-#define WIRED_UARD_TX								GPIO*							//Output - UART1 Transmit pin (Wired FTDI)
-#define BLUETOOTH_UART_RX							GPIO*							//Input  - UART2 Recieve pin (Bluetooth)
-#define BLUETOOTH_UART_TX							GPIO*							//Output - UART2 Transmit pin (Bluetooth)
+#define EMG_OVERRIDE_BUTTON						GPIOD_IDR.B3					// Input  - B3  - EMG Signal override button 
+#define EMG_ACTIVE_LED							GPIOB_ODR.B9					// Output - B9  - Lit during EMG timer execution 
+#define CHANNEL_ADC_EMG							1								// Chan   - A1  - ADC1 channel 1 used for EMG 
 
 
 //General MCU I/O
-#define PIN_MOTOR_ENABLE							GPIO*							//Output - Enable signal for ALL non-MCU IC's 
-#define MASK_MOTOR_ENABLE_PIN						_GPIO_*							//Mask   - Mask value for motor enable pin 
-
+#define MOTOR_ENABLE							GPIOE_ODR.B0					// Output - B0  - Enable signal for ALL non-MCU IC's 
+#define BATT_CHG_MON							15								// Chan   - C5  - ADC1 channel 15 used for battery charge current monitor
 
 //User I/O 
-#define PIN_MODE_GRAB_BUTTON						GPIO*							//Input  - User button to enable Grab mode 
-#define PIN_MODE_GRAB_LED							GPIO*							//Output - LED to indicate hand is in Grab mode 
-#define PIN_MODE_PINCH_BUTTON						GPIO*							//Input  - User button to enable Pinch mode 
-#define PIN_MODE_PINCH_LED							GPIO*							//Output - LED to indicate hand is in Pinch mode 
-#define PIN_MODE_POINT_BUTTON						GPIO*							//Input  - User button to enable Point mode 
-#define PIN_MODE_POINT_LED							GPIO*							//Output - LED to indicate hand is in Point mode 
-#define PIN_MODE_SHAKE_BUTTON						GPIO*							//Input  - User button to enable Hand Shake mode 
-#define PIN_MODE_SHAKE_LED							GPIO*							//Output - LED to indicate hand is in Hand Shake mode 
-#define PIN_MASTER_RESET_BUTTON						GPIO*							//Input  - Wakeup pin????? 
-#define PIN_HAND_RUNNING_LED						GPIO*							//Output - Active whenever hand is actively moving 
-#define PIN_LOW_BATTERY_LED							GPIO*							//Output - Active whenever battery level is low      ??Maybe??
+#define GRAB_MODE_BUTTON						GPIOD_IDR.B11					// Input  - D11 - User button to enable Grab mode 
+#define GRAB_MODE_LED							GPIOD_ODR.B12					// Output - D12 - LED to indicate hand is in Grab mode 
+#define PINCH_MODE_BUTTON						GPIOD_IDR.B7					// Input  - D7  - User button to enable Pinch mode 
+#define PINCH_MODE_LED							GPIOD_ODR.B14					// Output - D14 - LED to indicate hand is in Pinch mode 
+#define POINT_MODE_BUTTON						GPIOD_IDR.B1					// Input  - D1  - User button to enable Point mode 
+#define POINT_MODE_LED							GPIOD_ODR.B15					// Output - D15 - LED to indicate hand is in Point mode 
+#define SHAKE_MODE_BUTTON						GPIOD_IDR.B2					// Input  - D2  - User button to enable Hand Shake mode 
+#define SHAKE_MODE_LED							GPIOA_ODR.B8					// Output - A8  - LED to indicate hand is in Hand Shake mode 
+#define WAKEUP_BUTTON							GPIOA_IDR.B0					// Input  - A0  - Wakeup button (May be user defined for future)
+#define HAND_RUNNING_LED						GPIOB_ODR.B8					// Output - B8  - Active whenever hand is actively moving 
+#define LOW_BATTERY_LED							GPIOB_ODR.B7					// Output - B7  - Active whenever battery level is low  
+#define USER_DEF_BUTTON							GPIOD_IDR.B4					// Input  - D4  - User defined button for future use 
+#define CHANNEL_ADC_FORCE_KNOB					6								// Chan   - A6  - ADC1 channel 6 used for force control knob 
 
 //****Fingers****
 //Pointer - Motor 3
-#define PIN_POINTER_DIRECTION						GPIO*							//Output - Direction pin for Pointer motor driver 
-#define PIN_POINTER_LIMIT							GPIO*							//Input  - Limit (home) switch for Pointer 
-#define PIN_POINTER_ISENSE							GPIO*							//Input  - Force sensing via motor current from Pointer motor driver 
-#define PIN_POINTER_TIP_FORCE						GPIO*							//Input  - Flexiforce sensor on tip of Pointer 
-#define PIN_POINTER_ENCODER_A						GPIO*							//Input  - Quadrature encoder channel A for Pointer motor 
-#define PIN_POINTER_ENCODER_B						GPIO*							//Input  - Quadrature encoder channel B for Pointer motor 
-#define MASK_POINTER_PORT_BASE						GPIO?_BASE						//Mask 	 - Base port address for pointer finger pins
-#define MASK_POINTER_DIR_PIN						_GPIO_PINMASK_??				//Mask	 - Pin Mask for pointer finger direction pin 
-#define CHANNEL_POINTER_PWM							_PWM_CHANNEL?					//Chan   - PWM Channel used for pointer finger 
-#define PIN_POINTER_PWM								_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for Pointer motor driver
-#define COUNTER_POINTER_POSITION					?????							//?????  - Address of the position counter for the pointer finger
-#define CHANNEL_ADC_POINTER_TIP_FORCE				?								//Chan	 - ADC channel number used for FlexiForce sensor on pointer finger
-#define CHANNEL_ADC_POINTER_ISENSE					?								//Chan   - ADC channel number used for current sense on pointer finger
+#define POINTER_DIRECTION						GPIOE_ODR.B10					// Output - E10 - Direction pin for Pointer motor driver 
+#define POINTER_LIMIT							GPIOE_IDR.B15					// Input  - E15 - Limit (home) switch for Pointer 
+#define POINTER_ENCODER_B						GPIOE_IDR.B12					// Input  - E12 - Quadrature encoder channel B for Pointer motor 
+#define POINTER_PWM								_PWM_CHANNEL1					// Chan   - E9  - TIM1 CH1 PWM Channel used for pointer finger 
+#define CHANNEL_ADC_POINTER_TIP_FORCE			7								// Chan	  - A7  - ADC1 channel 7 used for FlexiForce sensor on pointer finger
+#define CHANNEL_ADC_POINTER_ISENSE				4								// Chan   - A4  - ADC1 channel 4 used for current sense on pointer finger
 
 //Middle - Motor 4
-#define PIN_MIDDLE_DIRECTION						GPIO*							//Output - Direction pin for middle finger motor driver 
-#define PIN_MIDDLE_LIMIT							GPIO*							//Input  - Limit (home) switch for middle finger 
-#define PIN_MIDDLE_ISENSE							GPIO*							//Input  - Force sensing via motor current from middle finger motor driver 
-#define PIN_MIDDLE_TIP_FORCE						GPIO*							//Input  - Flexiforce sensor on tip of middle finger 
-#define PIN_MIDDLE_ENCODER_A						GPIO*							//Input  - Quadrature encoder channel A for middle finger motor 
-#define PIN_MIDDLE_ENCODER_B						GPIO*							//Input  - Quadrature encoder channel B for middle finger motor 
-#define MASK_MIDDLE_PORT_BASE						GPIO?_BASE						//Mask 	 - Base port address for middle finger pins
-#define MASK_MIDDLE_DIR_PIN							_GPIO_PINMASK_??				//Mask	 - Pin Mask for middle finger direction pin 
-#define CHANNEL_MIDDLE_PWM							_PWM_CHANNEL?					//Chan   - PWM Channel used for middle finger 
-#define PIN_MIDDLE_PWM								_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for middle finger motor driver
-#define COUNTER_MIDDLE_POSITION						?????							//?????  - Address of the position counter for the middle finger
-#define CHANNEL_ADC_MIDDLE_TIP_FORCE				?								//Chan	 - ADC channel number used for FlexiForce sensor on middle finger
-#define CHANNEL_ADC_MIDDLE_ISENSE					?								//Chan   - ADC channel number used for current sense on middle finger
+#define MIDDLE_DIRECTION						GPIOB_ODR.B10					// Output - B10 - Direction pin for MIDDLE motor driver 
+#define MIDDLE_LIMIT							GPIOB_IDR.B12					// Input  - B12 - Limit (home) switch for MIDDLE 
+#define MIDDLE_ENCODER_B						GPIOA_IDR.B11					// Input  - A11 - Quadrature encoder channel B for MIDDLE motor 
+#define MIDDLE_PWM								_PWM_CHANNEL2					// Chan   - E11 - TIM1 CH2 PWM Channel used for MIDDLE finger 
+#define CHANNEL_ADC_MIDDLE_TIP_FORCE			9								// Chan	  - B1  - ADC1 channel 9 used for FlexiForce sensor on middle finger
+#define CHANNEL_ADC_MIDDLE_ISENSE				8								// Chan   - B0  - ADC1 channel 8 used for current sense on middle finger
 
 
 //Ring - Motor 5
-#define PIN_RING_DIRECTION							GPIO*							//Output - Direction pin for ring finger motor driver 
-#define PIN_RING_LIMIT								GPIO*							//Input  - Limit (home) switch for ring finger 
-#define PIN_RING_ISENSE								GPIO*							//Input  - Force sensing via motor current from ring finger motor driver 
-#define PIN_RING_TIP_FORCE							GPIO*							//Input  - Flexiforce sensor on tip of ring finger 
-#define PIN_RING_ENCODER_A							GPIO*							//Input  - Quadrature encoder channel A for ring finger motor 
-#define PIN_RING_ENCODER_B							GPIO*							//Input  - Quadrature encoder channel B for ring finger motor 
-#define MASK_RING_PORT_BASE							GPIO?_BASE						//Mask 	 - Base port address for ring finger pins
-#define MASK_RING_DIR_PIN							_GPIO_PINMASK_??				//Mask	 - Pin Mask for ring finger direction pin 
-#define CHANNEL_RING_PWM							_PWM_CHANNEL?					//Chan   - PWM Channel used for ring finger 
-#define PIN_RING_PWM								_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for ring finger motor driver
-#define COUNTER_RING_POSITION						?????							//?????  - Address of the position counter for the ring finger 
-#define CHANNEL_ADC_RING_TIP_FORCE					?								//Chan	 - ADC channel number used for FlexiForce sensor on ring finger
-#define CHANNEL_ADC_RING_ISENSE						?								//Chan   - ADC channel number used for current sense on ring finger
+#define RING_DIRECTION							GPIOB_ODR.B13					// Output - B13 - Direction pin for RING motor driver 
+#define RING_LIMIT								GPIOB_IDR.B14					// Input  - B14 - Limit (home) switch for RING 
+#define RING_ENCODER_B							GPIOB_IDR.B15					// Input  - B15 - Quadrature encoder channel B for RING motor 
+#define RING_PWM								_PWM_CHANNEL3					// Chan   - E13 - TIM1 CH3 PWM Channel used for RING finger 
+#define CHANNEL_ADC_RING_TIP_FORCE				11								// Chan	  - C1  - ADC1 channel 11 used for FlexiForce sensor on ring finger
+#define CHANNEL_ADC_RING_ISENSE					10								// Chan   - C0  - ADC1 channel 10 Used for current sense on ring finger
 
 
 //Pinky - Motor 6
-#define PIN_PINKY_DIRECTION							GPIO*							//Output - Direction pin for pinky motor driver 
-#define PIN_PINKY_LIMIT								GPIO*							//Input  - Limit (home) switch for pinky  
-#define PIN_PINKY_ISENSE							GPIO*							//Input  - Force sensing via motor current from pinky motor driver 
-#define PIN_PINKY_TIP_FORCE							GPIO*							//Input  - Flexiforce sensor on tip of pinky  
-#define PIN_PINKY_ENCODER_A							GPIO*							//Input  - Quadrature encoder channel A for pinky motor 
-#define PIN_PINKY_ENCODER_B							GPIO*							//Input  - Quadrature encoder channel B for pinky motor 
-#define MASK_PINKY_PORT_BASE						GPIO?_BASE						//Mask 	 - Base port address for pinky pins
-#define MASK_PINKY_DIR_PIN							_GPIO_PINMASK_??				//Mask	 - Pin Mask for pinky direction pin 
-#define CHANNEL_PINKY_PWM							_PWM_CHANNEL?					//Chan   - PWM Channel used for pinky  
-#define PIN_PINKY_PWM								_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for pinky motor driver
-#define COUNTER_PINKY_POSITION						?????							//?????  - Address of the position counter for the pinky  
-#define CHANNEL_ADC_PINKY_TIP_FORCE					?								//Chan	 - ADC channel number used for FlexiForce sensor on pinky
-#define CHANNEL_ADC_PINKY_ISENSE					?								//Chan   - ADC channel number used for current sense on pinky
+#define PINKY_DIRECTION							GPIOD_ODR.B8 					// Output - D8  - Direction pin for PINKY motor driver 
+#define PINKY_LIMIT								GPIOD_IDR.B10					// Input  - D10 - Limit (home) switch for PINKY 
+#define PINKY_ENCODER_B							GPIOD_IDR.B9					// Input  - D9  - Quadrature encoder channel B for PINKY motor 
+#define PINKY_PWM								_PWM_CHANNEL4					// Chan   - E14 - TIM1 CH4 PWM Channel used for PINKY finger 
+#define CHANNEL_ADC_PINKY_TIP_FORCE				13								// Chan	  - C3  - ADC1 channel 13 used for FlexiForce sensor on pinky
+#define CHANNEL_ADC_PINKY_ISENSE				12								// Chan   - C2  - ADC1 channel 12 used for current sense on pinky
 
 
-//Thumb - Motor 1
-#define PIN_THUMB_DIRECTION							GPIO*							//Output - Direction pin for thumb motor driver 
-#define PIN_THUMB_LIMIT								GPIO*							//Input  - Limit (home) switch for thumb 
-#define PIN_THUMB_ISENSE							GPIO*							//Input  - Force sensing via motor current from thumb motor driver 
-#define PIN_THUMB_TIP_FORCE							GPIO*							//Input  - Flexiforce sensor on tip of thumb 
-#define PIN_THUMB_ENCODER_A							GPIO*							//Input  - Quadrature encoder channel A for thumb motor 
-#define PIN_THUMB_ENCODER_B							GPIO*							//Input  - Quadrature encoder channel B for thumb motor 
-#define MASK_THUMB_PORT_BASE						GPIO?_BASE						//Mask 	 - Base port address for thumb pins
-#define MASK_THUMB_DIR_PIN							_GPIO_PINMASK_??				//Mask	 - Pin Mask for thumb direction pin 
-#define CHANNEL_THUMB_PWM							_PWM_CHANNEL?					//Chan   - PWM Channel used for thumb 
-#define PIN_THUMB_PWM								_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for thumb motor driver
-#define COUNTER_THUMB_POSITION						?????							//?????  - Address of the position counter for the thumb 
-#define CHANNEL_ADC_THUMB_TIP_FORCE					?								//Chan	 - ADC channel number used for FlexiForce sensor on thumb
-#define CHANNEL_ADC_THUMB_ISENSE					?								//Chan   - ADC channel number used for current sense on thumb
-
-
-//Thumb Articulation - Motor 2       ******UNKNOWN AT THIS POINT*****
-#define PIN_THUMB_ARTIC_DIRECTION					GPIO*							//Output - Direction pin for thumb articulation motor driver 
-#define PIN_THUMB_ARTIC_LIMIT						GPIO*							//Input  - Limit (home) switch for thumb articulation
-#define PIN_THUMB_ARTIC_ISENSE						GPIO*							//Input  - Force sensing via motor current from thumb articulation motor driver 
-#define PIN_THUMB_ARTIC_TIP_FORCE					GPIO*							//Input  - Flexiforce sensor on tip of thumb articulation 
-#define PIN_THUMB_ARTIC_ENCODER_A					GPIO*							//Input  - Quadrature encoder channel A for thumb articulation motor 
-#define PIN_THUMB_ARTIC_ENCODER_B					GPIO*							//Input  - Quadrature encoder channel B for thumb articulation motor 
-#define MASK_THUMB_ARTIC_PORT_BASE					GPIO?_BASE						//Mask 	 - Base port address for thumb articulation pins
-#define MASK_THUMB_ARTIC_DIR_PIN					_GPIO_PINMASK_??				//Mask	 - Pin Mask for thumb articulation direction pin 
-#define CHANNEL_THUMB_ARTIC_PWM						_PWM_CHANNEL?					//Chan   - PWM Channel used for thumb articulation 
-#define PIN_THUMB_ARTIC_PWM							_GPIO_MODULE_TIM?_CH?_PE?		//Output - PWM pin for thumb articulation motor driver
-#define COUNTER_THUMB_ARTIC_POSITION				?????							//?????  - Address of the position counter for the thumb articulation
-#define CHANNEL_ADC_THUMB_ARTIC_TIP_FORCE			?								//Chan	 - ADC channel number used for FlexiForce sensor on thumb articulation
-#define CHANNEL_ADC_THUMB_ARTIC_ISENSE				?								//Chan   - ADC channel number used for current sense on thumb articulation
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Thumb - Motor 1	
+#define THUMB_DIRECTION							GPIOC_ODR.B12					// Output - C12 - Direction pin for THUMB motor driver 
+#define THUMB_LIMIT								GPIOE_IDR.B8					// Input  - E8  - Limit (home) switch for THUMB 
+#define THUMB_ENCODER_B							GPIOC_IDR.B11					// Input  - C11 - Quadrature encoder channel B for THUMB motor 
+#define THUMB_PWM								_PWM_CHANNEL1					// Chan   - B6  - TIM4 CH1 PWM Channel used for THUMB finger 
+#define CHANNEL_ADC_THUMB_TIP_FORCE				3								// Chan	  - A3  - ADC1 channel 3 used for FlexiForce sensor on thumb
+#define CHANNEL_ADC_THUMB_ISENSE				2								// Chan   - A2  - ADC1 channel 2 used for current sense on thumb
 

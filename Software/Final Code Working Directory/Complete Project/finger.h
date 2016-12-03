@@ -47,6 +47,21 @@ Donnell Jones
 */
 
 
+/************************  Constants  ************************/
+unsigned long MCU_FREQUENCY = 168000000;                                        // Microcontroller clock speed in Hz
+unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
+unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
+unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
+unsigned int SAMPLE_TIM_PSC = 279;                                             // Prescaler for sampling timer
+
+
+
+/**************  Global Variables  **************/
+long double encoder_timer_period_ms;                                            // Period in ms of timers used for motor encoder input capture
+unsigned int poll_flag;                                                         // Flag to enter main loop
+unsigned long tim2_overflow_count;                                              // Overflow counter for timer 2
+unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
+
 
 /************************  Finger Structure  ************************
 /																	/
@@ -58,11 +73,11 @@ Donnell Jones
 /																	/
 /*******************************************************************/
 
-extern struct finger {
+struct finger {
 	char name[STR_MAX];                                                     // Name of finger
 	long position_temp;                                                     // Number of input capture events since last sample. Used for finger position
 	long position_actual;                                                   // Calculated position of finger 
-	unsigned int direction;													// Desired direction of movement of finger 
+	unsigned int direction_desired;											// Desired direction of movement of finger 
 	unsigned int speed_desired;												// Desired speed of finger movement 
 	unsigned int position_desired;											// Desired destination position of finger 
 	unsigned int direction_actual;                                          // Actual direction of motor movement as read from encoder
@@ -83,12 +98,34 @@ extern struct finger {
 
 
 
+
 /************************  Finger Function Prototypes  ************************/
 void init_capture_timers();										// Configure Timers 2 and 3 for input capture 
 void activate_capture_timers();									// Arm timers 2 and 3 interrupts 
 void init_finger(struct finger *fngr);							// Initialize all hardware for the selected finger 
 void set_finger_speed(struct finger *fngr, int speed);			// Set speed of finger via PWM duty cycle 
-void set_finger_position(struct finger *fngr, int position);	// Set the desired destination position of finger 
-float get_tip_force(struct finger *fngr);						// Read the FlexiForce fingertip pressure
-float get_finger_force(struct finger *fngr);					// Read force on finger from motor current sense
+void sample_finger(struct finger *fngr);						// Sample all finger paramaters and write to struct members
+void debug_finger(struct finger *fngr);							// Print all finger state value to terminal 
+void timer2_ISR();                                              // Interrupt handler for Timer 2
+void timer3_ISR();                                              // Interrupt handler for Timer 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,3 +1,5 @@
+#include <finger.h>
+
 /*
 Prosthetic Hand Senior Design Project
 12/2/2016
@@ -14,8 +16,6 @@ Donnell Jones
 	
 */
 
-
-#include <finger.h>
 
 
 /***************  Input Capture Timer Initialization  ***************
@@ -113,13 +113,14 @@ void init_finger(struct finger *fngr) {
 		TIM3_DIER.CC1IE = 1;                                                        // Enable interrupt on capture channel 1
 			
 		// Configure encoder channel B 
-		GPIO_Digital_Input(&GPIOE_BASE, _GPIO_PINMASK_12);                          // Pointer motor encoder channel B
+		GPIO_Digital_Input(&GPIOE_BASE, _GPIO_PINMASK_12);                          // Pointer motor encoder channel B (E12)
 
 		// Configure Pointer finger PWM 
 
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
+		
 	}
 	
 	else if (strcmp(fngr->name, "fngr_middle") == 0) {
@@ -133,13 +134,14 @@ void init_finger(struct finger *fngr) {
 		TIM3_DIER.CC2IE = 1;                                                        // Enable interrupt on capture channel 2
 			
 		// Configure encoder channel B 
-		GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_11);                          // Middle motor encoder channel B
+		GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_11);                          // Middle motor encoder channel B (A11)
 
 		// Configure Pointer finger PWM 
 
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
+		
 	}
 
 	//Ring Finger
@@ -153,13 +155,14 @@ void init_finger(struct finger *fngr) {
 		TIM3_DIER.CC3IE = 1;                                                        // Enable interrupt on capture channel 3
 			
 		// Configure encoder channel B 
-		GPIO_Digital_Input(&GPIOB_BASE, _GPIO_PINMASK_15);                          // Ring motor encoder channel B
+		GPIO_Digital_Input(&GPIOB_BASE, _GPIO_PINMASK_15);                          // Ring motor encoder channel B (B15)
 
 		// Configure Pointer finger PWM 
 
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
+		
 	}
 
 	//Pinky 
@@ -174,13 +177,14 @@ void init_finger(struct finger *fngr) {
 		TIM3_DIER.CC4IE = 1;                                                        // Enable interrupt on capture channel 4
 			
 		// Configure encoder channel B 
-		GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_9);                           // Pinky motor encoder channel B
+		GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_9);                           // Pinky motor encoder channel B (D9)
 
 		// Configure Pointer finger PWM 
 
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
+		
 	}
 
 	//Thumb
@@ -195,13 +199,14 @@ void init_finger(struct finger *fngr) {
 		TIM2_DIER.CC1IE = 1;                                                        // Enable interrupt on capture channel 1
 			
 		// Configure encoder channel B 
-		GPIO_Digital_Input(&GPIOC_BASE, _GPIO_PINMASK_11);                          // Thumb motor encoder channel B
+		GPIO_Digital_Input(&GPIOC_BASE, _GPIO_PINMASK_11);                          // Thumb motor encoder channel B (C11)
 
 		// Configure Pointer finger PWM 
 
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
+		
 	}
 
 
@@ -266,145 +271,242 @@ void set_finger_speed(struct finger *fngr, int speed) {
 
 
 
-/*********************  Set Finger Position  *************************
+
+/********************  Sample Finger State  *************************
 /																	/
-/	Function Name: set_finger_position(struct, int)					/
+/	Function Name: sample_finger(struct) 							/
 /	Return Type: None		 										/
 /																	/
 /	Description: 													/
-/		This function sets the desired destination position of a 	/
-/		finger.														/
+/		This function samples all paramaters associated with a  	/
+/		finger instance. (Speed, position, direction, tip force, 	/
+/		motor torque)												/
 /																	/
 /	Preconditions: 													/
-/		Finger has been initialized 								/
+/		Finger has been instantiated 								/
 /		Finger instance has been passed in 							/
-/		Position value is valid										/
 /																	/
 /	Postconditions: 												/
-/		Finger will attempt to reach desired position 				/
+/		All paramaters have been stored to struct instance members	/
 /																	/
 /*******************************************************************/
-void set_finger_position(struct finger *fngr, int position) {
+void sample_finger(struct finger *fngr){
 	
-	if (strcmp(fngr->name, "fngr_pointer") == 0) {
-		//Do Position magic here
+	
+	if (strcmp(fngr->name, "fngr_pointer") == 0) {							// Get analog values for pointer finger 
+		fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_POINTER_TIP_FORCE);	//Sample pointer finger flexiforce 
+		fngr->motor_torque = ADC1_Get_Sample(CHANNEL_ADC_POINTER_ISENSE);	//Sample pointer finger motor torque 
+	}
+		
+	
+	else if (strcmp(fngr->name, "fngr_middle") == 0) {						// Get analog values for middle finger 
+		fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_MIDDLE_TIP_FORCE);	// Sample middle finger flexiforce 
+		fngr->motor_torque = ADC1_Get_Sample(CHANNEL_ADC_MIDDLE_ISENSE);	// Sample middle finger motor torque 
 	}
 	
-	else if (strcmp(fngr->name, "fngr_middle") == 0) {
-		//Do Position magic here
+	else if (strcmp(fngr->name, "fngr_ring") == 0) {						// Get analog values for ring finger 
+		fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_RING_TIP_FORCE);		// Sample ring finger flexiforce 
+		fngr->motor_torque = ADC1_Get_Sample(CHANNEL_ADC_RING_ISENSE);		// Sample ring finger motor torque 
 	}
 	
-	else if (strcmp(fngr->name, "fngr_ring") == 0) {
-		//Do Position magic here
+	else if (strcmp(fngr->name, "fngr_pinky") == 0) {						// Get analog values for pinky
+		fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_PINKY_TIP_FORCE);		// Sample pinky flexiforce 
+		fngr->motor_torque = ADC1_Get_Sample(CHANNEL_ADC_PINKY_ISENSE);		// Sample pinky motor torque 
 	}
 	
-	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
-		//Do Position magic here
+	else if (strcmp(fngr->name, "fngr_thumb") == 0) {						// Get analog values for thumb
+		fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_THUMB_TIP_FORCE);		// Sample thumb flexiforce 
+		fngr->motor_torque = ADC1_Get_Sample(CHANNEL_ADC_THUMB_ISENSE);		// Sample thumb motor torque 
 	}
 	
-	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-		//Do Position magic here
-	}
 	
-	fngr->position_desired_desired = position; 							// Store position to finger instance 
+	// Calculate position, direction, speed of motor 
+	// Calculate number of timer overflows between previous and current capture events 
+	fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
+	
+	// Calculate timer ticks for the number of overflows
+	fngr->enc_overflow_ticks = (unsigned long) fngr->enc_overflow_delta * (ENCODER_TIM_RELOAD - 3);
+	
+	// Calculate number of timer ticks (minus overflows) between previous and current capture events 
+	fngr->enc_delta_ticks = (unsigned long) fngr->enc_end_time - fngr->enc_start_time;
+	
+	// Calculate total timer ticks between previous and current capture events 
+	fngr->enc_total_ticks = (unsigned long) fngr->enc_overflow_ticks + fngr->enc_delta_ticks;
+	
+	// Calculate period of captured signal (ms)
+	fngr->input_sig_period = (long double) fngr->enc_total_ticks * encoder_timer_period_ms;
+	
+	// Calculate frequency of captured signal (Hz)
+	fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
+
+	// Check direction of motor movement and calculate position
+	if (fngr->enc_chan_b == 1) {                                                // Clockwise
+			fngr->direction_actual = 1;
+			fngr->position_actual += fngr->position_temp;                       // Calculate new position
+	}
+
+	else if (fngr->enc_chan_b == 0) {                                           // Counter Clockwise
+			fngr->direction_actual = 0;
+			fngr->position_actual -= fngr->position_temp;                       // Calculate new position
+	}
+
+	else {                                                                      // ERROR: Invalid direction state
+			fngr->direction_actual = 7;
+	}
+
+	fngr->position_temp = 0;													// Reset position counter
 }
 
 
 
-/***************  Read Current Flexiforce Value  ********************
+
+
+
+
+/**********************  Print Debug Values  ************************
 /																	/
-/	Function Name: get_tip_force(struct) 							/
-/	Return Type: float		 										/
+/	Function Name: debug_finger(struct)								/
+/	Return Type: None		 										/
 /																	/
 /	Description: 													/
-/		This function samples the ADC channel for the Flexiforce    /
-/		sensor on the given finger and returns the value 			/
+/		This function prints all current state values of the finger /
+/		to the terminal for debug 									/
 /																	/
-/	Preconditions: 													/
+/	Preconditions: 													/	***Needs to be adapted for new multi-UART print functions 
 /		Finger has been initialized 								/
 /		Finger instance has been passed in 							/
-/		Signal from Flexiforce sensor is valid						/
 /																	/
 /	Postconditions: 												/
-/		Current flexiforce pressure is returned 					/
+/		All state values have been printed to the terminal 			/
 /																	/
 /*******************************************************************/
-float get_tip_force(struct finger *fngr) {
-	float currentTipForce;
+void debug_finger(struct finger *fngr) {
 	
-	if (strcmp(fngr->name, "fngr_pointer") == 0) {
-		currentTipForce = ADC1_Get_Sample(POINTER_FORCE_SENSOR};	// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_middle") == 0) {
-		currentTipForce = ADC1_Get_Sample(MIDDLE_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_ring") == 0) {
-		currentTipForce = ADC1_Get_Sample(RING_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
-		currentTipForce = ADC1_Get_Sample(PINKY_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-		currentTipForce = ADC1_Get_Sample(THUMB_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	fngr->tip_force = currentTipForce;								// Set current force reading to finger instance 
+    //Local strings
+    char frequency_text[STR_MAX];
+    char position_text[STR_MAX];
+    char direction_text[STR_MAX];
+	char tip_force_text[STR_MAX];
+	char motor_torque_text[STR_MAX];
+    
+    UART1_Write_Text("\n\rFinger Name: ");                                      //Print name of current finger to terminal
+    UART1_Write_Text(fngr->name);
+    UART1_Write_Text("\n\r");
 
-	return currentTipForce;
+    LongWordToStr(fngr->input_sig_frequency, frequency_text);                   // Print input capture signal frequency to terminal
+    UART1_Write_Text("Finger speed (Hz): ");
+    UART1_Write_Text(frequency_text);
+    UART1_Write_Text("\n\r");                        
+
+    IntToStr(fngr->direction_actual, direction_text);                           // Print direction of movement to terminal
+    UART1_Write_Text("Direction of movement:             ");
+    UART1_Write_Text(direction_text);
+    UART1_Write_Text("\n\r");                        
+    
+    LongToStr(fngr->position_actual, position_text);                            // Print total number of input events (position) to terminal
+    UART1_Write_Text("Position of finger:                ");
+    UART1_Write_Text(position_text);
+    UART1_Write_Text("\n\r");
+	
+	FloatToStr(fngr->tip_force, tip_force_text);								// Print flexiforce value to terminal 
+	UART1_Write_Text("Fingertip Force: 					 ");
+	UART1_Write_Text(tip_force_text);
+	UART1_Write_Text("\n\r");
+	
+	FloatToStr(fngr->motor_torque, motor_torque_text);							// Print motor torque value to terminal 
+	UART1_Write_Text("Finger Motor Torque: 				 ");
+	UART1_Write_Text(motor_torque_text);
+	UART1_Write_Text("\n\n\n\r");
 }
 
 
 
 
 
-/**************  Read Current Isense Force Value  ******************
-/																	/
-/	Function Name: get_finger_force(struct) 						/
-/	Return Type: float		 										/
+
+/**************  Finger Encoder Interrupt Handlers  *****************
 /																	/
 /	Description: 													/
-/		This function samples the ADC channel for a the current     /
-/		sensor on the motor driver IC. This corresponds to the 		/
-/		torque applied to the motor 								/
+/		These ISR's handle all encoder input capture and overflow	/
+/		events for timers 2 and 3. These are capture channels for 	/
+/		motor encoder channel A on all fingers 						/
 /																	/
 /	Preconditions: 													/
-/		Finger has been initialized 								/
-/		Finger instance has been passed in 							/
-/		Signal from Isense resistor is valid						/
-/																	/
-/	Postconditions: 												/
-/		Current Isense force value is returned 						/
+/		Timers 2 and 3 have been initialized 						/
+/		Input capture channels have been configured 				/
 /																	/
 /*******************************************************************/
-float get_finger_force(struct fingerName) {
-	float currentFingerForce;
-	
-	
-	if (strcmp(fngr->name, "fngr_pointer") == 0) {
-		currentFingerForce = ADC1_Get_Sample(POINTER_FORCE_SENSOR};		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_middle") == 0) {
-		currentFingerForce = ADC1_Get_Sample(MIDDLE_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_ring") == 0) {
-		currentFingerForce = ADC1_Get_Sample(RING_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
-		currentFingerForce = ADC1_Get_Sample(PINKY_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-		currentFingerForce = ADC1_Get_Sample(THUMB_FORCE_SENSOR);		// Sample ADC channel ??
-	}
-	
-	fngr->motor_torque = currentFingerForce;							// Set current torque reading to finger instance 
+// Interrupt handler for Timer 2 (Handles thumb overflows AND Capture events)
+void timer2_ISR() iv IVT_INT_TIM2 {
 
-	return currentFingerForce;
+     /* Timer 2 Overflow Events */
+    if(TIM2_SR.UIF == 1) {                                                     
+        TIM2_SR.UIF = 0;                                                        // Clear timer 2 interrupt bit
+        tim2_overflow_count++;                                                  // Increment timer 2 overflow counter
+    }
+
+    /* Input Capture Events */
+    // Timer 2, Channel 1 (Pin A5) Thumb input capture event
+    if (TIM2_SR.CC1IF == 1) {    
+        fngr_thumb.enc_start_time = fngr_thumb.enc_end_time;                    // Store previous captured value for next calculation
+        fngr_thumb.enc_end_time = TIM2_CCR1;                                    // Read stored input capture time
+        fngr_thumb.enc_overflow_start = fngr_thumb.enc_overflow_end;            // Store previous overflow value for next calculation
+        fngr_thumb.enc_overflow_end = tim2_overflow_count;                      // Store number of timer 2 overflows for thumb
+        fngr_thumb.enc_chan_b = THUMB_ENCODER_B;                                // Sample the second encoder channel (For direction)
+        fngr_thumb.position_temp++;                                             // Increment total input capture event counter
+    }
 }
+
+
+// Interrupt handler for Timer 3 (Handles Pointer, Middle, Ring, Pinky overflows AND Capture events)
+void timer3_ISR() iv IVT_INT_TIM3 {
+
+    /* Timer 3 Overflow Events */
+    if(TIM3_SR.UIF == 1) {
+        TIM3_SR.UIF = 0;                                                        // Clear timer 3 interrupt bit
+        tim3_overflow_count++;                                                  // Increment timer 3 overflow counter
+    }
+
+    // Timer 3, Channel 1 (Pin C6) Pointer finger input capture event
+    if (TIM3_SR.CC1IF == 1) {
+        fngr_pointer.enc_start_time = fngr_pointer.enc_end_time;                // Store previous captured value for next calculation
+        fngr_pointer.enc_end_time = TIM3_CCR1;                                  // Read stored input capture time
+        fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;        // Store previous overflow value for next calculation
+        fngr_pointer.enc_overflow_end = tim3_overflow_count;                    // Store number of timer 3 overflows for Pointer finger
+        fngr_pointer.enc_chan_b = POINTER_ENCODER_B;                            // Sample the second encoder channel state (For direction)
+        fngr_pointer.position_temp++;                                           // Increment total input capture event counter
+    }
+
+
+    // Timer 3, Channel 2 (Pin C7) Middle finger input capture event
+    if (TIM3_SR.CC2IF == 1) {
+        fngr_middle.enc_start_time = fngr_middle.enc_end_time;                  // Store previous captured value for next calculation
+        fngr_middle.enc_end_time = TIM3_CCR2;                                   // Read stored input capture time
+        fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;          // Store previous overflow value for next calculation
+        fngr_middle.enc_overflow_end = tim3_overflow_count;                     // Store number of timer 3 overflows for Middle finger
+        fngr_middle.enc_chan_b = MIDDLE_ENCODER_B;                              // Sample the second encoder channel state (For direction)
+        fngr_middle.position_temp++;                                            // Increment total input capture event counter
+    }
+
+    // Timer 3, Channel 3 (Pin C8) Ring finger input capture event
+    if (TIM3_SR.CC3IF == 1) {
+        fngr_ring.enc_start_time = fngr_ring.enc_end_time;                      // Store previous captured value for next calculation
+        fngr_ring.enc_end_time = TIM3_CCR3;                                     // Read stored input capture time
+        fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;              // Store previous overflow value for next calculation
+        fngr_ring.enc_overflow_end = tim3_overflow_count;                       // Store number of timer 3 overflows for Ring finger
+        fngr_ring.enc_chan_b = RING_ENCODER_B;                                  // Sample the second encoder channel state (For direction)
+        fngr_ring.position_temp++;                                              // Increment total input capture event counter
+    }
+
+    // Timer 3, Channel 4 (Pin C9) Pinky input capture event
+    if (TIM3_SR.CC4IF == 1) {
+        fngr_pinky.enc_start_time = fngr_pinky.enc_end_time;                    // Store previous captured value for next calculation
+        fngr_pinky.enc_end_time = TIM3_CCR4;                                    // Read stored input capture time
+        fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;            // Store previous overflow value for next calculation
+        fngr_pinky.enc_overflow_end = tim3_overflow_count;                      // Store number of timer 3 overflows for Pinky
+        fngr_pinky.enc_chan_b = PINKY_ENCODER_B;                                // Sample the second encoder channel state (For direction)
+        fngr_pinky.position_temp++;                                             // Increment total input capture event counter
+    }
+}                                                                
+
+
