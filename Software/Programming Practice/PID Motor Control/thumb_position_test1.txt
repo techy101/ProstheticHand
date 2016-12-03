@@ -1,0 +1,578 @@
+
+
+** This test runs THUMB FROM fully extended position TO fully contracted position twice and back,
+	given the current setup (single-jointed thumb).
+** Even though values are printing for the structure named "Pointer", the motor was running the thumb appendage for this test.
+** "Frequency of incoming signal" is frequency of encoder signals (3 rising edges per 1 rotation of encoder wheel).
+** Values print every 1000 ms via a delay in the main loop.
+
+
+UART Init Complete
+
+
+Program Has Started!
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz): 4294967295		** motors not running -> no encoder signals
+Direction of movement:             CONTRACT 
+Position of finger:                          1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz): 4294967295
+Direction of movement:             CONTRACT 
+Position of finger:                          1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz): 4294967295
+Direction of movement:             CONTRACT 
+Position of finger:                          1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz): 4294967295
+Direction of movement:             CONTRACT 
+Position of finger:                          1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         89
+Direction of movement:             CONTRACT 
+Position of finger:                        207
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        874
+Direction of movement:             EXTEND 
+Position of finger:                       -452
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        811
+Direction of movement:             EXTEND 
+Position of finger:                      -1330
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        868
+Direction of movement:             EXTEND 
+Position of finger:                      -2189
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        105
+Direction of movement:             EXTEND 
+Position of finger:                      -2985
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        717
+Direction of movement:             EXTEND 
+Position of finger:                      -3367
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        108
+Direction of movement:             EXTEND 
+Position of finger:                      -3642
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        108
+Direction of movement:             EXTEND 
+Position of finger:                      -3642
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        108
+Direction of movement:             EXTEND 
+Position of finger:                      -3642
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        108
+Direction of movement:             EXTEND 
+Position of finger:                      -3642
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        954
+Direction of movement:             CONTRACT 
+Position of finger:                      -3313
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        953
+Direction of movement:             CONTRACT 
+Position of finger:                      -2691
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        959
+Direction of movement:             CONTRACT 
+Position of finger:                      -1950
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        978
+Direction of movement:             CONTRACT 
+Position of finger:                       -980
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        933
+Direction of movement:             CONTRACT 
+Position of finger:                       -375
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         87
+Direction of movement:             CONTRACT 
+Position of finger:                        238
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         87
+Direction of movement:             CONTRACT 
+Position of finger:                        238
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         87
+Direction of movement:             CONTRACT 
+Position of finger:                        238
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):         87
+Direction of movement:             CONTRACT 
+Position of finger:                        238
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        878
+Direction of movement:             EXTEND 
+Position of finger:                       -427
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        813
+Direction of movement:             EXTEND 
+Position of finger:                      -1314
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        886
+Direction of movement:             EXTEND 
+Position of finger:                      -2160
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        875
+Direction of movement:             EXTEND 
+Position of finger:                      -2848
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        873
+Direction of movement:             EXTEND 
+Position of finger:                      -3518
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+Frequency of incoming signal (Hz):        145
+Direction of movement:             EXTEND 
+Position of finger:                      -3891
+
+
+
+
+
+
+
+
+

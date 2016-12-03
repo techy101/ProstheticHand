@@ -1,14 +1,15 @@
-#line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
-#line 60 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Input Capture Code/Input Capture Complete 5ch.c"
+#line 55 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Input Capture Code/Input Capture Complete 5ch.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
+unsigned int SAMPLE_TIM_RELOAD = 59999;
+unsigned int SAMPLE_TIM_PSC = 279;
 unsigned int TERMINAL_PRINT_THRESH = 40;
-unsigned int PWM_PERIOD;
 
 
-long double timer2_period_ms;
-long double timer3_period_ms;
+
+long double encoder_timer_period_ms;
 unsigned int poll_flag;
 unsigned int terminal_print_count;
 unsigned long tim2_overflow_count;
@@ -16,24 +17,12 @@ unsigned long tim3_overflow_count;
 
 
 
-int setP = 60;
-int const MARGIN = 2;
-float const K = 5.0;
-
-int MPV_position;
-int dutyCycle;
-
-char ToStr[15];
-
-
-
 void timer2_ISR();
 void timer3_ISR();
 void init_GPIO();
 void init_UART();
-void motor_1_pwm_init();
 void init_input_capture();
-
+void init_timer11();
 void calc_finger_state(struct finger *fngr);
 void print_finger_info(struct finger *fngr);
 void calc_timer_values(struct finger *fngr);
@@ -71,6 +60,7 @@ struct finger fngr_thumb;
 void main() {
 
 
+ init_UART();
  init_GPIO();
 
 
@@ -81,34 +71,34 @@ void main() {
  strcpy(fngr_thumb.name, "Thumb");
 
 
-
- motor_1_pwm_init();
- init_input_capture();
-
-
- PWM_TIM4_Set_Duty(80*(PWM_PERIOD/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);
-
-
- init_UART();
  UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
  delay_ms(500);
 
 
+ init_timer11();
+ init_input_capture();
+
 
  while(1) {
- Delay_ms(1000);
-#line 159 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+
+ if (poll_flag) {
+ poll_flag = 0;
  calc_finger_state(&fngr_pointer);
-#line 168 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+ calc_finger_state(&fngr_middle);
+ calc_finger_state(&fngr_ring);
+ calc_finger_state(&fngr_pinky);
+ calc_finger_state(&fngr_thumb);
+ }
+
+ if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
+
  print_finger_info(&fngr_pointer);
-#line 173 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+ print_finger_info(&fngr_middle);
+ print_finger_info(&fngr_ring);
+ print_finger_info(&fngr_pinky);
+ print_finger_info(&fngr_thumb);
  UART1_Write_Text("\n\n\n\n\n\n\n\r");
-
-
-
-
-
-
+ }
  }
 }
 
@@ -135,7 +125,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  fngr_thumb.enc_end_time = TIM2_CCR1;
  fngr_thumb.enc_overflow_start = fngr_thumb.enc_overflow_end;
  fngr_thumb.enc_overflow_end = tim2_overflow_count;
- fngr_thumb.enc_chan_b =  GPIOD_IDR.B4 ;
+ fngr_thumb.enc_chan_b =  GPIOC_IDR.B11 ;
  fngr_thumb.position_temp++;
  }
 }
@@ -143,8 +133,6 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 
 
 void timer3_ISR() iv IVT_INT_TIM3 {
-
- GPIOD_ODR.B5 = 1;
 
 
  if(TIM3_SR.UIF == 1) {
@@ -158,7 +146,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
  fngr_pointer.enc_end_time = TIM3_CCR1;
  fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;
  fngr_pointer.enc_overflow_end = tim3_overflow_count;
- fngr_pointer.enc_chan_b =  GPIOD_IDR.B0 ;
+ fngr_pointer.enc_chan_b =  GPIOE_IDR.B12 ;
  fngr_pointer.position_temp++;
  }
 
@@ -169,7 +157,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
  fngr_middle.enc_end_time = TIM3_CCR2;
  fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;
  fngr_middle.enc_overflow_end = tim3_overflow_count;
- fngr_middle.enc_chan_b =  GPIOD_IDR.B1 ;
+ fngr_middle.enc_chan_b =  GPIOA_IDR.B11 ;
  fngr_middle.position_temp++;
  }
 
@@ -179,7 +167,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
  fngr_ring.enc_end_time = TIM3_CCR3;
  fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;
  fngr_ring.enc_overflow_end = tim3_overflow_count;
- fngr_ring.enc_chan_b =  GPIOD_IDR.B2 ;
+ fngr_ring.enc_chan_b =  GPIOB_IDR.B15 ;
  fngr_ring.position_temp++;
  }
 
@@ -189,21 +177,33 @@ void timer3_ISR() iv IVT_INT_TIM3 {
  fngr_pinky.enc_end_time = TIM3_CCR4;
  fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;
  fngr_pinky.enc_overflow_end = tim3_overflow_count;
- fngr_pinky.enc_chan_b =  GPIOD_IDR.B3 ;
+ fngr_pinky.enc_chan_b =  GPIOD_IDR.B9 ;
  fngr_pinky.position_temp++;
  }
-
- GPIOD_ODR.B5 = 0;
 }
-#line 281 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+
+
+
+void timer11_ISR() iv IVT_INT_TIM1_TRG_COM_TIM11 {
+
+ TIM11_SR.UIF = 0;
+ poll_flag = 1;
+ terminal_print_count++;
+}
+
+
+
+
+
+
 void init_GPIO() {
 
 
- GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_0 | _GPIO_PINMASK_1 | _GPIO_PINMASK_2 | _GPIO_PINMASK_3 | _GPIO_PINMASK_4);
- GPIO_Digital_Output(&GPIOD_Base, _GPIO_PINMASK_5);
-
- GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);
- GPIO_Digital_Output(&GPIOC_BASE, _GPIO_PINMASK_12);
+ GPIO_Digital_Input(&GPIOE_BASE, _GPIO_PINMASK_12);
+ GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_11);
+ GPIO_Digital_Input(&GPIOB_BASE, _GPIO_PINMASK_15);
+ GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_9);
+ GPIO_Digital_Input(&GPIOC_BASE, _GPIO_PINMASK_11);
 }
 
 
@@ -214,13 +214,6 @@ void init_UART() {
  UART1_Init( 115200 );
  Delay_ms(200);
  UART_Write_Text("\rUART Init Complete\r\n");
-}
-
-
-void motor_1_pwm_init() {
- PWM_PERIOD = PWM_TIM4_Init(10000);
- PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);
- PWM_TIM4_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM4_CH1_PB6);
 }
 
 
@@ -237,7 +230,7 @@ void init_input_capture() {
  TIM3_CR1 |= 0;
 
 
- GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH1_PA6);
+ GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH1_PC6);
  TIM3_CCMR1_Input |= 0x01;
  TIM3_CCER.CC1P = 0;
  TIM3_CCER.CC1NP = 0;
@@ -253,7 +246,7 @@ void init_input_capture() {
  TIM3_DIER.CC2IE = 1;
 
 
- GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH3_PB0);
+ GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH3_PC8);
  TIM3_CCMR2_Input |= 0x01;
  TIM3_CCER.CC3P = 0;
  TIM3_CCER.CC3NP = 0;
@@ -261,7 +254,7 @@ void init_input_capture() {
  TIM3_DIER.CC3IE = 1;
 
 
- GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH4_PB1);
+ GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH4_PC9);
  TIM3_CCMR2_Input |= 0x100;
  TIM3_CCER.CC3P = 0;
  TIM3_CCER.CC3NP = 0;
@@ -296,9 +289,28 @@ void init_input_capture() {
 
 
 
- timer3_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));
+ encoder_timer_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));
 }
-#line 403 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/PID Motor Control/Input Capture Four Channel Demo.c"
+
+
+
+
+void init_timer11() {
+
+ RCC_APB2ENR.TIM11EN = 1;
+ TIM11_CR1.CEN = 0;
+ TIM11_PSC = SAMPLE_TIM_PSC;
+ TIM11_ARR = SAMPLE_TIM_RELOAD;
+ NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);
+ TIM11_DIER.UIE = 1;
+ TIM11_CR1.CEN = 1;
+}
+
+
+
+
+
+
 void calc_finger_state( struct finger *fngr) {
 
 
@@ -314,19 +326,19 @@ void calc_finger_state( struct finger *fngr) {
  fngr->enc_total_ticks = (unsigned long) fngr->enc_overflow_ticks + fngr->enc_delta_ticks;
 
 
- fngr->input_sig_period = (long double) fngr->enc_total_ticks * timer3_period_ms;
+ fngr->input_sig_period = (long double) fngr->enc_total_ticks * encoder_timer_period_ms;
 
 
  fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
 
 
  if (fngr->enc_chan_b == 1) {
- fngr->direction_actual =  1 ;
+ fngr->direction_actual = 1;
  fngr->position_actual += fngr->position_temp;
  }
 
  else if (fngr->enc_chan_b == 0) {
- fngr->direction_actual =  0 ;
+ fngr->direction_actual = 0;
  fngr->position_actual -= fngr->position_temp;
  }
 
@@ -356,13 +368,9 @@ void print_finger_info( struct finger *fngr) {
  UART1_Write_Text(frequency_text);
  UART1_Write_Text("\n\r");
 
-
+ IntToStr(fngr->direction_actual, direction_text);
  UART1_Write_Text("Direction of movement:             ");
- if(fngr->direction_actual ==  1 )
- UART1_Write_Text("EXTEND ");
- else if(fngr->direction_actual ==  0 )
- UART1_Write_Text("CONTRACT ");
-
+ UART1_Write_Text(direction_text);
  UART1_Write_Text("\n\r");
 
  LongToStr(fngr->position_actual, position_text);

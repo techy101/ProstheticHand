@@ -1,5 +1,5 @@
 #line 1 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
-#line 40 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
+#line 48 "C:/HandGitRepo/ProstheticHand/Software/Programming Practice/Input Capture Full Demo/Input Capture Four Channel Demo.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
@@ -11,7 +11,6 @@ long double timer2_period_ms;
 long double timer3_period_ms;
 unsigned int poll_flag;
 unsigned int terminal_print_count;
-unsigned long overflow_count;
 unsigned long tim2_overflow_count;
 unsigned long tim3_overflow_count;
 
@@ -119,6 +118,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
  }
 
 
+
  if (TIM2_SR.CC1IF == 1) {
  fngr_thumb.enc_start_time = fngr_thumb.enc_end_time;
  fngr_thumb.enc_end_time = TIM2_CCR1;
@@ -134,6 +134,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
 void timer3_ISR() iv IVT_INT_TIM3 {
 
  GPIOD_ODR.B5 = 1;
+
 
  if(TIM3_SR.UIF == 1) {
  TIM3_SR.UIF = 0;
@@ -221,7 +222,6 @@ void init_input_capture() {
 
 
 
-
  RCC_APB1ENR.TIM3EN = 1;
  TIM3_CR1.CEN = 0;
  TIM3_CR2.TI1S = 0;
@@ -286,6 +286,7 @@ void init_input_capture() {
  NVIC_IntEnable(IVT_INT_TIM2);
  TIM3_CR1.CEN = 1;
  TIM2_CR1.CEN = 1;
+
 
 
  timer3_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));

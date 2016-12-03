@@ -2,12 +2,13 @@
 diagnostics: 0	122	Compilation Started	Input Capture Four Channel Demo.c
 hint: 0	1004	interrupt handler (timer2_ISR at 0x002C)	Input Capture Four Channel Demo.c
 hint: 0	1004	interrupt handler (timer3_ISR at 0x002D)	Input Capture Four Channel Demo.c
-diagnostics: 442	123	Compiled Successfully	Input Capture Four Channel Demo.c
-diagnostics: 0	127	All files Compiled in 172 ms	 
+hint: 449	1163	Variable 'direction_text' has been declared, but not used	Input Capture Four Channel Demo.c
+diagnostics: 475	123	Compiled Successfully	Input Capture Four Channel Demo.c
+diagnostics: 0	127	All files Compiled in 187 ms	 
 hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
-hint: 0	1144	Static RAM (bytes): 657   Dynamic RAM (bytes): 130409	Static RAM (bytes): 657   Dynamic RAM (bytes): 130409
-hint: 0	1144	Used ROM (bytes): 9015 (1%)  Free ROM (bytes): 1039561 (99%)	Used ROM (bytes): 9015 (1%)  Free ROM (bytes): 1039561 (99%)
+hint: 0	1144	Static RAM (bytes): 675   Dynamic RAM (bytes): 130393	Static RAM (bytes): 675   Dynamic RAM (bytes): 130393
+hint: 0	1144	Used ROM (bytes): 8843 (1%)  Free ROM (bytes): 1039733 (99%)	Used ROM (bytes): 8843 (1%)  Free ROM (bytes): 1039733 (99%)
 diagnostics: 0	125	Project Linked Successfully	position_P_control.mcpar
-diagnostics: 0	128	Linked in 1094 ms	 
-diagnostics: 0	129	Project 'position_P_control.mcpar' completed: 1735 ms	 
-diagnostics: 0	103	Finished successfully: 02 Dec 2016, 11:05:35	position_P_control.mcpar
+diagnostics: 0	128	Linked in 1125 ms	 
+diagnostics: 0	129	Project 'position_P_control.mcpar' completed: 1796 ms	 
+diagnostics: 0	103	Finished successfully: 02 Dec 2016, 16:37:03	position_P_control.mcpar
