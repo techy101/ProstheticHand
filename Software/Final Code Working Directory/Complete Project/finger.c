@@ -115,8 +115,10 @@ void init_finger(struct finger *fngr) {
 		// Configure encoder channel B 
 		GPIO_Digital_Input(&GPIOE_BASE, _GPIO_PINMASK_12);                          // Pointer motor encoder channel B (E12)
 
-		// Configure Pointer finger PWM 
-
+		// Configure Pointer finger PWM (Pin E9)
+		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          			// PWM duty cycle to 0 on Timer 1, channel 1
+		
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
@@ -136,8 +138,10 @@ void init_finger(struct finger *fngr) {
 		// Configure encoder channel B 
 		GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_11);                          // Middle motor encoder channel B (A11)
 
-		// Configure Pointer finger PWM 
-
+		// Configure Middle finger PWM (Pin E11)
+		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL2);          			// PWM duty cycle to 0 on Timer 1, channel 2
+		
 		// Configure flexiforce sensor 
 		
 		//Configure motor driver current sensor 
@@ -157,7 +161,9 @@ void init_finger(struct finger *fngr) {
 		// Configure encoder channel B 
 		GPIO_Digital_Input(&GPIOB_BASE, _GPIO_PINMASK_15);                          // Ring motor encoder channel B (B15)
 
-		// Configure Pointer finger PWM 
+		// Configure Ring finger PWM (Pin E13)
+		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL3);          			// PWM duty cycle to 0 on Timer 1, channel 3
 
 		// Configure flexiforce sensor 
 		
@@ -179,7 +185,9 @@ void init_finger(struct finger *fngr) {
 		// Configure encoder channel B 
 		GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_9);                           // Pinky motor encoder channel B (D9)
 
-		// Configure Pointer finger PWM 
+		// Configure Pinky finger PWM (Pin E14)
+		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL4);          			// PWM duty cycle to 0 on Timer 1, channel 4
 
 		// Configure flexiforce sensor 
 		
@@ -201,7 +209,9 @@ void init_finger(struct finger *fngr) {
 		// Configure encoder channel B 
 		GPIO_Digital_Input(&GPIOC_BASE, _GPIO_PINMASK_11);                          // Thumb motor encoder channel B (C11)
 
-		// Configure Pointer finger PWM 
+		// Configure Thumb PWM (Pin B6) 
+		pwm_period = PWM_TIM4_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
+		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          			// PWM duty cycle to 0 on Timer 4, channel 1
 
 		// Configure flexiforce sensor 
 		
@@ -211,7 +221,7 @@ void init_finger(struct finger *fngr) {
 
 
 	//Set Initial States
-	fngr->direction = contract;				// Set initial direction of finger movement to contracting 
+	fngr->direction = CONTRACT;				// Set initial direction of finger movement to contracting 
 	fngr->speed_desired = 0;				// Set initial speed of finger movement to stopped 
 	fngr->position_desired = 0;				// Set initial desired position to home (0)
 	
@@ -243,25 +253,38 @@ void init_finger(struct finger *fngr) {
 /*******************************************************************/
 void set_finger_speed(struct finger *fngr, int speed) {
 	
+	unsigned int duty_cycle;
+		
+	// convert speed to duty cycle: integer 20-100
 	
 	if (strcmp(fngr->name, "fngr_pointer") == 0) {
-		//Do PWM magic here
+		//Do PWM magic here:		
+		// Convert duty cycle to timer ticks and set it 
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);		
 	}
 	
 	else if (strcmp(fngr->name, "fngr_middle") == 0) {
-		//Do PWM magic here
+		//Do PWM magic here:		
+		// Convert duty cycle to timer ticks and set it 
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL2);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_ring") == 0) {
-		//Do PWM magic here
+		//Do PWM magic here:
+		// Convert duty cycle to timer ticks and set it 
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL3);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
-		//Do PWM magic here
+		//Do PWM magic here:
+		// Convert duty cycle to timer ticks and set it 
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL4);
 	}
 	
 	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-		//Do PWM magic here
+		//Do PWM magic here:
+		// Convert duty cycle to timer ticks and set it 
+		PWM_TIM4_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);
 	}
 	
 	fngr->speed_desired = speed; 									// Store speed to finger instance 

@@ -52,8 +52,10 @@ unsigned long MCU_FREQUENCY = 168000000;                                        
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
-unsigned int SAMPLE_TIM_PSC = 279;                                             // Prescaler for sampling timer
-
+unsigned int SAMPLE_TIM_PSC = 279;                                             	// Prescaler for sampling timer
+unsigned long PWM_FREQ_HZ = 100;												// PWM base frequency
+int EXTEND = 1;																	// TODO these may not be the right directions
+int CONTRACT = 0;
 
 
 /**************  Global Variables  **************/
@@ -61,6 +63,7 @@ long double encoder_timer_period_ms;                                            
 unsigned int poll_flag;                                                         // Flag to enter main loop
 unsigned long tim2_overflow_count;                                              // Overflow counter for timer 2
 unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
+unsigned int pwm_period;														// Base timer period of PWM - needed for duty cycle calculations
 
 
 /************************  Finger Structure  ************************
