@@ -24,13 +24,13 @@ Rachel Mertz
 #define EXTEND									0								// Finger direction extending 
 
 //EMG 
-#define EMG_OVERRIDE_BUTTON						GPIOD_IDR.B3					// Input  - B3  - EMG Signal override button 
+#define EMG_OVERRIDE_BUTTON						GPIOD_IDR.B3					// Input  - D3  - EMG Signal override button 
 #define EMG_ACTIVE_LED							GPIOB_ODR.B9					// Output - B9  - Lit during EMG timer execution 
 #define CHANNEL_ADC_EMG							1								// Chan   - A1  - ADC1 channel 1 used for EMG 
 
 
 //General MCU I/O
-#define MOTOR_ENABLE							GPIOE_ODR.B0					// Output - B0  - Enable signal for ALL non-MCU IC's 
+#define MOTOR_ENABLE							GPIOE_ODR.B0					// Output - E0  - Enable signal for ALL non-MCU IC's 
 #define BATT_CHG_MON							15								// Chan   - C5  - ADC1 channel 15 used for battery charge current monitor
 
 //User I/O 

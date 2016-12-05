@@ -117,7 +117,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Pointer finger PWM (Pin E9)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          			// PWM duty cycle to 0 on Timer 1, channel 1
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, POINTER_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 1
 		
 		// Configure flexiforce sensor 
 		
@@ -140,7 +140,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Middle finger PWM (Pin E11)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL2);          			// PWM duty cycle to 0 on Timer 1, channel 2
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, MIDDLE_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 2
 		
 		// Configure flexiforce sensor 
 		
@@ -163,7 +163,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Ring finger PWM (Pin E13)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL3);          			// PWM duty cycle to 0 on Timer 1, channel 3
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, RING_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 3
 
 		// Configure flexiforce sensor 
 		
@@ -187,7 +187,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Pinky finger PWM (Pin E14)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL4);          			// PWM duty cycle to 0 on Timer 1, channel 4
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, PINKY_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 4
 
 		// Configure flexiforce sensor 
 		
@@ -211,7 +211,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Thumb PWM (Pin B6) 
 		pwm_period = PWM_TIM4_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, _PWM_CHANNEL1);          			// PWM duty cycle to 0 on Timer 4, channel 1
+		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, THUMB_PWM);          			// PWM duty cycle to 0 on Timer 4, channel 1
 
 		// Configure flexiforce sensor 
 		
