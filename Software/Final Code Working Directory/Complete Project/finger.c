@@ -117,7 +117,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Pointer finger PWM (Pin E9)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, POINTER_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 1
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, POINTER_PWM);          				// PWM duty cycle to 0 on Timer 1, channel 1
 		
 		// Configure flexiforce sensor 
 		
@@ -140,7 +140,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Middle finger PWM (Pin E11)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, MIDDLE_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 2
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, MIDDLE_PWM);          				// PWM duty cycle to 0 on Timer 1, channel 2
 		
 		// Configure flexiforce sensor 
 		
@@ -163,7 +163,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Ring finger PWM (Pin E13)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, RING_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 3
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, RING_PWM);          				// PWM duty cycle to 0 on Timer 1, channel 3
 
 		// Configure flexiforce sensor 
 		
@@ -187,7 +187,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Pinky finger PWM (Pin E14)
 		pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, PINKY_PWM);          			// PWM duty cycle to 0 on Timer 1, channel 4
+		PWM_TIM1_Set_Duty(0, _PWM_NON_INVERTED, PINKY_PWM);          				// PWM duty cycle to 0 on Timer 1, channel 4
 
 		// Configure flexiforce sensor 
 		
@@ -211,7 +211,7 @@ void init_finger(struct finger *fngr) {
 
 		// Configure Thumb PWM (Pin B6) 
 		pwm_period = PWM_TIM4_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
-		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, THUMB_PWM);          			// PWM duty cycle to 0 on Timer 4, channel 1
+		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, THUMB_PWM);          				// PWM duty cycle to 0 on Timer 4, channel 1
 
 		// Configure flexiforce sensor 
 		
@@ -260,31 +260,31 @@ void set_finger_speed(struct finger *fngr, int speed) {
 	if (strcmp(fngr->name, "fngr_pointer") == 0) {
 		//Do PWM magic here:		
 		// Convert duty cycle to timer ticks and set it 
-		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);		
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);		
 	}
 	
 	else if (strcmp(fngr->name, "fngr_middle") == 0) {
 		//Do PWM magic here:		
 		// Convert duty cycle to timer ticks and set it 
-		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL2);	
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, MIDDLE_PWM);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_ring") == 0) {
 		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
-		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL3);	
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, RING_PWM);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
 		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
-		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL4);
+		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, PINKY_PWM);
 	}
 	
 	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
 		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
-		PWM_TIM4_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, _PWM_CHANNEL1);
+		PWM_TIM4_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, THUMB_PWM);
 	}
 	
 	fngr->speed_desired = speed; 									// Store speed to finger instance 
@@ -364,7 +364,7 @@ void sample_finger(struct finger *fngr){
 
 	// Check direction of motor movement and calculate position
 	if (fngr->enc_chan_b == 1) {                                                // Clockwise
-			fngr->direction_actual = 1;
+			fngr->direction_actual = 1;											// TODO use EXTEND and CONTRACT
 			fngr->position_actual += fngr->position_temp;                       // Calculate new position
 	}
 
