@@ -53,7 +53,7 @@ unsigned long ENCODER_TIM_RELOAD = 65535;                                       
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
 unsigned int SAMPLE_TIM_PSC = 279;                                             	// Prescaler for sampling timer
-unsigned long PWM_FREQ_HZ = 100;												// PWM base frequency
+unsigned long PWM_FREQ_HZ = 10000;												// PWM base frequency
 int EXTEND = 1;																	// TODO these may not be the right directions
 int CONTRACT = 0;
 

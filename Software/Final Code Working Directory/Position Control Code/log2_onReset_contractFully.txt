@@ -1,0 +1,241 @@
+** Now finger contracts and counts up from 0 (or -1).
+** Directions funny again.
+** Range is about 0 to 4100 again. Call it 0-4000 and normalize to 0-1000.
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz): 4294967295
+
+Direction of movement:             EXTEND 
+
+Position of finger:                         -1
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):        122
+
+Direction of movement:             CONTRACT 
+
+Position of finger:                        450
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):         32
+
+Direction of movement:             EXTEND 
+
+Position of finger:                        876
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):         26
+
+Direction of movement:             EXTEND 
+
+Position of finger:                       1530
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):        381
+
+Direction of movement:             CONTRACT 
+
+Position of finger:                       2156
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):        429
+
+Direction of movement:             CONTRACT 
+
+Position of finger:                       2976
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):        414
+
+Direction of movement:             CONTRACT 
+
+Position of finger:                       3902
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):         40
+
+Direction of movement:             EXTEND 
+
+Position of finger:                       4124
+
+
+
+
+
+
+
+
+
+
+Finger Name: Pointer
+
+Frequency of incoming signal (Hz):         40
+
+Direction of movement:             EXTEND 
+
+Position of finger:                       4124
+
+
+
+
+
+
+
+
+
