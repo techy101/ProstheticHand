@@ -59,11 +59,13 @@ main
 			_LongDoubleToSignedIntegral
 	Pcontrol_position
 		abs
+	LongWordToStr
+	IntToStr
+		WordToStr
+	abs
 	move_finger
 		strcmp
 		PWM_TIM1_Set_Duty
-	abs
-	UART_Write_Text
 	print_finger_info
 		UART1_Write_Text
 		LongWordToStr

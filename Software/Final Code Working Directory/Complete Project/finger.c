@@ -260,6 +260,10 @@ void set_finger_speed(struct finger *fngr, int speed) {
 	unsigned int duty_cycle;
 		
 	// convert speed to duty cycle: integer 20-100
+	duty_cycle = speed;						// for now...
+	
+	if(speed == 0 || fngr->speed_actual > 20000)
+		fngr->speed_actual = 0;
 	
 	if (strcmp(fngr->name, "fngr_pointer") == 0) {
 		//Do PWM magic here:		
@@ -365,7 +369,12 @@ void sample_finger(struct finger *fngr){
 	
 	// Calculate frequency of captured signal (Hz)
 	fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
-
+	if (fngr->input_sig_frequency > 20000.0)                                    // NEW: Handles startup error
+       fngr->input_sig_frequency = 0;
+	   
+	fngr->motor_speed_actual = fngr->input_sig_frequency;						// Temporary reassignment, will be conversion in future from 
+																				// 	  input encoder frequency to motor output shaft speed (RPM)
+	
 	// Check direction of motor movement and calculate position
 	if (fngr->enc_chan_b == 1) {                                                // Clockwise
 			fngr->direction_actual = 1;											// TODO use EXTEND and CONTRACT

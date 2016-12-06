@@ -1,0 +1,205 @@
+
+** Position and duty cycle printing at sampling frequency (10 Hz).
+** Other info printing at 0.5 Hz.
+** K is 5000.0, MARGIN is 15.
+
+
+UART Init Complete
+
+
+Program Has Started!
+
+UART Init Complete
+
+
+Program Has Started!
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             CONTRACT 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          0
+Duty cycle returned is    100
+Position normalized is          9
+Duty cycle returned is    100
+Position normalized is         20
+Duty cycle returned is    100
+Position normalized is         31
+Duty cycle returned is    100
+Position normalized is         42
+Duty cycle returned is    100
+Position normalized is         53
+Duty cycle returned is    100
+Position normalized is         64
+Duty cycle returned is    100
+Position normalized is         75
+Duty cycle returned is    100
+Position normalized is         86
+Duty cycle returned is    100
+Position normalized is         97
+Duty cycle returned is    100
+Position normalized is        108
+Duty cycle returned is    100
+Position normalized is        119
+Duty cycle returned is    100
+Position normalized is        130
+Duty cycle returned is    100
+Position normalized is        141
+Duty cycle returned is    100
+Position normalized is        152
+Duty cycle returned is    100
+Position normalized is        163
+Duty cycle returned is    100
+Position normalized is        174
+Duty cycle returned is    100
+Position normalized is        185
+Duty cycle returned is    100
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        482
+Direction of movement:             EXTEND 
+Position of finger:                        185
+
+
+
+
+
+
+
+
+
+Position normalized is        198
+Duty cycle returned is    100
+Position normalized is        208
+Duty cycle returned is    100
+Position normalized is        219
+Duty cycle returned is    100
+Position normalized is        230
+Duty cycle returned is    100
+Position normalized is        241
+Duty cycle returned is    100
+Position normalized is        252
+Duty cycle returned is    100
+Position normalized is        263
+Duty cycle returned is    100
+Position normalized is        274
+Duty cycle returned is    100
+Position normalized is        285
+Duty cycle returned is    100
+Position normalized is        296
+Duty cycle returned is    100
+Position normalized is        307
+Duty cycle returned is    100
+Position normalized is        318
+Duty cycle returned is    100
+Position normalized is        329
+Duty cycle returned is    100
+Position normalized is        340
+Duty cycle returned is    100
+Position normalized is        351
+Duty cycle returned is    100
+Position normalized is        362
+Duty cycle returned is    100
+Position normalized is        373
+Duty cycle returned is    100
+Position normalized is        384
+Duty cycle returned is    100
+Position normalized is        395
+Duty cycle returned is    100
+Position normalized is        406
+Duty cycle returned is    100
+Position normalized is        417
+Duty cycle returned is    100
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        450
+Direction of movement:             EXTEND 
+Position of finger:                        417
+
+
+
+
+
+
+
+
+
+Position normalized is        430
+Duty cycle returned is    100
+Position normalized is        439
+Duty cycle returned is    100
+Position normalized is        450
+Duty cycle returned is    100
+Position normalized is        461
+Duty cycle returned is    100
+Position normalized is        472
+Duty cycle returned is    100
+Position normalized is        483
+Duty cycle returned is    100
+Position normalized is        494
+Duty cycle returned is    100
+
+** PV stabilized!!!! 

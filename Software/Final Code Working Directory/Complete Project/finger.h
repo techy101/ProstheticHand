@@ -82,6 +82,7 @@ struct finger {
 	long position_actual;                                                   // Calculated position of finger 
 	unsigned int direction_desired;											// Desired direction of movement of finger 
 	unsigned int speed_desired;												// Desired speed of finger movement 
+	unsigned int motor_speed_actual;										// Calculated motor output shaft speed (RPM)
 	unsigned int position_desired;											// Desired destination position of finger 
 	unsigned int direction_actual;                                          // Actual direction of motor movement as read from encoder
 	unsigned int enc_chan_b;                                                // Motor encoder channel b value. Used to test direction of movement
@@ -93,7 +94,7 @@ struct finger {
 	unsigned long enc_overflow_delta;                                       // Calculated number of timer overflows between capture events
 	unsigned long enc_overflow_ticks;                                       // Total number of timer ticks for the timer overflows between events
 	unsigned long enc_total_ticks;                                          // Calculated total number of timer ticks between input capture events 
-	unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz)
+	unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz) (Used in future for motor_speed_actual conversion)
 	long double input_sig_period;                                           // Period of motor encoder signal (in ms)
 	float motor_torque;														// Motor torque as measured by motor driver current 
 	float tip_force;														// Force applied at flexiforce sensor on fingertip 
