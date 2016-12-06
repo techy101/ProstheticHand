@@ -110,3 +110,84 @@ void main() {
 
 return 0;
 }
+
+
+
+
+
+/* // any declarations that need to happen outside of main 
+
+int NEUTRAL = 0;
+int GRAB = 1;
+int PINCH = 2;
+int POINT = 3;
+int HANDSHAKE = 4;
+
+int mode;
+
+
+main {
+
+	********* Initialization routines ************ 
+	
+	// Finger initializations
+	void init_capture_timers();										// Configure Timers 2 and 3 for input capture
+	void init_finger(struct finger *fngr);							// Initialize all hardware for the selected finger
+	
+	mode = GRAB;
+	
+	// Calibration 
+
+	while(1){
+	
+	// SLEEP HERE IN FUTURE	
+	
+
+
+	if(go_Status == 1 && system_go == 1)	// check system status - whether system is currently on or off, and which way the switch has been flipped
+	{
+		//run hand	
+		
+		void activate_capture_timers();									// Arm timers 2 and 3 interrupts  
+		
+		switch(mode)
+		{
+			case GRAB:
+				break;
+			case PINCH:
+				break;
+			case POINT:
+				break;
+			case HANDSHAKE:
+				break;
+			case NEUTRAL:
+				break;
+			default:	// ?
+				break;
+				
+		
+		
+		}
+	}
+	
+	if(go_status == 1 && system_go == 0)	// Check if the hand is about to shut down (Currently active and has been told to return to neutral)
+	{
+		// Return hand to neutral position 
+		go_Status = 0;						// Clear go_Status to complete hand shutdown
+
+	}
+}
+
+
+
+void go_timer_ISR() {
+
+	if (go_Status == 0) {			// System is currently inactive (hand is in neutral position)
+		go_Status = 1;				// Set the system state variable as active 
+		system_go = 1;				// Start the main code loop 
+	}
+	
+	else if (go_status == 1) {		// The system is currently active (hand is running)
+		system_go = 0;				// Stop executing the main code loop. This leaves go_Status active for return to neutral position 	
+	}
+} */

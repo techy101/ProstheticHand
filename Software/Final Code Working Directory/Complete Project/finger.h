@@ -56,6 +56,9 @@ unsigned int SAMPLE_TIM_PSC = 279;                                             	
 unsigned long PWM_FREQ_HZ = 10000;												// PWM base frequency
 int EXTEND = 1;																	// TODO these may not be the right directions
 int CONTRACT = 0;
+//unsigned long FULLY_EXTENDED = 0;                                              	// Lower bound for finger position			- These may not be necessary. 
+//unsigned long FULLY_CONTRACTED = 4000;                                          // Higher bound for finger position			- In any case, they must be determined by testing.
+unsigned int NORMALIZATION_CONSTANT = 4;                                       	// "Self-explanatory": to normalize encoder ticks to a given range (0-1000)
 
 
 /**************  Global Variables  **************/
@@ -107,6 +110,8 @@ struct finger {
 void init_capture_timers();										// Configure Timers 2 and 3 for input capture 
 void activate_capture_timers();									// Arm timers 2 and 3 interrupts 
 void init_finger(struct finger *fngr);							// Initialize all hardware for the selected finger 
+unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);	// Apply proportional control to position finger based on position handler
+//unsigned int Pcontrol_force(struct finger *, unsigned long, unsigned long);	// Not sure about return type yet
 void set_finger_speed(struct finger *fngr, int speed);			// Set speed of finger via PWM duty cycle 
 void sample_finger(struct finger *fngr);						// Sample all finger paramaters and write to struct members
 void debug_finger(struct finger *fngr);							// Print all finger state value to terminal 
