@@ -5,13 +5,15 @@ unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
 unsigned int SAMPLE_TIM_RELOAD = 59999;
 unsigned int SAMPLE_TIM_PSC = 279;
-unsigned int TERMINAL_PRINT_THRESH = 40;
+unsigned int TERMINAL_PRINT_THRESH = 20;
+
 
 unsigned long PWM_FREQ_HZ = 10000;
 int EXTEND = 1;
 int CONTRACT = 0;
-unsigned long FULLY_EXTENDED = 30;
+unsigned long FULLY_EXTENDED = 0;
 unsigned long FULLY_CONTRACTED = 3000;
+unsigned int NORMALIZATION_CONSTANT = 4;
 
 
 
@@ -46,9 +48,10 @@ unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);
 void move_finger(struct finger *, unsigned int);
 
 int setP = 500;
-int const MARGIN = 50;
-float const K = 10.0;
+int const MARGIN = 15;
+float const K = 1000.0;
 unsigned int duty_cycle = 0;
+char toStr[ 15 ];
 
 
 
@@ -120,12 +123,20 @@ void main() {
  if (poll_flag) {
  poll_flag = 0;
  calc_finger_state(&fngr_pointer);
-#line 185 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
- fngr_pointer.position_actual = 1000*(fngr_pointer.position_actual/4000);
-
+#line 188 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
  duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);
 
- move_finger(&fngr_pointer, duty_cycle);
+ UART1_Write_Text("Position normalized is ");
+ LongWordToStr(fngr_pointer.position_actual, toStr);
+ UART1_Write_Text(toStr);
+ UART1_Write_Text("\n\r");
+
+ UART1_Write_Text("Duty cycle returned is ");
+ IntToStr(duty_cycle, toStr);
+ UART1_Write_Text(toStr);
+ UART1_Write_Text("\n\r");
+
+
 
 
  if(abs(fngr_pointer.position_actual - setP) < MARGIN)
@@ -133,10 +144,8 @@ void main() {
  move_finger(&fngr_pointer, 0);
  poll_flag = 0;
  NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);
- UART_Write_Text("\n** PV stabilized!!!! ");
-#line 200 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
- ;;;
-#line 207 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+ UART1_Write_Text("\n** PV stabilized!!!! ");
+#line 218 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
  }
 
  }
@@ -144,7 +153,7 @@ void main() {
  if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
 
  print_finger_info(&fngr_pointer);
-#line 218 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+#line 229 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
  UART1_Write_Text("\n\n\n\n\n\n\n\r");
  }
  }
@@ -157,7 +166,7 @@ void main() {
 
 
 
-unsigned int Pcontrol_position(struct finger *fngr, unsigned long setP, unsigned long MPV)
+unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned long MPV)
 {
  unsigned int duty_cycle;
 
@@ -166,7 +175,7 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long setP, unsigned
  else
  fngr->direction_desired = CONTRACT;
 
- duty_cycle = K*abs(setP-MPV);
+ duty_cycle = K*abs(SP-MPV);
 
  if(duty_cycle > 100)
  duty_cycle = 100;
@@ -404,11 +413,6 @@ void init_timer11() {
  NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);
  TIM11_DIER.UIE = 1;
  TIM11_CR1.CEN = 1;
-
-
- TIM4_PSC = 279;
- TIM4_ARR = 59999;
-
 }
 
 
@@ -435,22 +439,24 @@ void calc_finger_state( struct finger *fngr) {
 
 
  fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
+ if (fngr->input_sig_frequency > 20000.0)
+ fngr->input_sig_frequency = 0;
 
 
  if (fngr->enc_chan_b == 1) {
  fngr->direction_actual = EXTEND;
- fngr->position_actual += fngr->position_temp;
+ fngr->position_actual += (fngr->position_temp / NORMALIZATION_CONSTANT);
  }
 
  else if (fngr->enc_chan_b == 0) {
  fngr->direction_actual = CONTRACT;
- fngr->position_actual -= fngr->position_temp;
+ fngr->position_actual -= (fngr->position_temp / NORMALIZATION_CONSTANT);
  }
 
  else {
  fngr->direction_actual = 7;
  }
-#line 532 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+#line 541 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
  fngr->position_temp = 0;
 }
 

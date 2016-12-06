@@ -62,13 +62,15 @@ unsigned long ENCODER_TIM_RELOAD = 65535;                                       
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
 unsigned int SAMPLE_TIM_PSC = 279;                                              // Prescaler for sampling timer
-unsigned int TERMINAL_PRINT_THRESH = 40;                                        // Number of polling even
+unsigned int TERMINAL_PRINT_THRESH = 20;                                        // Number of polling events
 
-unsigned long PWM_FREQ_HZ = 10000;                                                // PWM base frequency
-int EXTEND = 1;                                                                        // TODO these may not be the right directions
+// NEW
+unsigned long PWM_FREQ_HZ = 10000;                                              // PWM base frequency
+int EXTEND = 1;                                                                 // TODO these may not be the right directions
 int CONTRACT = 0;
-unsigned long FULLY_EXTENDED = 30;                                              // Lower bound for position
+unsigned long FULLY_EXTENDED = 0;                                              // Lower bound for position
 unsigned long FULLY_CONTRACTED = 3000;                                          // Higher bound for position
+unsigned int NORMALIZATION_CONSTANT = 4;                                       // "Self-explanatory"
 
 
 /**************  Global Variables  **************/
@@ -102,10 +104,11 @@ void init_pointer_PWM();
 unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);
 void move_finger(struct finger *, unsigned int);
 
-int setP = 500;            // setpoint - desired position. normalized.
-int const MARGIN = 50;     // accuracy of PV - ?%
-float const K = 10.0;      // proportion constant for P control
+int setP = 500;            // setpoint - desired position. normalized for 0-1000 range.
+int const MARGIN = 15;     // accuracy of PV - 1.5%
+float const K = 1000.0;      // proportion constant for P control
 unsigned int duty_cycle = 0;            // initial
+char toStr[STR_MAX];                    // convenient
 
 
 /**************  Generic Finger Struct Definition  **************/
@@ -181,12 +184,20 @@ void main() {
               calc_finger_state(&fngr_ring);
               calc_finger_state(&fngr_pinky);
               calc_finger_state(&fngr_thumb);*/
-
-              fngr_pointer.position_actual = 1000*(fngr_pointer.position_actual/4000);   // quick! normalize finger position to 0-1000 range
               
               duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);  // apply P control; input is finger, SP, MPV
+
+              UART1_Write_Text("Position normalized is ");
+              LongWordToStr(fngr_pointer.position_actual, toStr);               // Print
+              UART1_Write_Text(toStr);
+              UART1_Write_Text("\n\r");
+
+              UART1_Write_Text("Duty cycle returned is ");
+              IntToStr(duty_cycle, toStr);               // Print
+              UART1_Write_Text(toStr);
+              UART1_Write_Text("\n\r");
               
-              move_finger(&fngr_pointer, duty_cycle);        // apply duty cycle
+              //move_finger(&fngr_pointer, duty_cycle);        // apply duty cycle
               
               // stabilization: don't generate a new setpoint, just let it find once
               if(abs(fngr_pointer.position_actual - setP) < MARGIN)    // both values normalized
@@ -194,7 +205,7 @@ void main() {
                    move_finger(&fngr_pointer, 0);       // stop the motor
                    poll_flag = 0;
                    NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
-                   UART_Write_Text("\n** PV stabilized!!!! ");         // HOORAH
+                   UART1_Write_Text("\n** PV stabilized!!!! ");        // HOORAH
                    /*IntToStr(MPV, toStr);
                    UART1_Write_Text(ToStr);*/
 
@@ -207,7 +218,7 @@ void main() {
                }
               
            }
-             
+
            if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
 
               print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger
@@ -227,7 +238,7 @@ void main() {
 // apply P control to position to determine duty cycle. takes in encoder values (positions) and returns duty cycle.
 // *** ONLY WORKS if finger begins fully extended, i.e. the limit switch is hit
 // *** so counting up is contracting and counting down is extending.
-unsigned int Pcontrol_position(struct finger *fngr, unsigned long setP, unsigned long MPV)
+unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned long MPV)
 {
      unsigned int duty_cycle;
 
@@ -236,7 +247,7 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long setP, unsigned
      else
          fngr->direction_desired = CONTRACT;         // Keep going
 
-     duty_cycle = K*abs(setP-MPV);    // proportional control
+     duty_cycle = K*abs(SP-MPV);    // proportional control
      
      if(duty_cycle > 100)
           duty_cycle = 100;       // cap duty cycle
@@ -474,11 +485,6 @@ void init_timer11() {
     NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);                                 // Enable timer 11 interrupt
     TIM11_DIER.UIE = 1;                                                         // Timer 11 update interrupt enable
     TIM11_CR1.CEN = 1;                                                          // Enable timer/counter
-    
-
-    TIM4_PSC = 279;                                                             // Set timer 4 prescaler
-    TIM4_ARR = 59999;                                                           // Set timer 4 overflow value
-
 }
 
 
@@ -505,22 +511,25 @@ void calc_finger_state( struct finger *fngr) {
     
     // Calculate frequency of captured signal (Hz)
     fngr->input_sig_frequency = (unsigned long) 1000.0 / fngr->input_sig_period;
+    if (fngr->input_sig_frequency > 20000.0)                                    // NEW: Handles startup error
+       fngr->input_sig_frequency = 0;
 
     // Check direction of motor movement and calculate position
     if (fngr->enc_chan_b == 1) {                                                // Clockwise
             fngr->direction_actual = EXTEND;
-            fngr->position_actual += fngr->position_temp;                       // Calculate new position
+            fngr->position_actual += (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
     }
 
     else if (fngr->enc_chan_b == 0) {                                           // Counter Clockwise
             fngr->direction_actual = CONTRACT;
-            fngr->position_actual -= fngr->position_temp;                       // Calculate new position
+            fngr->position_actual -= (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
     }
 
     else {                                                                      // ERROR: Invalid direction state
             fngr->direction_actual = 7;
     }
     
+   // fngr->position_actual = (long) fngr->position_actual / 4.0;
     // NEW
     /*if(fngr->position_desired >= FULLY_CONTRACTED)  // don't run too far!
          fngr->direction_actual = EXTEND;
