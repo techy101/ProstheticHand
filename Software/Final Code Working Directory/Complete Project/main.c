@@ -85,56 +85,45 @@ Donnell Jones
 #include <finger.h> 
 #include <usart.h> 
 #include <user_io.h> 
+#include <system.h>
+
+
+
+// any declarations that need to happen outside of main 
 
 
 
 
-
-
-
-
-
-
-void main() {
+//Create struct instances 
+struct finger FNGR_pointer;
+struct finger FNGR_middle;
+struct finger FNGR_ring;
+struct finger FNGR_pinky;
+struct finger FNGR_thumb;
 	
-	//Create struct instances 
 	
 	
-	//Initialize all hardware 
-	
-	
-	while(1) {
-		//Main Infinite Loop 
-	}
-	
-
-return 0;
-}
-
-
-
-
-
-/* // any declarations that need to happen outside of main 
-
-int NEUTRAL = 0;
-int GRAB = 1;
-int PINCH = 2;
-int POINT = 3;
-int HANDSHAKE = 4;
-
-int mode;
-
-
 main {
+	
+	// Name fingers
+	strcpy(FNGR_pointer.name, "FNGR_pointer");
+	strcpy(FNGR_middle.name, "FNGR_middle");
+	strcpy(FNGR_ring.name, "FNGR_ring");
+	strcpy(FNGR_pinky.name, "FNGR_pinky");
+	strcpy(FNGR_thumb.name, "FNGR_thumb");
+	
 
-	********* Initialization routines ************ 
+	/********* Initialization routines ************/ 
 	
 	// Finger initializations
-	void init_capture_timers();										// Configure Timers 2 and 3 for input capture
-	void init_finger(struct finger *fngr);							// Initialize all hardware for the selected finger
+	init_capture_timers();									// Configure Timers 2 and 3 for input capture
+	init_finger(&FNGR_pointer);								// Initialize all hardware for pointer finger
+	init_finger(&FNGR_middle);								// Initialize all hardware for middle finger
+	init_finger(&FNGR_ring);								// Initialize all hardware for ring finger
+	init_finger(&FNGR_pinky);								// Initialize all hardware for pinky finger
+	init_finger(&FNGR_thumb);								// Initialize all hardware for thumb
 	
-	mode = GRAB;
+	mode = GRAB;	// Meh
 	
 	// Calibration 
 
@@ -153,14 +142,73 @@ main {
 		switch(mode)
 		{
 			case GRAB:
+				if(GRAB_initialize)		// extint button handler will set this flag and probably control_type flag
+				{
+					GRAB_initialize = 0;
+					control_type = FORCE;
+					
+					pointer_average_force_reading = 0;			// declare somewhere
+					middle_average_force_reading = 0;			// declare somewhere
+					ring_average_force_reading = 0;				// declare somewhere
+					pinky_average_force_reading = 0;			// declare somewhere
+					thumb_average_force_reading = 0;			// declare somewhere
+					
+					for(int i = 0; i < NUM_SAMPLES; i++)		// set up first five samples
+					{
+						sample_finger(FNGR_pointer);
+						sample_finger(FNGR_middle);
+						sample_finger(FNGR_ring);
+						sample_finger(FNGR_pinky);
+						sample_finger(FNGR_thumb);
+						pointer_average_force_reading = (((pointer_average_force_reading * (NUM_SAMPLES-1)) + FNGR_pointer.tip_force) / NUM_SAMPLES);						
+						middle_average_force_reading = (((middle_average_force_reading * (NUM_SAMPLES-1)) + FNGR_middle.tip_force) / NUM_SAMPLES);
+						ring_average_force_reading = (((ring_average_force_reading * (NUM_SAMPLES-1)) + FNGR_ring.tip_force) / NUM_SAMPLES);
+						pinky_average_force_reading = (((pinky_average_force_reading * (NUM_SAMPLES-1)) + FNGR_pinky.tip_force) / NUM_SAMPLES);
+						thumb_average_force_reading = (((thumb_average_force_reading * (NUM_SAMPLES-1)) + FNGR_thumb.tip_force) / NUM_SAMPLES);
+					}
+				}
+			
+				if(sample_flag && control_type == POSITION)	// declare sample_flag somewhere
+				{					
+					sample_finger(FNGR_pointer);
+					sample_finger(FNGR_middle);
+					sample_finger(FNGR_ring);
+					sample_finger(FNGR_pinky);
+					sample_finger(FNGR_thumb);
+					
+					// do position control
+					
+					// if force sensors reach a certain threshold
+					{
+						control_type = FORCE;						
+					}
+				}
+				else if(sample_flag && control_type == FORCE)
+				{										
+					sample_finger(FNGR_pointer);
+					sample_finger(FNGR_middle);
+					sample_finger(FNGR_ring);
+					sample_finger(FNGR_pinky);
+					sample_finger(FNGR_thumb);
+
+					// do force control
+				}			
+			
 				break;
 			case PINCH:
+				if(PINCH_initialize)		// extint button handler will set this flag and maybe control_type flag
+				{
+					PINCH_initialize = 0;
+					control_type = POSITION;
+				}
+				
+				
 				break;
 			case POINT:
 				break;
 			case HANDSHAKE:
 				break;
-			case NEUTRAL:
+			case NEUTRAL:		// ?
 				break;
 			default:	// ?
 				break;
@@ -173,6 +221,7 @@ main {
 	if(go_status == 1 && system_go == 0)	// Check if the hand is about to shut down (Currently active and has been told to return to neutral)
 	{
 		// Return hand to neutral position 
+		
 		go_Status = 0;						// Clear go_Status to complete hand shutdown
 
 	}
@@ -190,4 +239,4 @@ void go_timer_ISR() {
 	else if (go_status == 1) {		// The system is currently active (hand is running)
 		system_go = 0;				// Stop executing the main code loop. This leaves go_Status active for return to neutral position 	
 	}
-} */
+}

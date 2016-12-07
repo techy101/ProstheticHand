@@ -216,6 +216,7 @@ void init_finger(struct finger *fngr) {
 		// Configure Thumb PWM (Pin B6) 
 		pwm_period = PWM_TIM4_Init(PWM_FREQ_HZ);                                  	// Set PWM base frequency to 100 Hz
 		PWM_TIM4_Set_Duty(0, _PWM_NON_INVERTED, THUMB_PWM);          				// PWM duty cycle to 0 on Timer 4, channel 1
+		PWM_TIM4_Start(THUMB_PWM, &_GPIO_MODULE_TIM4_CH1_PB6);       				// Start PWM
 
 		// Configure flexiforce sensor 
 		
@@ -236,6 +237,92 @@ void init_finger(struct finger *fngr) {
 
 
 
+/*********************  Proportional control for position  ******************		
+/																			/
+/	Function Name: Pcontrol_position(struct, unsigned long, unsigned long) 	/
+/	Return Type: Unsigned int 												/
+/																			/
+/	Description: 															/
+/		This function applies P control to position values 					/
+/		(encoder ticks) and returns a corresponding duty cycle.				/
+/																			/
+/	Preconditions: 															/
+/		Finger has been initialized 										/
+/		Finger starts fully extended (limit switches have been hit)			/
+/		Finger instance has been passed in 									/
+/		Setpoint and MPV are normalized position values						/
+/																			/
+/	Postconditions: 														/
+/		Duty cycle returned is positive										/
+/		Finger direction is set correctly relative to setpoint				/
+/																			/
+/***************************************************************************/
+unsigned int Pcontrol_position(struct finger *, unsigned long SP, unsigned long MPV)
+{
+	unsigned int duty_cycle;
+
+    if((SP-MPV) < 0)                			
+        fngr->direction_desired = EXTEND;              	// Moved past SP: need to extend back
+    else
+        fngr->direction_desired = CONTRACT;         	// Keep contracting toward setpoint
+
+    duty_cycle = (unsigned int) (POSITION_K*abs(SP-MPV));    	// Proportional control
+     
+    if(duty_cycle > 100)
+        duty_cycle = 100;       						// Cap duty cycle
+    else if(duty_cycle < 20)
+        duty_cycle = 20;       							// Boost duty cycle
+
+    return duty_cycle;	
+}
+
+
+
+
+
+/*********************  Proportional control for force  *********************		
+/																			/
+/	Function Name: Pcontrol_force(struct, int, int) 						/
+/	Return Type: Unsigned int 												/
+/																			/
+/	Description: 															/
+/		This function applies P control to force values 					/
+/		(from Flexiforce sensor on fingertip) and 							/
+/		returns a corresponding duty cycle.									/
+/																			/
+/	Preconditions: 															/
+/		Finger has been initialized 										/
+/		Finger starts fully extended (limit switches have been hit)			/
+/		Finger instance has been passed in 									/
+/		Setpoint and MPV are normalized force values						/
+/																			/
+/	Postconditions: 														/
+/		Duty cycle returned is positive										/
+/		Finger direction is set correctly relative to setpoint				/
+/																			/
+/***************************************************************************/
+unsigned int Pcontrol_force(struct finger *, int SP, int MPV) 
+{
+	unsigned int duty_cycle;
+
+    if((SP-MPV) < 0)                					
+        fngr->direction_desired = EXTEND;              	// Moved past SP: need to extend back
+    else
+        fngr->direction_desired = CONTRACT;         	// Keep contracting toward setpoint
+
+    duty_cycle = (unsigned int) (FORCE_K*abs(SP-MPV));    	// Proportional control
+     
+    if(duty_cycle > 100)
+        duty_cycle = 100;       						// Cap duty cycle
+    else if(duty_cycle < 20)
+        duty_cycle = 20;       							// Boost duty cycle
+
+    return duty_cycle;	
+}
+
+
+
+
 
 /*********************  Set Finger Speed  ***************************
 /																	/
@@ -249,7 +336,7 @@ void init_finger(struct finger *fngr) {
 /	Preconditions: 													/
 /		Finger has been initialized 								/
 /		Finger instance has been passed in 							/
-/		Duty cycle input is valid									/
+/		Speed input is valid (for this version, an integer 0-100)	/
 /																	/
 /	Postconditions: 												/
 /		Finger motor is running at set speed / duty cycle			/
@@ -259,43 +346,38 @@ void set_finger_speed(struct finger *fngr, int speed) {
 	
 	unsigned int duty_cycle;
 		
-	// convert speed to duty cycle: integer 20-100
-	duty_cycle = speed;						// for now...
+	duty_cycle = speed;								// A conversion from motor speed (via encoder signal frequency)
+													//	to duty cycle will occur in future code
 	
-	if(speed == 0 || fngr->speed_actual > 20000)
+	if(speed == 0 || fngr->speed_actual > 20000)	
 		fngr->speed_actual = 0;
 	
 	if (strcmp(fngr->name, "fngr_pointer") == 0) {
-		//Do PWM magic here:		
 		// Convert duty cycle to timer ticks and set it 
 		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);		
 	}
 	
 	else if (strcmp(fngr->name, "fngr_middle") == 0) {
-		//Do PWM magic here:		
 		// Convert duty cycle to timer ticks and set it 
 		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, MIDDLE_PWM);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_ring") == 0) {
-		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
 		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, RING_PWM);	
 	}
 	
 	else if (strcmp(fngr->name, "fngr_pinky") == 0) {
-		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
 		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, PINKY_PWM);
 	}
 	
 	else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-		//Do PWM magic here:
 		// Convert duty cycle to timer ticks and set it 
 		PWM_TIM4_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, THUMB_PWM);
 	}
 	
-	fngr->speed_desired = speed; 									// Store speed to finger instance 
+	fngr->speed_desired = speed; 					// Store speed to finger instance 
 }
 
 
@@ -318,7 +400,7 @@ void set_finger_speed(struct finger *fngr, int speed) {
 /		Finger instance has been passed in 							/
 /																	/
 /	Postconditions: 												/
-/		All paramaters have been stored to struct instance members	/
+/		All parameters have been stored to struct instance members	/
 /																	/
 /*******************************************************************/
 void sample_finger(struct finger *fngr){
@@ -377,13 +459,15 @@ void sample_finger(struct finger *fngr){
 	
 	// Check direction of motor movement and calculate position
 	if (fngr->enc_chan_b == 1) {                                                // Clockwise
-			fngr->direction_actual = 1;											// TODO use EXTEND and CONTRACT
-			fngr->position_actual += fngr->position_temp;                       // Calculate new position
+			fngr->direction_actual = EXTEND;									
+			fngr->position_actual += (fngr->position_temp 
+				/ POSITION_NORMALIZATION_CONSTANT);								// Calculate new position
 	}
 
 	else if (fngr->enc_chan_b == 0) {                                           // Counter Clockwise
-			fngr->direction_actual = 0;
-			fngr->position_actual -= fngr->position_temp;                       // Calculate new position
+			fngr->direction_actual = CONTRACT;
+			fngr->position_actual -= (fngr->position_temp 
+				/ POSITION_NORMALIZATION_CONSTANT);                       		// Calculate new position
 	}
 
 	else {                                                                      // ERROR: Invalid direction state

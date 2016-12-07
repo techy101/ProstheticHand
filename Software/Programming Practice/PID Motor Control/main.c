@@ -62,7 +62,7 @@ void main()
 {
    srand(50);
    
-   // prepare     for digital output
+   // prepare for digital output
    GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10 | _GPIO_PINMASK_15);
    motorDirection = CONTRACT;
    motorEnable = 0;        // enabled initially

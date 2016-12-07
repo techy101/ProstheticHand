@@ -56,9 +56,23 @@ unsigned int SAMPLE_TIM_PSC = 279;                                             	
 unsigned long PWM_FREQ_HZ = 10000;												// PWM base frequency
 int EXTEND = 1;																	// TODO these may not be the right directions
 int CONTRACT = 0;
-//unsigned long FULLY_EXTENDED = 0;                                              	// Lower bound for finger position			- These may not be necessary. 
-//unsigned long FULLY_CONTRACTED = 4000;                                          // Higher bound for finger position			- In any case, they must be determined by testing.
-unsigned int NORMALIZATION_CONSTANT = 4;                                       	// "Self-explanatory": to normalize encoder ticks to a given range (0-1000)
+//unsigned long FULLY_EXTENDED = 0;                                             // Lower bound for finger position			- These may not be necessary. 
+//unsigned long FULLY_CONTRACTED = 4000;                                        // Higher bound for finger position			- In any case, they must be determined by testing.
+unsigned int POSITION_NORMALIZATION_CONSTANT = 4;                               // "Self-explanatory": divide by this to normalize encoder ticks to a given range (0-1000)
+unsigned int FORCE_NORMALIZATION_CONSTANT = 
+int POSITION_P_MARGIN = 15;														// Margin of error for P control based on position
+int FORCE_P_MARGIN = 3;															// Margin of error for P control based on force
+float POSITION_K = 500.0;														// Proportionality constant for P control based on force 
+float FORCE_K = 5.0;															// Proportionality constant for P control based on force
+int NUM_SAMPLES = 5;															// Number of samples for a moving force average
+int POSITION = 0;																// Flag value: use position control
+int FORCE = 1;																	// Flag value: use force control
+
+int NEUTRAL = 0;																// Mode enums
+int GRAB = 1;
+int PINCH = 2;
+int POINT = 3;
+int HANDSHAKE = 4;
 
 
 /**************  Global Variables  **************/
@@ -67,6 +81,9 @@ unsigned int poll_flag;                                                         
 unsigned long tim2_overflow_count;                                              // Overflow counter for timer 2
 unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
 unsigned int pwm_period;														// Base timer period of PWM - needed for duty cycle calculations
+
+
+int mode;
 
 
 /************************  Finger Structure  ************************
@@ -111,7 +128,7 @@ void init_capture_timers();										// Configure Timers 2 and 3 for input captu
 void activate_capture_timers();									// Arm timers 2 and 3 interrupts 
 void init_finger(struct finger *fngr);							// Initialize all hardware for the selected finger 
 unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);	// Apply proportional control to position finger based on position handler
-//unsigned int Pcontrol_force(struct finger *, unsigned long, unsigned long);	// Not sure about return type yet
+//unsigned int Pcontrol_force(struct finger *, int, int);	// Not sure about types for force values
 void set_finger_speed(struct finger *fngr, int speed);			// Set speed of finger via PWM duty cycle 
 void sample_finger(struct finger *fngr);						// Sample all finger paramaters and write to struct members
 void debug_finger(struct finger *fngr);							// Print all finger state value to terminal 
