@@ -201,14 +201,22 @@ main {
 					PINCH_initialize = 0;
 					control_type = POSITION;
 				}
-				
-				
 				break;
 			case POINT:
+				if(POINT_initialize)
+				{
+					PINCH_initialize = 0;
+					control_type = POSITION;
+				}
 				break;
 			case HANDSHAKE:
+				if(HANDSHAKE_initialize)
+				{
+					PINCH_initialize = 0;
+					control_type = POSITION;
+				}
 				break;
-			case NEUTRAL:		// ?
+			case NEUTRAL:		// need limit switches?
 				break;
 			default:	// ?
 				break;

@@ -62,15 +62,15 @@ unsigned long ENCODER_TIM_RELOAD = 65535;                                       
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
 unsigned int SAMPLE_TIM_PSC = 279;                                              // Prescaler for sampling timer
-unsigned int TERMINAL_PRINT_THRESH = 20;                                        // Number of polling events
+unsigned int TERMINAL_PRINT_THRESH = 5;                                        // Number of polling events
 
 // NEW
 unsigned long PWM_FREQ_HZ = 10000;                                              // PWM base frequency
-int EXTEND = 1;                                                                 // TODO these may not be the right directions
+int EXTEND = 1;                                                                 // Arbitrarily assigned - reliant on encoder orientation
 int CONTRACT = 0;
-unsigned long FULLY_EXTENDED = 0;                                              // Lower bound for position
+long FULLY_EXTENDED = 0;                                                        // Lower bound for position
 unsigned long FULLY_CONTRACTED = 3000;                                          // Higher bound for position
-unsigned int NORMALIZATION_CONSTANT = 4;                                       // "Self-explanatory"
+unsigned int NORMALIZATION_CONSTANT = 1;                                       // "Self-explanatory" - was 4
 
 
 /**************  Global Variables  **************/
@@ -105,7 +105,7 @@ unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);
 void move_finger(struct finger *, unsigned int);
 
 int setP = 500;            // setpoint - desired position. normalized for 0-1000 range.
-int const MARGIN = 15;     // accuracy of PV - 1.5%
+int const MARGIN = 15;     // accuracy of PV - 1.5% from normalization constant
 float const K = 1000.0;      // proportion constant for P control
 unsigned int duty_cycle = 0;            // initial
 char toStr[STR_MAX];                    // convenient
@@ -185,7 +185,7 @@ void main() {
               calc_finger_state(&fngr_pinky);
               calc_finger_state(&fngr_thumb);*/
               
-              duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);  // apply P control; input is finger, SP, MPV
+              /*duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);  // apply P control; input is finger, SP, MPV
 
               UART1_Write_Text("Position normalized is ");
               LongWordToStr(fngr_pointer.position_actual, toStr);               // Print
@@ -196,16 +196,16 @@ void main() {
               IntToStr(duty_cycle, toStr);               // Print
               UART1_Write_Text(toStr);
               UART1_Write_Text("\n\r");
-              
-              //move_finger(&fngr_pointer, duty_cycle);        // apply duty cycle
+
+              move_finger(&fngr_pointer, duty_cycle);*/       // apply duty cycle
               
               // stabilization: don't generate a new setpoint, just let it find once
-              if(abs(fngr_pointer.position_actual - setP) < MARGIN)    // both values normalized
+              /*if(abs(fngr_pointer.position_actual - setP) < MARGIN)    // both values normalized
               {
                    move_finger(&fngr_pointer, 0);       // stop the motor
                    poll_flag = 0;
                    NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
-                   UART1_Write_Text("\n** PV stabilized!!!! ");        // HOORAH
+                   UART1_Write_Text("\n** PV stabilized!!!! ");*/       // HOORAH
                    /*IntToStr(MPV, toStr);
                    UART1_Write_Text(ToStr);*/
 
@@ -215,7 +215,7 @@ void main() {
                    /*UART1_Write_Text(ToStr);
                    moveFinger(60);       // start the motor
                    NVIC_IntEnable(IVT_INT_TIM4);*/            // start sampling again
-               }
+              /*}*/
               
            }
 
@@ -385,7 +385,7 @@ void init_GPIO() {
  void init_finger(struct finger *fngr)
  {
       fngr->position_actual = 0;
-      fngr->direction_desired = CONTRACT;        // skips over using POINTER_DIRECTION
+      POINTER_DIRECTION = CONTRACT;        // skips over using POINTER_DIRECTION
  }
  
 
@@ -516,12 +516,12 @@ void calc_finger_state( struct finger *fngr) {
 
     // Check direction of motor movement and calculate position
     if (fngr->enc_chan_b == 1) {                                                // Clockwise
-            fngr->direction_actual = EXTEND;
+            fngr->direction_actual = CONTRACT;
             fngr->position_actual += (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
     }
 
     else if (fngr->enc_chan_b == 0) {                                           // Counter Clockwise
-            fngr->direction_actual = CONTRACT;
+            fngr->direction_actual = EXTEND;
             fngr->position_actual -= (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
     }
 
@@ -531,11 +531,15 @@ void calc_finger_state( struct finger *fngr) {
     
    // fngr->position_actual = (long) fngr->position_actual / 4.0;
     // NEW
-    /*if(fngr->position_desired >= FULLY_CONTRACTED)  // don't run too far!
-         fngr->direction_actual = EXTEND;
-     if(fngr->position_actual <= FULLY_EXTENDED)
-         fngr->direction_desired = CONTRACT;*/
-         
+    if(fngr->position_actual >= FULLY_CONTRACTED) {  // don't run too far!
+         fngr->direction_desired = EXTEND;
+         POINTER_DIRECTION = EXTEND;
+    }
+    
+     if(fngr->position_actual <= FULLY_EXTENDED) {
+         fngr->direction_desired = CONTRACT;
+         POINTER_DIRECTION = CONTRACT;
+     }
          
     // Reset position counter
     fngr->position_temp = 0;

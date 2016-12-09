@@ -83,91 +83,6 @@ STRH	R1, [R0, #0]
 MOVW	R0, #lo_addr(_fngr_pointer+0)
 MOVT	R0, #hi_addr(_fngr_pointer+0)
 BL	_calc_finger_state+0
-;Input Capture Complete 5ch.c,188 :: 		duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);  // apply P control; input is finger, SP, MPV
-MOVW	R0, #lo_addr(_fngr_pointer+20)
-MOVT	R0, #hi_addr(_fngr_pointer+20)
-LDR	R1, [R0, #0]
-MOVW	R0, #lo_addr(_setP+0)
-MOVT	R0, #hi_addr(_setP+0)
-LDRSH	R0, [R0, #0]
-MOV	R2, R1
-MOV	R1, R0
-MOVW	R0, #lo_addr(_fngr_pointer+0)
-MOVT	R0, #hi_addr(_fngr_pointer+0)
-BL	_Pcontrol_position+0
-MOVW	R1, #lo_addr(_duty_cycle+0)
-MOVT	R1, #hi_addr(_duty_cycle+0)
-STRH	R0, [R1, #0]
-;Input Capture Complete 5ch.c,190 :: 		UART1_Write_Text("Position normalized is ");
-MOVW	R0, #lo_addr(?lstr7_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr7_Input_32Capture_32Complete_325ch+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,191 :: 		LongWordToStr(fngr_pointer.position_actual, toStr);               // Print
-MOVW	R0, #lo_addr(_fngr_pointer+20)
-MOVT	R0, #hi_addr(_fngr_pointer+20)
-LDR	R0, [R0, #0]
-MOVW	R1, #lo_addr(_toStr+0)
-MOVT	R1, #hi_addr(_toStr+0)
-BL	_LongWordToStr+0
-;Input Capture Complete 5ch.c,192 :: 		UART1_Write_Text(toStr);
-MOVW	R0, #lo_addr(_toStr+0)
-MOVT	R0, #hi_addr(_toStr+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,193 :: 		UART1_Write_Text("\n\r");
-MOVW	R0, #lo_addr(?lstr8_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr8_Input_32Capture_32Complete_325ch+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,195 :: 		UART1_Write_Text("Duty cycle returned is ");
-MOVW	R0, #lo_addr(?lstr9_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr9_Input_32Capture_32Complete_325ch+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,196 :: 		IntToStr(duty_cycle, toStr);               // Print
-MOVW	R0, #lo_addr(_duty_cycle+0)
-MOVT	R0, #hi_addr(_duty_cycle+0)
-LDRH	R0, [R0, #0]
-MOVW	R1, #lo_addr(_toStr+0)
-MOVT	R1, #hi_addr(_toStr+0)
-BL	_IntToStr+0
-;Input Capture Complete 5ch.c,197 :: 		UART1_Write_Text(toStr);
-MOVW	R0, #lo_addr(_toStr+0)
-MOVT	R0, #hi_addr(_toStr+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,198 :: 		UART1_Write_Text("\n\r");
-MOVW	R0, #lo_addr(?lstr10_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr10_Input_32Capture_32Complete_325ch+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,203 :: 		if(abs(fngr_pointer.position_actual - setP) < MARGIN)    // both values normalized
-MOVW	R0, #lo_addr(_setP+0)
-MOVT	R0, #hi_addr(_setP+0)
-LDRSH	R1, [R0, #0]
-MOVW	R0, #lo_addr(_fngr_pointer+20)
-MOVT	R0, #hi_addr(_fngr_pointer+20)
-LDR	R0, [R0, #0]
-SUB	R0, R0, R1
-SXTH	R0, R0
-BL	_abs+0
-CMP	R0, #15
-IT	GE
-BGE	L_main5
-;Input Capture Complete 5ch.c,205 :: 		move_finger(&fngr_pointer, 0);       // stop the motor
-MOVS	R1, #0
-MOVW	R0, #lo_addr(_fngr_pointer+0)
-MOVT	R0, #hi_addr(_fngr_pointer+0)
-BL	_move_finger+0
-;Input Capture Complete 5ch.c,206 :: 		poll_flag = 0;
-MOVS	R1, #0
-MOVW	R0, #lo_addr(_poll_flag+0)
-MOVT	R0, #hi_addr(_poll_flag+0)
-STRH	R1, [R0, #0]
-;Input Capture Complete 5ch.c,207 :: 		NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
-MOVW	R0, #42
-BL	_NVIC_IntDisable+0
-;Input Capture Complete 5ch.c,208 :: 		UART1_Write_Text("\n** PV stabilized!!!! ");        // HOORAH
-MOVW	R0, #lo_addr(?lstr11_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr11_Input_32Capture_32Complete_325ch+0)
-BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,218 :: 		}
-L_main5:
 ;Input Capture Complete 5ch.c,220 :: 		}
 L_main4:
 ;Input Capture Complete 5ch.c,222 :: 		if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
@@ -192,8 +107,8 @@ MOVW	R0, #lo_addr(_fngr_pointer+0)
 MOVT	R0, #hi_addr(_fngr_pointer+0)
 BL	_print_finger_info+0
 ;Input Capture Complete 5ch.c,229 :: 		UART1_Write_Text("\n\n\n\n\n\n\n\r");
-MOVW	R0, #lo_addr(?lstr12_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr12_Input_32Capture_32Complete_325ch+0)
+MOVW	R0, #lo_addr(?lstr7_Input_32Capture_32Complete_325ch+0)
+MOVT	R0, #hi_addr(?lstr7_Input_32Capture_32Complete_325ch+0)
 BL	_UART1_Write_Text+0
 ;Input Capture Complete 5ch.c,222 :: 		if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
 L__main34:
@@ -223,7 +138,7 @@ STR	LR, [SP, #0]
 SUB	R3, R1, R2
 CMP	R3, #0
 IT	CS
-BCS	L_Pcontrol_position9
+BCS	L_Pcontrol_position8
 ;Input Capture Complete 5ch.c,246 :: 		fngr->direction_desired = EXTEND;              // Move back
 ADDW	R4, R0, #26
 ; fngr end address is: 0 (R0)
@@ -232,8 +147,8 @@ MOVT	R3, #hi_addr(_EXTEND+0)
 LDRSH	R3, [R3, #0]
 STRH	R3, [R4, #0]
 IT	AL
-BAL	L_Pcontrol_position10
-L_Pcontrol_position9:
+BAL	L_Pcontrol_position9
+L_Pcontrol_position8:
 ;Input Capture Complete 5ch.c,248 :: 		fngr->direction_desired = CONTRACT;         // Keep going
 ; fngr start address is: 0 (R0)
 ADDW	R4, R0, #26
@@ -242,7 +157,7 @@ MOVW	R3, #lo_addr(_CONTRACT+0)
 MOVT	R3, #hi_addr(_CONTRACT+0)
 LDRSH	R3, [R3, #0]
 STRH	R3, [R4, #0]
-L_Pcontrol_position10:
+L_Pcontrol_position9:
 ;Input Capture Complete 5ch.c,250 :: 		duty_cycle = K*abs(SP-MPV);    // proportional control
 SUB	R3, R1, R2
 ; SP end address is: 4 (R1)
@@ -263,28 +178,28 @@ UXTH	R0, R3
 ;Input Capture Complete 5ch.c,252 :: 		if(duty_cycle > 100)
 CMP	R3, #100
 IT	LS
-BLS	L_Pcontrol_position11
+BLS	L_Pcontrol_position10
 ;Input Capture Complete 5ch.c,253 :: 		duty_cycle = 100;       // cap duty cycle
 MOVS	R0, #100
 IT	AL
-BAL	L_Pcontrol_position12
-L_Pcontrol_position11:
+BAL	L_Pcontrol_position11
+L_Pcontrol_position10:
 ;Input Capture Complete 5ch.c,254 :: 		else if(duty_cycle < 20)
 CMP	R0, #20
 IT	CS
-BCS	L__Pcontrol_position31
+BCS	L__Pcontrol_position35
 ;Input Capture Complete 5ch.c,255 :: 		duty_cycle = 20;       // boost duty cycle
 MOVS	R0, #20
 ; duty_cycle end address is: 0 (R0)
 IT	AL
-BAL	L_Pcontrol_position13
-L__Pcontrol_position31:
+BAL	L_Pcontrol_position12
+L__Pcontrol_position35:
 ;Input Capture Complete 5ch.c,254 :: 		else if(duty_cycle < 20)
 ;Input Capture Complete 5ch.c,255 :: 		duty_cycle = 20;       // boost duty cycle
-L_Pcontrol_position13:
+L_Pcontrol_position12:
 ; duty_cycle start address is: 0 (R0)
 ; duty_cycle end address is: 0 (R0)
-L_Pcontrol_position12:
+L_Pcontrol_position11:
 ;Input Capture Complete 5ch.c,257 :: 		return duty_cycle;
 ; duty_cycle start address is: 0 (R0)
 ; duty_cycle end address is: 0 (R0)
@@ -306,14 +221,14 @@ UXTH	R4, R1
 ; fngr start address is: 0 (R0)
 ; duty_cycle start address is: 16 (R4)
 ;Input Capture Complete 5ch.c,264 :: 		if(strcmp(fngr->name, "fngr_pointer") == 0)
-MOVW	R2, #lo_addr(?lstr13_Input_32Capture_32Complete_325ch+0)
-MOVT	R2, #hi_addr(?lstr13_Input_32Capture_32Complete_325ch+0)
+MOVW	R2, #lo_addr(?lstr8_Input_32Capture_32Complete_325ch+0)
+MOVT	R2, #hi_addr(?lstr8_Input_32Capture_32Complete_325ch+0)
 MOV	R1, R2
 ; fngr end address is: 0 (R0)
 BL	_strcmp+0
 CMP	R0, #0
 IT	NE
-BNE	L_move_finger14
+BNE	L_move_finger13
 ;Input Capture Complete 5ch.c,265 :: 		PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);       // set new duty cycle
 MOVW	R2, #lo_addr(_pwm_period+0)
 MOVT	R2, #hi_addr(_pwm_period+0)
@@ -327,7 +242,7 @@ MOVS	R1, #0
 UXTH	R0, R2
 MOVS	R2, #0
 BL	_PWM_TIM1_Set_Duty+0
-L_move_finger14:
+L_move_finger13:
 ;Input Capture Complete 5ch.c,268 :: 		}
 L_end_move_finger:
 LDR	LR, [SP, #0]
@@ -342,7 +257,7 @@ MOVT	R1, #hi_addr(TIM2_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer2_ISR15
+BEQ	L_timer2_ISR14
 ;Input Capture Complete 5ch.c,278 :: 		TIM2_SR.UIF = 0;                                                        // Clear timer 2 interrupt bit
 MOVS	R1, #0
 SXTB	R1, R1
@@ -356,14 +271,14 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,280 :: 		}
-L_timer2_ISR15:
+L_timer2_ISR14:
 ;Input Capture Complete 5ch.c,284 :: 		if (TIM2_SR.CC1IF == 1) {
 MOVW	R1, #lo_addr(TIM2_SR+0)
 MOVT	R1, #hi_addr(TIM2_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer2_ISR16
+BEQ	L_timer2_ISR15
 ;Input Capture Complete 5ch.c,285 :: 		fngr_thumb.enc_start_time = fngr_thumb.enc_end_time;                    // Store previous captured value for next calculation
 MOVW	R2, #lo_addr(_fngr_thumb+36)
 MOVT	R2, #hi_addr(_fngr_thumb+36)
@@ -402,7 +317,7 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,291 :: 		}
-L_timer2_ISR16:
+L_timer2_ISR15:
 ;Input Capture Complete 5ch.c,292 :: 		}
 L_end_timer2_ISR:
 BX	LR
@@ -415,7 +330,7 @@ MOVT	R1, #hi_addr(TIM3_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer3_ISR17
+BEQ	L_timer3_ISR16
 ;Input Capture Complete 5ch.c,300 :: 		TIM3_SR.UIF = 0;                                                        // Clear timer 3 interrupt bit
 MOVS	R1, #0
 SXTB	R1, R1
@@ -429,14 +344,14 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,302 :: 		}
-L_timer3_ISR17:
+L_timer3_ISR16:
 ;Input Capture Complete 5ch.c,305 :: 		if (TIM3_SR.CC1IF == 1) {
 MOVW	R1, #lo_addr(TIM3_SR+0)
 MOVT	R1, #hi_addr(TIM3_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer3_ISR18
+BEQ	L_timer3_ISR17
 ;Input Capture Complete 5ch.c,306 :: 		fngr_pointer.enc_start_time = fngr_pointer.enc_end_time;                // Store previous captured value for next calculation
 MOVW	R2, #lo_addr(_fngr_pointer+36)
 MOVT	R2, #hi_addr(_fngr_pointer+36)
@@ -475,14 +390,14 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,312 :: 		}
-L_timer3_ISR18:
+L_timer3_ISR17:
 ;Input Capture Complete 5ch.c,316 :: 		if (TIM3_SR.CC2IF == 1) {
 MOVW	R1, #lo_addr(TIM3_SR+0)
 MOVT	R1, #hi_addr(TIM3_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer3_ISR19
+BEQ	L_timer3_ISR18
 ;Input Capture Complete 5ch.c,317 :: 		fngr_middle.enc_start_time = fngr_middle.enc_end_time;                  // Store previous captured value for next calculation
 MOVW	R2, #lo_addr(_fngr_middle+36)
 MOVT	R2, #hi_addr(_fngr_middle+36)
@@ -521,14 +436,14 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,323 :: 		}
-L_timer3_ISR19:
+L_timer3_ISR18:
 ;Input Capture Complete 5ch.c,326 :: 		if (TIM3_SR.CC3IF == 1) {
 MOVW	R1, #lo_addr(TIM3_SR+0)
 MOVT	R1, #hi_addr(TIM3_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer3_ISR20
+BEQ	L_timer3_ISR19
 ;Input Capture Complete 5ch.c,327 :: 		fngr_ring.enc_start_time = fngr_ring.enc_end_time;                      // Store previous captured value for next calculation
 MOVW	R2, #lo_addr(_fngr_ring+36)
 MOVT	R2, #hi_addr(_fngr_ring+36)
@@ -567,14 +482,14 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,333 :: 		}
-L_timer3_ISR20:
+L_timer3_ISR19:
 ;Input Capture Complete 5ch.c,336 :: 		if (TIM3_SR.CC4IF == 1) {
 MOVW	R1, #lo_addr(TIM3_SR+0)
 MOVT	R1, #hi_addr(TIM3_SR+0)
 LDR	R0, [R1, #0]
 CMP	R0, #0
 IT	EQ
-BEQ	L_timer3_ISR21
+BEQ	L_timer3_ISR20
 ;Input Capture Complete 5ch.c,337 :: 		fngr_pinky.enc_start_time = fngr_pinky.enc_end_time;                    // Store previous captured value for next calculation
 MOVW	R2, #lo_addr(_fngr_pinky+36)
 MOVT	R2, #hi_addr(_fngr_pinky+36)
@@ -613,7 +528,7 @@ LDR	R0, [R1, #0]
 ADDS	R0, R0, #1
 STR	R0, [R1, #0]
 ;Input Capture Complete 5ch.c,343 :: 		}
-L_timer3_ISR21:
+L_timer3_ISR20:
 ;Input Capture Complete 5ch.c,344 :: 		}
 L_end_timer3_ISR:
 BX	LR
@@ -726,15 +641,16 @@ SUB	SP, SP, #4
 ; fngr start address is: 0 (R0)
 ;Input Capture Complete 5ch.c,387 :: 		fngr->position_actual = 0;
 ADDW	R2, R0, #20
+; fngr end address is: 0 (R0)
 MOVS	R1, #0
 STR	R1, [R2, #0]
-;Input Capture Complete 5ch.c,388 :: 		fngr->direction_desired = CONTRACT;        // skips over using POINTER_DIRECTION
-ADDW	R2, R0, #26
-; fngr end address is: 0 (R0)
+;Input Capture Complete 5ch.c,388 :: 		POINTER_DIRECTION = CONTRACT;        // skips over using POINTER_DIRECTION
 MOVW	R1, #lo_addr(_CONTRACT+0)
 MOVT	R1, #hi_addr(_CONTRACT+0)
-LDRSH	R1, [R1, #0]
-STRH	R1, [R2, #0]
+LDRSH	R2, [R1, #0]
+MOVW	R1, #lo_addr(GPIOE_ODR+0)
+MOVT	R1, #hi_addr(GPIOE_ODR+0)
+STR	R2, [R1, #0]
 ;Input Capture Complete 5ch.c,389 :: 		}
 L_end_init_finger:
 ADD	SP, SP, #4
@@ -752,15 +668,15 @@ MOVW	R7, #58878
 MOVT	R7, #170
 NOP
 NOP
-L_init_UART22:
+L_init_UART21:
 SUBS	R7, R7, #1
-BNE	L_init_UART22
+BNE	L_init_UART21
 NOP
 NOP
 NOP
 ;Input Capture Complete 5ch.c,397 :: 		UART_Write_Text("\rUART Init Complete\r\n");                                // *** DEBUG *** Print test statement to terminal
-MOVW	R0, #lo_addr(?lstr14_Input_32Capture_32Complete_325ch+0)
-MOVT	R0, #hi_addr(?lstr14_Input_32Capture_32Complete_325ch+0)
+MOVW	R0, #lo_addr(?lstr9_Input_32Capture_32Complete_325ch+0)
+MOVT	R0, #hi_addr(?lstr9_Input_32Capture_32Complete_325ch+0)
 BL	_UART_Write_Text+0
 ;Input Capture Complete 5ch.c,398 :: 		}
 L_end_init_UART:
@@ -1189,22 +1105,22 @@ VMOV	S0, R1
 VCMPE.F32	S1, S0
 VMRS	#60, FPSCR
 IT	LE
-BLE	L_calc_finger_state24
+BLE	L_calc_finger_state23
 ;Input Capture Complete 5ch.c,515 :: 		fngr->input_sig_frequency = 0;
 ADD	R2, R9, #64
 MOVS	R1, #0
 STR	R1, [R2, #0]
-L_calc_finger_state24:
+L_calc_finger_state23:
 ;Input Capture Complete 5ch.c,518 :: 		if (fngr->enc_chan_b == 1) {                                                // Clockwise
 ADD	R1, R9, #28
 LDRH	R1, [R1, #0]
 CMP	R1, #1
 IT	NE
-BNE	L_calc_finger_state25
-;Input Capture Complete 5ch.c,519 :: 		fngr->direction_actual = EXTEND;
+BNE	L_calc_finger_state24
+;Input Capture Complete 5ch.c,519 :: 		fngr->direction_actual = CONTRACT;
 ADD	R2, R9, #24
-MOVW	R1, #lo_addr(_EXTEND+0)
-MOVT	R1, #hi_addr(_EXTEND+0)
+MOVW	R1, #lo_addr(_CONTRACT+0)
+MOVT	R1, #hi_addr(_CONTRACT+0)
 LDRSH	R1, [R1, #0]
 STRH	R1, [R2, #0]
 ;Input Capture Complete 5ch.c,520 :: 		fngr->position_actual += (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
@@ -1220,18 +1136,18 @@ ADDS	R1, R1, R2
 STR	R1, [R3, #0]
 ;Input Capture Complete 5ch.c,521 :: 		}
 IT	AL
-BAL	L_calc_finger_state26
-L_calc_finger_state25:
+BAL	L_calc_finger_state25
+L_calc_finger_state24:
 ;Input Capture Complete 5ch.c,523 :: 		else if (fngr->enc_chan_b == 0) {                                           // Counter Clockwise
 ADD	R1, R9, #28
 LDRH	R1, [R1, #0]
 CMP	R1, #0
 IT	NE
-BNE	L_calc_finger_state27
-;Input Capture Complete 5ch.c,524 :: 		fngr->direction_actual = CONTRACT;
+BNE	L_calc_finger_state26
+;Input Capture Complete 5ch.c,524 :: 		fngr->direction_actual = EXTEND;
 ADD	R2, R9, #24
-MOVW	R1, #lo_addr(_CONTRACT+0)
-MOVT	R1, #hi_addr(_CONTRACT+0)
+MOVW	R1, #lo_addr(_EXTEND+0)
+MOVT	R1, #hi_addr(_EXTEND+0)
 LDRSH	R1, [R1, #0]
 STRH	R1, [R2, #0]
 ;Input Capture Complete 5ch.c,525 :: 		fngr->position_actual -= (fngr->position_temp / NORMALIZATION_CONSTANT);                       // Calculate new position
@@ -1247,74 +1163,120 @@ SUB	R1, R1, R2
 STR	R1, [R3, #0]
 ;Input Capture Complete 5ch.c,526 :: 		}
 IT	AL
-BAL	L_calc_finger_state28
-L_calc_finger_state27:
+BAL	L_calc_finger_state27
+L_calc_finger_state26:
 ;Input Capture Complete 5ch.c,529 :: 		fngr->direction_actual = 7;
 ADD	R2, R9, #24
 MOVS	R1, #7
 STRH	R1, [R2, #0]
 ;Input Capture Complete 5ch.c,530 :: 		}
+L_calc_finger_state27:
+L_calc_finger_state25:
+;Input Capture Complete 5ch.c,534 :: 		if(fngr->position_actual >= FULLY_CONTRACTED) {  // don't run too far!
+ADD	R1, R9, #20
+LDR	R2, [R1, #0]
+MOVW	R1, #lo_addr(_FULLY_CONTRACTED+0)
+MOVT	R1, #hi_addr(_FULLY_CONTRACTED+0)
+LDR	R1, [R1, #0]
+CMP	R2, R1
+IT	CC
+BCC	L_calc_finger_state28
+;Input Capture Complete 5ch.c,535 :: 		fngr->direction_desired = EXTEND;
+ADD	R3, R9, #26
+MOVW	R2, #lo_addr(_EXTEND+0)
+MOVT	R2, #hi_addr(_EXTEND+0)
+LDRSH	R1, [R2, #0]
+STRH	R1, [R3, #0]
+;Input Capture Complete 5ch.c,536 :: 		POINTER_DIRECTION = EXTEND;
+MOV	R1, R2
+LDRSH	R2, [R1, #0]
+MOVW	R1, #lo_addr(GPIOE_ODR+0)
+MOVT	R1, #hi_addr(GPIOE_ODR+0)
+STR	R2, [R1, #0]
+;Input Capture Complete 5ch.c,537 :: 		}
 L_calc_finger_state28:
-L_calc_finger_state26:
-;Input Capture Complete 5ch.c,541 :: 		fngr->position_temp = 0;
+;Input Capture Complete 5ch.c,539 :: 		if(fngr->position_actual <= FULLY_EXTENDED) {
+ADD	R1, R9, #20
+LDR	R2, [R1, #0]
+MOVW	R1, #lo_addr(_FULLY_EXTENDED+0)
+MOVT	R1, #hi_addr(_FULLY_EXTENDED+0)
+LDR	R1, [R1, #0]
+CMP	R2, R1
+IT	GT
+BGT	L_calc_finger_state29
+;Input Capture Complete 5ch.c,540 :: 		fngr->direction_desired = CONTRACT;
+ADD	R3, R9, #26
+MOVW	R2, #lo_addr(_CONTRACT+0)
+MOVT	R2, #hi_addr(_CONTRACT+0)
+LDRSH	R1, [R2, #0]
+STRH	R1, [R3, #0]
+;Input Capture Complete 5ch.c,541 :: 		POINTER_DIRECTION = CONTRACT;
+MOV	R1, R2
+LDRSH	R2, [R1, #0]
+MOVW	R1, #lo_addr(GPIOE_ODR+0)
+MOVT	R1, #hi_addr(GPIOE_ODR+0)
+STR	R2, [R1, #0]
+;Input Capture Complete 5ch.c,542 :: 		}
+L_calc_finger_state29:
+;Input Capture Complete 5ch.c,545 :: 		fngr->position_temp = 0;
 ADD	R2, R9, #16
 ; fngr end address is: 36 (R9)
 MOVS	R1, #0
 STR	R1, [R2, #0]
-;Input Capture Complete 5ch.c,542 :: 		}
+;Input Capture Complete 5ch.c,546 :: 		}
 L_end_calc_finger_state:
 LDR	LR, [SP, #0]
 ADD	SP, SP, #12
 BX	LR
 ; end of _calc_finger_state
 _print_finger_info:
-;Input Capture Complete 5ch.c,546 :: 		void print_finger_info( struct finger *fngr) {
+;Input Capture Complete 5ch.c,550 :: 		void print_finger_info( struct finger *fngr) {
 ; fngr start address is: 0 (R0)
 SUB	SP, SP, #36
 STR	LR, [SP, #0]
 MOV	R7, R0
 ; fngr end address is: 0 (R0)
 ; fngr start address is: 28 (R7)
-;Input Capture Complete 5ch.c,553 :: 		UART1_Write_Text("\n\rFinger Name: ");                                      //Print name of current finger to terminal
-MOVW	R1, #lo_addr(?lstr15_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr15_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,557 :: 		UART1_Write_Text("\n\rFinger Name: ");                                      //Print name of current finger to terminal
+MOVW	R1, #lo_addr(?lstr10_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr10_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,554 :: 		UART1_Write_Text(fngr->name);
+;Input Capture Complete 5ch.c,558 :: 		UART1_Write_Text(fngr->name);
 MOV	R0, R7
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,555 :: 		UART1_Write_Text("\n\r");
-MOVW	R1, #lo_addr(?lstr16_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr16_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,559 :: 		UART1_Write_Text("\n\r");
+MOVW	R1, #lo_addr(?lstr11_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr11_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,557 :: 		LongWordToStr(fngr->input_sig_frequency, frequency_text);                   // Print input capture signal frequency to terminal
+;Input Capture Complete 5ch.c,561 :: 		LongWordToStr(fngr->input_sig_frequency, frequency_text);                   // Print input capture signal frequency to terminal
 ADD	R2, SP, #4
 ADDW	R1, R7, #64
 LDR	R1, [R1, #0]
 MOV	R0, R1
 MOV	R1, R2
 BL	_LongWordToStr+0
-;Input Capture Complete 5ch.c,558 :: 		UART1_Write_Text("Frequency of incoming signal (Hz): ");
-MOVW	R1, #lo_addr(?lstr17_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr17_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,562 :: 		UART1_Write_Text("Frequency of incoming signal (Hz): ");
+MOVW	R1, #lo_addr(?lstr12_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr12_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,559 :: 		UART1_Write_Text(frequency_text);
+;Input Capture Complete 5ch.c,563 :: 		UART1_Write_Text(frequency_text);
 ADD	R1, SP, #4
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,560 :: 		UART1_Write_Text("\n\r");
-MOVW	R1, #lo_addr(?lstr18_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr18_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,564 :: 		UART1_Write_Text("\n\r");
+MOVW	R1, #lo_addr(?lstr13_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr13_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,563 :: 		UART1_Write_Text("Direction of movement:             ");
-MOVW	R1, #lo_addr(?lstr19_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr19_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,567 :: 		UART1_Write_Text("Direction of movement:             ");
+MOVW	R1, #lo_addr(?lstr14_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr14_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,564 :: 		if(fngr->direction_actual == EXTEND)
+;Input Capture Complete 5ch.c,568 :: 		if(fngr->direction_actual == EXTEND)
 ADDW	R1, R7, #24
 LDRH	R2, [R1, #0]
 MOVW	R1, #lo_addr(_EXTEND+0)
@@ -1322,27 +1284,27 @@ MOVT	R1, #hi_addr(_EXTEND+0)
 LDRSH	R1, [R1, #0]
 CMP	R2, R1
 IT	NE
-BNE	L_print_finger_info29
-;Input Capture Complete 5ch.c,565 :: 		UART1_Write_Text("EXTEND ");
-MOVW	R1, #lo_addr(?lstr20_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr20_Input_32Capture_32Complete_325ch+0)
+BNE	L_print_finger_info30
+;Input Capture Complete 5ch.c,569 :: 		UART1_Write_Text("EXTEND ");
+MOVW	R1, #lo_addr(?lstr15_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr15_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
 IT	AL
-BAL	L_print_finger_info30
-L_print_finger_info29:
-;Input Capture Complete 5ch.c,567 :: 		UART1_Write_Text("CONTRACT ");
-MOVW	R1, #lo_addr(?lstr21_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr21_Input_32Capture_32Complete_325ch+0)
-MOV	R0, R1
-BL	_UART1_Write_Text+0
+BAL	L_print_finger_info31
 L_print_finger_info30:
-;Input Capture Complete 5ch.c,569 :: 		UART1_Write_Text("\n\r");
-MOVW	R1, #lo_addr(?lstr22_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr22_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,571 :: 		UART1_Write_Text("CONTRACT ");
+MOVW	R1, #lo_addr(?lstr16_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr16_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,571 :: 		LongToStr(fngr->position_actual, position_text);                            // Print total number of input events (position) to terminal
+L_print_finger_info31:
+;Input Capture Complete 5ch.c,573 :: 		UART1_Write_Text("\n\r");
+MOVW	R1, #lo_addr(?lstr17_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr17_Input_32Capture_32Complete_325ch+0)
+MOV	R0, R1
+BL	_UART1_Write_Text+0
+;Input Capture Complete 5ch.c,575 :: 		LongToStr(fngr->position_actual, position_text);                            // Print total number of input events (position) to terminal
 ADD	R2, SP, #19
 ADDW	R1, R7, #20
 ; fngr end address is: 28 (R7)
@@ -1350,26 +1312,26 @@ LDR	R1, [R1, #0]
 MOV	R0, R1
 MOV	R1, R2
 BL	_LongToStr+0
-;Input Capture Complete 5ch.c,572 :: 		UART1_Write_Text("Position of finger:                ");
-MOVW	R1, #lo_addr(?lstr23_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr23_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,576 :: 		UART1_Write_Text("Position of finger:                ");
+MOVW	R1, #lo_addr(?lstr18_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr18_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,573 :: 		UART1_Write_Text(position_text);
+;Input Capture Complete 5ch.c,577 :: 		UART1_Write_Text(position_text);
 ADD	R1, SP, #19
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,574 :: 		UART1_Write_Text("\n\n\n\r");
-MOVW	R1, #lo_addr(?lstr24_Input_32Capture_32Complete_325ch+0)
-MOVT	R1, #hi_addr(?lstr24_Input_32Capture_32Complete_325ch+0)
+;Input Capture Complete 5ch.c,578 :: 		UART1_Write_Text("\n\n\n\r");
+MOVW	R1, #lo_addr(?lstr19_Input_32Capture_32Complete_325ch+0)
+MOVT	R1, #hi_addr(?lstr19_Input_32Capture_32Complete_325ch+0)
 MOV	R0, R1
 BL	_UART1_Write_Text+0
-;Input Capture Complete 5ch.c,576 :: 		terminal_print_count = 0;                                                   // Reset counter for terminal printing
+;Input Capture Complete 5ch.c,580 :: 		terminal_print_count = 0;                                                   // Reset counter for terminal printing
 MOVS	R2, #0
 MOVW	R1, #lo_addr(_terminal_print_count+0)
 MOVT	R1, #hi_addr(_terminal_print_count+0)
 STRH	R2, [R1, #0]
-;Input Capture Complete 5ch.c,577 :: 		}
+;Input Capture Complete 5ch.c,581 :: 		}
 L_end_print_finger_info:
 LDR	LR, [SP, #0]
 ADD	SP, SP, #36

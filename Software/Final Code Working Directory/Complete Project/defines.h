@@ -26,7 +26,13 @@ Rachel Mertz
 //EMG 
 #define EMG_OVERRIDE_BUTTON						GPIOD_IDR.B3					// Input  - D3  - EMG Signal override button 
 #define EMG_ACTIVE_LED							GPIOB_ODR.B9					// Output - B9  - Lit during EMG timer execution 
-#define CHANNEL_ADC_EMG							1								// Chan   - A1  - ADC1 channel 1 used for EMG 
+#define CHANNEL_ADC_EMG							1								// Chan   - A1  - ADC1 channel 1 used for EMG
+
+// AWD
+#define high_level        						400													
+#define low_level         						0
+#define high_level2        						4095
+#define low_level2         						400 
 
 
 //General MCU I/O

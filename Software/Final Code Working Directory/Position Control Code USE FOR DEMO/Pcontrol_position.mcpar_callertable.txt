@@ -1,5 +1,4 @@
 main
-	NVIC_IntDisable
 	__CC2DW
 	__FillZeros
 	init_UART
@@ -57,15 +56,6 @@ main
 		_Div_DP
 		_LongDoubleToUnsignedIntegral
 			_LongDoubleToSignedIntegral
-	Pcontrol_position
-		abs
-	LongWordToStr
-	IntToStr
-		WordToStr
-	abs
-	move_finger
-		strcmp
-		PWM_TIM1_Set_Duty
 	print_finger_info
 		UART1_Write_Text
 		LongWordToStr
