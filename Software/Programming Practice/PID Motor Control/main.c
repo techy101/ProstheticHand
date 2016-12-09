@@ -20,8 +20,6 @@
 #define motorDirection GPIOE_ODR.B10
 #define motorEnable GPIOE_ODR.B15    // new
 
-#define EXTEND      0           // direction toward mechanical 0
-#define CONTRACT    1           // direction away from mechanical 0
 
 
 /* --------------------------- FUNCTION PROTOTYPES  ---------------------------- */
@@ -33,19 +31,22 @@ void Timer3_interrupt();      // Timer 3 interrupt handler
 int motorState = 1;           // Motor 1 state variable
 int analogGo = 0;
 
-unsigned int Pcontrol(int, int);
+unsigned int Pcontrol(unsigned int, unsigned int);
 void moveFinger(int);
 int getForce();
 void Timer4_init();
 
-int setP = 60;            // setpoint - what PV should be
-int const MARGIN = 2;     // accuracy of PV - 2.5%
-float const K = 5.0;      // proportion constant for P control
+unsigned int setP;                                                                       // setpoint - what PV should be
+int const MARGIN = 10;                                                          // accuracy of PV - 2.5%
+float const K = 5.0;                                                            // proportionality  constant for P control
 
-int MPV;                  // measured process variable
-int dutyCycle;            // initial
-float averageForceReading = 0.0;
-unsigned int PWM_PERIOD;           // get period in ticks from PWM_Timer1_init
+unsigned int MPV;                                                                        // measured process variable
+unsigned int dutyCycle;                                                                  // duty cycle returned by P controller
+float averageForceReading = 0.0;                                                // moving average over 5 force samples
+unsigned int PWM_PERIOD;                                                        // period in ticks from PWM_Timer1_init
+
+int EXTEND = 1;           // direction toward mechanical 0
+int CONTRACT = 0;          // direction away from mechanical 0
 
 int sampleFlag = 0;
 char ToStr[15];
@@ -57,17 +58,14 @@ void timer4_ISR() iv IVT_INT_TIM4 {
     sampleFlag = 1;
 }
 
-
 void main()
 {
-   srand(50);
-   
    // prepare for digital output
    GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10 | _GPIO_PINMASK_15);
    motorDirection = CONTRACT;
    motorEnable = 0;        // enabled initially
-   
-   // set up 10 Hz timer
+
+ // set up 10 Hz timer
    Timer4_init();
 
    // set up PWM on PE9 @ 1 kHz
@@ -76,9 +74,9 @@ void main()
 
    // set up ADC1
    ADC_Set_Input_Channel(_ADC_CHANNEL_7);                    // set up for Flexiforce input
-   ADC_Set_Input_Channel(_ADC_CHANNEL_3);                    // set up for EMG input
    ADC1_Init();
-   
+
+   ADC_Set_Input_Channel(_ADC_CHANNEL_3);                    // set up for EMG input
    // set up UART1
    UART1_Init(115200);
    delay_ms(100);
@@ -96,7 +94,11 @@ void main()
    IntToStr(margin, ToStr);
    UART1_Write_Text(ToStr);
    
-   
+   for(i = 0; i < 5; i++)
+   {
+           MPV = getForce();
+   }
+
    /************* AWD initializations ******************/
     //motor_1_init();                // Initialize hardware for motor 1
     motor_1_pwm_init();            // Initialize PWM for motor 1
@@ -116,10 +118,7 @@ void main()
     ADC1_CR1bits.JAWDEN = 0;     // Analog watchdog enable on injected channels (disabled)
     ADC1_CR1bits.AWDIE = 1;      // Enable analog interrupt (enabled)
     NVIC_IntEnable(IVT_INT_ADC); // Enabling interrupt
-   
-   
-   for(i = 0; i < 5; i++)
-         MPV = getForce();   // set up the first 5 samples - HMMMM
+
    
    while(1)
    {

@@ -6,8 +6,13 @@ MOVW	R1, #255
 MOVW	R0, #lo_addr(GPIOD_BASE+0)
 MOVT	R0, #hi_addr(GPIOD_BASE+0)
 BL	_GPIO_Digital_Output+0
-;read_2_ADC_channels.c,17 :: 		ADC_Set_Input_Channel(_ADC_CHANNEL_1);                    // set up for 2 input
-MOVW	R0, #2
+;read_2_ADC_channels.c,12 :: 		GPIOD_ODR = 0x0000;              // init all to 0
+MOVS	R1, #0
+MOVW	R0, #lo_addr(GPIOD_ODR+0)
+MOVT	R0, #hi_addr(GPIOD_ODR+0)
+STR	R1, [R0, #0]
+;read_2_ADC_channels.c,17 :: 		ADC_Set_Input_Channel(_ADC_CHANNEL_3);                    // set up for 2 input
+MOVW	R0, #8
 BL	_ADC_Set_Input_Channel+0
 ;read_2_ADC_channels.c,18 :: 		ADC1_Init();
 BL	_ADC1_Init+0
@@ -23,8 +28,8 @@ MOVT	R0, #hi_addr(_channel2_value+0)
 STRH	R1, [R0, #0]
 ;read_2_ADC_channels.c,24 :: 		while(1)
 L_main0:
-;read_2_ADC_channels.c,27 :: 		channel2_value = ADC1_Get_Sample(1);         // Pin A3 - Thumb Flexiforce
-MOVS	R0, #1
+;read_2_ADC_channels.c,27 :: 		channel2_value = ADC1_Get_Sample(3);         // Pin A1 - EMG signal
+MOVS	R0, #3
 BL	_ADC1_Get_Sample+0
 MOVW	R1, #lo_addr(_channel2_value+0)
 MOVT	R1, #hi_addr(_channel2_value+0)

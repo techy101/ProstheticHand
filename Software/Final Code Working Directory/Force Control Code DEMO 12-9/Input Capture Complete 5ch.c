@@ -65,21 +65,24 @@
 #define low_level2         400
 
 
-/*****************  Constants  ******************/
+/*****************  System constants  ******************/
 unsigned long MCU_FREQUENCY = 168000000;                                        // Microcontroller clock speed in Hz
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
 unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
-unsigned int SAMPLE_TIM_PSC = 279;                                              // Prescaler for sampling timer
-unsigned int TERMINAL_PRINT_THRESH = 5;                                        // Number of polling events
-
-// NEW
+unsigned int SAMPLE_TIM_PSC = 27;                                              // Prescaler for sampling timer
+unsigned int TERMINAL_PRINT_THRESH = 20;                                        // Number of polling events
 unsigned long PWM_FREQ_HZ = 10000;                                              // PWM base frequency
+
+unsigned int PWM_PERIOD_TIM1;                                                   // For four fingers - base timer period of PWM - needed for duty cycle calculations
+unsigned int PWM_PERIOD_TIM4;                                                   // For thumb
+
+// Motor control constants
 int EXTEND = 1;                                                                 // Arbitrarily assigned - reliant on encoder orientation
 int CONTRACT = 0;
 long FULLY_EXTENDED = 0;                                                        // Lower bound for position
-unsigned long FULLY_CONTRACTED = 3000;                                          // Higher bound for position
-unsigned int NORMALIZATION_CONSTANT = 1;                                       // "Self-explanatory" - was 4
+unsigned long FULLY_CONTRACTED = 3800;                                          // Higher bound for position
+unsigned int NORMALIZATION_CONSTANT = 1;                                        // "Self-explanatory" - was 4
 
 
 /**************  Global Variables  **************/
@@ -91,8 +94,6 @@ unsigned long tim3_overflow_count;                                              
 int analogGo = 0;
 int goStatus = 0;
 
-// NEW
-unsigned int pwm_period;                                                        // Base timer period of PWM - needed for duty cycle calculations
 
 
 /*************  Function Prototypes  ************/
@@ -101,26 +102,30 @@ void timer3_ISR();                                                              
 void init_GPIO();                                                               // Initialization of MCU I/O
 void init_UART();                                                               // Initialization of UART for terminal communication
 void init_input_capture();
-void init_timer11();                                                            // Initialization of timer 11 (Used for fixed polling rate)
-void calc_finger_state(struct finger *fngr);                                    // Function to determine state of finger
+void init_timer11();                                                            // Initialization of timer 11 (Used for fixed polling rate at 100 Hz)
+void sample_finger(struct finger *fngr);                                        // Function to determine state of finger
 void print_finger_info(struct finger *fngr);                                    // Function to print finger state info to terminal
 void calc_timer_values(struct finger *fngr);                                    // Function to calculate motor speed, etc...
 void ADC_AWD();               // ADC interrupt handler
 void InitTimer5();            // Timer 5 init
 void Timer5_interrupt();      // Timer 5 interrupt handler
 
-// NEW
+// Initializes and starts pointer PWM
 void init_pointer_PWM();
  
  
-// NEW P control based on position
-unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);
-void move_finger(struct finger *, unsigned int);
+// P control based on force
+unsigned int Pcontrol_force(struct finger *, unsigned int, unsigned int);       // Takes finger structure, SP, and MPV
+void move_pointer_finger(struct finger *, unsigned int);                        // Takes finger structure and duty cycle
 
-int setP = 3000;            // setpoint - desired position. normalized for 0-1000 range. CHANGE TO 3000 AND TEST CONTROL FOR DEMO.
-int const MARGIN = 30;     // accuracy of PV - 1.5% from normalization constant
-float const K = 1000.0;      // proportion constant for P control
-unsigned int duty_cycle = 0;            // initial
+int MARGIN = 10;                                                                  // accuracy of PV - 10/400 = 2.5%
+int setP;
+int SP_LOW = 180, SP_HIGH = 240;                                                   // 2 setpoints - desired force
+float FORCE_K = 50.0;                                                           // proportionality constant for P control
+unsigned int MPV;                                                               // measured process variable
+unsigned int dutyCycle;                                                         // duty cycle returned by P controller
+float pointer_average = 0.0;                                                    // moving average over 5 force samples
+int change_SP_flag;                                                             // Allows toggling between two different system setpoints
 char toStr[STR_MAX];                    // convenient
 
 
@@ -132,7 +137,7 @@ struct finger {
         unsigned int direction_actual;                                          // Actual direction of motor movement as read from encoder
         
         // NEW
-        unsigned int direction_desired;                                                // Desired direction of movement of finger
+        unsigned int direction_desired;                                         // Desired direction of movement of finger
         
         
         unsigned int enc_chan_b;                                                // Motor encoder channel b value. Used to test direction of movement
@@ -146,6 +151,7 @@ struct finger {
         unsigned long enc_total_ticks;                                          // Calculated total number of timer ticks between input capture events 
         unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz)
         long double input_sig_period;                                           // Period of motor encoder signal (in ms)
+        unsigned int tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
 };
 
 
@@ -158,7 +164,7 @@ struct finger fngr_thumb;
 
 
 // NEW
-void init_finger(struct finger *);                                    // Sets initial position of finger to 0 and direction to CONTRACT
+void init_finger(struct finger *);                                              // Sets initial position of finger to 0 and direction to CONTRACT
 
 
 // Main Starts here 
@@ -173,21 +179,21 @@ void main() {
         InitTimer5();                  // Timer3 init
 
         /* ------------ ADC Initialization ------------ */
-                ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channels
-                ADC1_Init();                                                // Initialize ADC1
+        ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channels
+        ADC1_Init();                                                // Initialize ADC1
 
-                /* ------------ AWD Initialization ------------ */
-                ADC1_LTR = low_level;        // Set AWD guard window initial lower threshold
-                ADC1_HTR = high_level;       // Set AWD guard window initial upper threshold
-                ADC1_CR2bits.CONT = 1;       // Enable ADC1 continuous conversion mode
-                ADC1_SQR3bits.SQ1 = 3;       // Set first channel in continuous coversion sequence to channel 3
-                ADC1_SQR3bits.SQ2 = 4;       // Set second channel in continuous coversion sequence to channel 4 - NEW
-                ADC1_CR1bits.AWDSGL = 1;     // Enable single channel monitoring mode for AWD
-                ADC1_CR1 |= 3;               // Set channel 3 as the single monitored AWD channel
-                ADC1_CR1bits.AWDEN = 1;      // Enable Analog watchdog on regular channels
-                ADC1_CR2bits.SWSTART = 1;    // Start ADC1 Conversions
-                ADC1_CR1bits.AWDIE = 1;      // Enable analog watchdog interrupt
-                NVIC_IntEnable(IVT_INT_ADC); // Enable global ADC interrupt
+        /* ------------ AWD Initialization ------------ */
+        ADC1_LTR = low_level;        // Set AWD guard window initial lower threshold
+        ADC1_HTR = high_level;       // Set AWD guard window initial upper threshold
+        ADC1_CR2bits.CONT = 1;       // Enable ADC1 continuous conversion mode
+        ADC1_SQR3bits.SQ1 = 3;       // Set first channel in continuous coversion sequence to channel 3
+        ADC1_SQR3bits.SQ2 = 4;       // Set second channel in continuous coversion sequence to channel 4 - NEW
+        ADC1_CR1bits.AWDSGL = 1;     // Enable single channel monitoring mode for AWD
+        ADC1_CR1 |= 3;               // Set channel 3 as the single monitored AWD channel
+        ADC1_CR1bits.AWDEN = 1;      // Enable Analog watchdog on regular channels
+        ADC1_CR2bits.SWSTART = 1;    // Start ADC1 Conversions
+        ADC1_CR1bits.AWDIE = 1;      // Enable analog watchdog interrupt
+        NVIC_IntEnable(IVT_INT_ADC); // Enable global ADC interrupt
 
         // Define names of finger struct instances
         strcpy(fngr_pointer.name, "fngr_pointer");
@@ -196,7 +202,7 @@ void main() {
         strcpy(fngr_pinky.name, "fngr_pinky");
         strcpy(fngr_thumb.name, "fngr_thumb");
         
-        // NEW
+        // Set initial direction to CONTRACT, initial position to 0, and configure ADC1 for input on channel 7
         init_finger(&fngr_pointer);
 
         // Program start terminal verification 
@@ -207,76 +213,118 @@ void main() {
         init_timer11();                                                         // Initialize timer 11, used for sampling
         init_input_capture();                                                   // Initialize input capture channels
         
+        setP = SP_LOW;                                                             // Medium touch to begin
+        change_SP_flag = 1;                                                     // Light touch next time
+        
         // Infinite Loop
         while(1) {
-                       /*if(analogGo) {*/
-                                if (poll_flag) {                                                     // Calculate finger state values (Set by timer 3)
-                                  poll_flag = 0;                                                    // Clear flag
-                                  calc_finger_state(&fngr_pointer);                                 // Call state calculation function for each finger - equivalent of sampling
-                                  
-                                  
-                                  /*calc_finger_state(&fngr_middle);
-                                  calc_finger_state(&fngr_ring);
-                                  calc_finger_state(&fngr_pinky);
-                                  calc_finger_state(&fngr_thumb);*/
-                                  
-                                  /*duty_cycle = Pcontrol_position(&fngr_pointer, setP, fngr_pointer.position_actual);  // apply P control; input is finger, SP, MPV
 
-                                  UART1_Write_Text("Position normalized is ");
-                                  LongWordToStr(fngr_pointer.position_actual, toStr);               // Print
-                                  UART1_Write_Text(toStr);
-                                  UART1_Write_Text("\n\r");
-
-                                  UART1_Write_Text("Duty cycle returned is ");
-                                  IntToStr(duty_cycle, toStr);               // Print
-                                  UART1_Write_Text(toStr);
-                                  UART1_Write_Text("\n\r");
-
-                                  move_finger(&fngr_pointer, duty_cycle);*/       // apply duty cycle
-                                  
-                                  // stabilization: don't generate a new setpoint, just let it find once
-                                  /*if(abs(fngr_pointer.position_actual - setP) < MARGIN)    // both values normalized
-                                  {
-                                           move_finger(&fngr_pointer, 0);       // stop the motor
-                                           poll_flag = 0;
-                                           NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
-                                           UART1_Write_Text("\n** PV stabilized!!!! ");*/       // HOORAH
-                                           /*IntToStr(MPV, toStr);
-                                           UART1_Write_Text(ToStr);*/
-
-                                           /*setP = (rand() % 95) + 20;    // generate a new setpoint
-                                           UART_Write_Text("\n** New SP = ");   // display it
-                                           IntToStr(setP, toStr);*/
-                                           /*UART1_Write_Text(ToStr);
-                                           moveFinger(60);       // start the motor
-                                           NVIC_IntEnable(IVT_INT_TIM4);*/            // start sampling again
-                                  /*}*/
+           if (poll_flag) {                                                     // Calculate finger state values (Set by timer 3)
+              poll_flag = 0;                                                    // Clear flag
+              sample_finger(&fngr_pointer);                                     // Call state calculation function for each finger - equivalent of sampling
+              /*sample_finger(&fngr_middle);
+              sample_finger(&fngr_ring);
+              sample_finger(&fngr_pinky);
+              sample_finger(&fngr_thumb);*/
               
-                           }
+              // emergency - if stabilization not reached
+              if(fngr_pointer.position_actual >= FULLY_CONTRACTED) {
+                   while(fngr_pointer.position_actual >= FULLY_EXTENDED) {
+                       sample_finger(&fngr_pointer);
+                       fngr_pointer.direction_desired = EXTEND;
+                       POINTER_DIRECTION = EXTEND;
+                   }
+              }
 
-                           if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
+              MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
+              
+              dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
 
-                                  print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger
-                                  /*print_finger_info(&fngr_middle);
-                                  print_finger_info(&fngr_ring);
-                                  print_finger_info(&fngr_pinky);
-                                  print_finger_info(&fngr_thumb);*/
-                                  UART1_Write_Text("\n\n\n\n\n\n\n\r");
-                           }  
-                        }        
-        //}
+              /*UART1_Write_Text("Force value is ");
+              IntToStr(MPV, toStr);               // Print
+              UART1_Write_Text(toStr);
+              UART1_Write_Text("\n\r");*/
 
-           
+              /*UART1_Write_Text("Duty cycle returned is ");
+              IntToStr(dutyCycle, toStr);                                       // Print
+              UART1_Write_Text(toStr);
+              UART1_Write_Text("\n\r");*/
+              
+              /*UART_Write_Text(" \n Setpoint is ");   // display it
+              IntToStr(setP, toStr);
+              UART1_Write_Text(ToStr);
+              UART1_Write_Text("\n\r");*/
+
+              move_pointer_finger(&fngr_pointer, dutyCycle);                 // apply duty cycle
+              
+              // stabilization: toggle between two different setpoints, light and hard
+              if(abs(MPV - setP) < MARGIN)
+              {
+                   move_pointer_finger(&fngr_pointer, 0);                       // stop the motor
+
+                   fngr_pointer.direction_desired = EXTEND;                     // Set up to EXTEND back from setpoint to mechanical 0
+                   POINTER_DIRECTION = fngr_pointer.direction_desired;
+
+                   poll_flag = 0;
+                   NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
+
+                   // Indicate stabilization
+                   UART1_Write_Text("\n\n************* PV stabilized at ");       // HOORAH
+                   IntToStr(MPV, toStr);
+                   UART1_Write_Text(ToStr);
+                   
+                   UART_Write_Text("\n\r***************** Setpoint was ");   // display it
+                   IntToStr(setP, toStr);
+                   UART1_Write_Text(ToStr);
+                   UART1_Write_Text("\n\n\n\n\r");
+
+                   // Change system setpoint
+                   if(change_SP_flag == 0)   {
+                        setP = SP_LOW;                                          // Switch to low setpoint for next time
+                        change_SP_flag = 1;
+                   }
+                   else if(change_SP_flag == 1)     {
+                        setP = SP_LOW;                                          // Normally would switch to high setpoint for next time
+                        change_SP_flag = 0;
+                   }
+
+                   UART_Write_Text("\n***************** New setpoint = ");   // display it
+                   IntToStr(setP, toStr);
+                   UART1_Write_Text(ToStr);
+                   UART1_Write_Text("\n\n\n\n\r");
+
+                   move_pointer_finger(&fngr_pointer, 100);                     // Restart the motor
+                   NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);                  // Start sampling with timer 11 again
+                   sample_finger(&fngr_pointer);                                // Sample to get current position
+                   while(fngr_pointer.position_actual >= FULLY_EXTENDED)   {
+                        sample_finger(&fngr_pointer);                           // Make sure finger extends backward before resuming force control
+                        MPV = fngr_pointer.tip_force;                           // Store the force value for comparison
+                   }
+                   // reached FULLY_EXTENDED: start contracting again
+                   POINTER_DIRECTION = CONTRACT;
+              }
+           }
+
+           if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
+
+              print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger     - PUT BACK IN
+              /*print_finger_info(&fngr_middle);
+              print_finger_info(&fngr_ring);
+              print_finger_info(&fngr_pinky);
+              print_finger_info(&fngr_thumb);*/
+              UART1_Write_Text("\n\n\n\n\n\n\n\r");                             //PUT BACK IN
+           }
+        }
 } // Main ends here
 
 
 
-/************** Position control ******************/
+/************** Force control ******************/
 
-// apply P control to position to determine duty cycle. takes in encoder values (positions) and returns duty cycle.
+// apply P control to force to determine duty cycle. takes in Flexiforce values and returns duty cycle.
 // *** ONLY WORKS if finger begins fully extended, i.e. the limit switch is hit
 // *** so counting up is contracting and counting down is extending.
-unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned long MPV)
+unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int MPV)
 {
      unsigned int duty_cycle;
 
@@ -284,8 +332,12 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
           fngr->direction_desired = EXTEND;              // Move back
      else
          fngr->direction_desired = CONTRACT;         // Keep going
+         
+     if(strcmp(fngr->name, "fngr_pointer") == 0)     {
+          POINTER_DIRECTION = fngr->direction_desired;
+     }
 
-     duty_cycle = K*abs(SP-MPV);    // proportional control
+     duty_cycle = FORCE_K*abs(SP-MPV);    // proportional control
      
      if(duty_cycle > 100)
           duty_cycle = 100;       // cap duty cycle
@@ -297,10 +349,10 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
 
 
 // set duty cycle returned from P control
-void move_finger(struct finger *fngr, unsigned int duty_cycle)
+void move_pointer_finger(struct finger *fngr, unsigned int duty_cycle)
 {
      if(strcmp(fngr->name, "fngr_pointer") == 0)
-        PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);       // set new duty cycle
+        PWM_TIM1_Set_Duty(duty_cycle*(PWM_PERIOD_TIM1/100), _PWM_NON_INVERTED, POINTER_PWM);       // set new duty cycle
      //else if(strcmp(fngr->name, "fngr_middle") == 0)            // etc.
             // PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED, MIDDLE_PWM);
 }
@@ -416,17 +468,36 @@ void init_GPIO() {
  // Initialize pointer finger PWM
  void init_pointer_PWM( ) {
      // Configure Pointer finger PWM (Pin E9)
-     pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 100 Hz
-     PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set 70% duty on Timer 1, channel 1
+     PWM_PERIOD_TIM1 = PWM_TIM1_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 100 Hz
+     PWM_TIM1_Set_Duty(100*(PWM_PERIOD_TIM1/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set 70% duty on Timer 1, channel 1
      PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);                 // Start PWM
  }
 
 
- // Initialize finger positions to 0: carefully run motor to this point. Also start finger at CONTRACT.
+ // Initialize finger positions to 0, start finger at CONTRACT, and set up Flexiforce channel
  void init_finger(struct finger *fngr)
  {
       fngr->position_actual = 0;
-      POINTER_DIRECTION = CONTRACT;        // skips over using POINTER_DIRECTION
+      fngr->direction_desired = CONTRACT;
+      
+      if (strcmp(fngr->name, "fngr_pointer") == 0) {
+         POINTER_DIRECTION = fngr->direction_desired;
+
+         ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
+         ADC1_Init();                                                // Initialize ADC1
+      }
+      /*else if (strcmp(fngr->name, "fngr_middle") == 0) {
+
+      }
+      else if (strcmp(fngr->name, "fngr_ring") == 0) {
+
+      }
+      else if (strcmp(fngr->name, "fngr_pinky") == 0) {
+
+      }
+      else if (strcmp(fngr->name, "fngr_thumb") == 0) {
+
+    }*/
  }
  
 
@@ -533,7 +604,7 @@ void init_timer11() {
 
 
 // Function to calculate statistics finger encoder. Broken into steps for clarity
-void calc_finger_state( struct finger *fngr) {
+void sample_finger( struct finger *fngr) {
 
     // Calculate number of timer overflows between previous and current capture events 
     fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
@@ -572,19 +643,23 @@ void calc_finger_state( struct finger *fngr) {
     
    // fngr->position_actual = (long) fngr->position_actual / 4.0;
     // NEW
-    if(fngr->position_actual >= FULLY_CONTRACTED) {  // don't run too far!
+ /*if(fngr->position_actual >= FULLY_CONTRACTED) {  // don't run too far!
          fngr->direction_desired = EXTEND;
-         POINTER_DIRECTION = EXTEND;
     }
-    
+
      if(fngr->position_actual <= FULLY_EXTENDED) {
          fngr->direction_desired = CONTRACT;
-         POINTER_DIRECTION = CONTRACT;
-                 analogGo = 0;
-     }
+     }*/
          
     // Reset position counter
     fngr->position_temp = 0;
+    
+    if(strcmp(fngr->name, "fngr_pointer") == 0)   {
+         pointer_average = ADC1_Get_Sample(3);
+         fngr->tip_force = (unsigned int)(((fngr->tip_force*4)+ pointer_average)/5);         // read analog value from channel 7 - pointer
+         POINTER_DIRECTION = fngr->direction_desired;
+    }
+    /* else middle, ring, pinky, thumb, etc.*/
 }
 
 
@@ -617,7 +692,12 @@ void print_finger_info( struct finger *fngr) {
     LongToStr(fngr->position_actual, position_text);                            // Print total number of input events (position) to terminal
     UART1_Write_Text("Position of finger:                ");
     UART1_Write_Text(position_text);
-    UART1_Write_Text("\n\n\n\r");        
+    UART1_Write_Text("\n\n\n\r"); 
+    
+    IntToStr(fngr->tip_force, toStr);                            // Print Flexiforce value (16-bit unsigned) to terminal
+    UART1_Write_Text("Force applied to tip of finger:                ");
+    UART1_Write_Text(toStr);
+    UART1_Write_Text("\n\n\n\r");
 
     terminal_print_count = 0;                                                   // Reset counter for terminal printing
 }

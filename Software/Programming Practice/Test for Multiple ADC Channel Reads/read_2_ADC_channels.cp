@@ -3,19 +3,19 @@
 unsigned int channel1_value;
 unsigned int channel2_value;
 
-unsigned int THRESHOLD = 200;
+unsigned int THRESHOLD = 100;
 
 
 
 void main() {
 
  GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_LOW);
+ GPIOD_ODR = 0x0000;
 
 
 
 
-
- ADC_Set_Input_Channel(_ADC_CHANNEL_1);
+ ADC_Set_Input_Channel(_ADC_CHANNEL_3);
  ADC1_Init();
 
 
@@ -25,7 +25,7 @@ void main() {
  while(1)
  {
 
- channel2_value = ADC1_Get_Sample(1);
+ channel2_value = ADC1_Get_Sample(3);
 
  delay_ms(100);
 

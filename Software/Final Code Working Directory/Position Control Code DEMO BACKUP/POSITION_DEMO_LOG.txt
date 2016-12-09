@@ -1,0 +1,2030 @@
+
+Program Has Started!
+UART Init Complete
+
+
+Program Has Started!
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):          0
+Direction of movement:             EXTEND 
+Position of finger:                          0
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        991
+Direction of movement:             CONTRACT 
+Position of finger:                         90
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1018
+Direction of movement:             CONTRACT 
+Position of finger:                        553
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        915
+Direction of movement:             CONTRACT 
+Position of finger:                       1381
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        941
+Direction of movement:             CONTRACT 
+Position of finger:                       1846
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        935
+Direction of movement:             CONTRACT 
+Position of finger:                       2312
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        938
+Direction of movement:             CONTRACT 
+Position of finger:                       2878
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        969
+Direction of movement:             EXTEND 
+Position of finger:                       2700
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1012
+Direction of movement:             EXTEND 
+Position of finger:                       2120
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1030
+Direction of movement:             EXTEND 
+Position of finger:                       1630
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1062
+Direction of movement:             EXTEND 
+Position of finger:                       1139
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        964
+Direction of movement:             EXTEND 
+Position of finger:                        649
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        855
+Direction of movement:             CONTRACT 
+Position of finger:                        403
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        882
+Direction of movement:             CONTRACT 
+Position of finger:                        870
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        866
+Direction of movement:             CONTRACT 
+Position of finger:                       1337
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        859
+Direction of movement:             CONTRACT 
+Position of finger:                       1804
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        892
+Direction of movement:             CONTRACT 
+Position of finger:                       2273
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        852
+Direction of movement:             CONTRACT 
+Position of finger:                       2932
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        960
+Direction of movement:             EXTEND 
+Position of finger:                       2692
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        948
+Direction of movement:             EXTEND 
+Position of finger:                       2204
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        906
+Direction of movement:             EXTEND 
+Position of finger:                       1519
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1070
+Direction of movement:             EXTEND 
+Position of finger:                        935
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        932
+Direction of movement:             EXTEND 
+Position of finger:                        350
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        888
+Direction of movement:             CONTRACT 
+Position of finger:                         16
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        879
+Direction of movement:             CONTRACT 
+Position of finger:                        854
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        875
+Direction of movement:             CONTRACT 
+Position of finger:                       1316
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        840
+Direction of movement:             CONTRACT 
+Position of finger:                       1779
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        913
+Direction of movement:             CONTRACT 
+Position of finger:                       2982
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        946
+Direction of movement:             EXTEND 
+Position of finger:                       2456
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        909
+Direction of movement:             EXTEND 
+Position of finger:                       1970
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1041
+Direction of movement:             EXTEND 
+Position of finger:                       1385
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        905
+Direction of movement:             EXTEND 
+Position of finger:                        603
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        817
+Direction of movement:             CONTRACT 
+Position of finger:                        -22
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        887
+Direction of movement:             CONTRACT 
+Position of finger:                        442
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1026
+Direction of movement:             CONTRACT 
+Position of finger:                       1003
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        979
+Direction of movement:             CONTRACT 
+Position of finger:                       1652
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        990
+Direction of movement:             CONTRACT 
+Position of finger:                       2120
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        862
+Direction of movement:             CONTRACT 
+Position of finger:                       2682
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        919
+Direction of movement:             EXTEND 
+Position of finger:                       2889
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        921
+Direction of movement:             EXTEND 
+Position of finger:                       2205
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1031
+Direction of movement:             EXTEND 
+Position of finger:                       1622
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1030
+Direction of movement:             EXTEND 
+Position of finger:                        939
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1029
+Direction of movement:             EXTEND 
+Position of finger:                        449
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1009
+Direction of movement:             CONTRACT 
+Position of finger:                        305
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        988
+Direction of movement:             CONTRACT 
+Position of finger:                        772
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1022
+Direction of movement:             CONTRACT 
+Position of finger:                       1425
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1016
+Direction of movement:             CONTRACT 
+Position of finger:                       1895
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1015
+Direction of movement:             CONTRACT 
+Position of finger:                       2553
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1029
+Direction of movement:             CONTRACT 
+Position of finger:                       3024
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        921
+Direction of movement:             EXTEND 
+Position of finger:                       2376
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        979
+Direction of movement:             EXTEND 
+Position of finger:                       1786
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        958
+Direction of movement:             EXTEND 
+Position of finger:                       1298
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        931
+Direction of movement:             EXTEND 
+Position of finger:                        812
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        952
+Direction of movement:             EXTEND 
+Position of finger:                        326
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1016
+Direction of movement:             CONTRACT 
+Position of finger:                        555
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        957
+Direction of movement:             CONTRACT 
+Position of finger:                       1024
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        891
+Direction of movement:             CONTRACT 
+Position of finger:                       1583
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        918
+Direction of movement:             CONTRACT 
+Position of finger:                       2054
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        986
+Direction of movement:             CONTRACT 
+Position of finger:                       2625
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        993
+Direction of movement:             EXTEND 
+Position of finger:                       2933
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        933
+Direction of movement:             EXTEND 
+Position of finger:                       2445
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        932
+Direction of movement:             EXTEND 
+Position of finger:                       1960
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        942
+Direction of movement:             EXTEND 
+Position of finger:                       1474
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        987
+Direction of movement:             EXTEND 
+Position of finger:                        988
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1016
+Direction of movement:             EXTEND 
+Position of finger:                        500
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1069
+Direction of movement:             EXTEND 
+Position of finger:                         10
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1009
+Direction of movement:             CONTRACT 
+Position of finger:                        316
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        909
+Direction of movement:             CONTRACT 
+Position of finger:                       1152
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        983
+Direction of movement:             CONTRACT 
+Position of finger:                       1622
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1012
+Direction of movement:             CONTRACT 
+Position of finger:                       2093
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        959
+Direction of movement:             CONTRACT 
+Position of finger:                       2750
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        953
+Direction of movement:             EXTEND 
+Position of finger:                       2581
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        996
+Direction of movement:             EXTEND 
+Position of finger:                       1795
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        939
+Direction of movement:             EXTEND 
+Position of finger:                       1308
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1009
+Direction of movement:             EXTEND 
+Position of finger:                        727
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1071
+Direction of movement:             EXTEND 
+Position of finger:                        236
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        975
+Direction of movement:             CONTRACT 
+Position of finger:                        100
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        854
+Direction of movement:             CONTRACT 
+Position of finger:                        658
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        900
+Direction of movement:             CONTRACT 
+Position of finger:                       1125
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        901
+Direction of movement:             CONTRACT 
+Position of finger:                       1592
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        950
+Direction of movement:             CONTRACT 
+Position of finger:                       2061
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        965
+Direction of movement:             CONTRACT 
+Position of finger:                       2531
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        984
+Direction of movement:             CONTRACT 
+Position of finger:                       2999
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        965
+Direction of movement:             EXTEND 
+Position of finger:                       2672
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1014
+Direction of movement:             EXTEND 
+Position of finger:                       2091
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        993
+Direction of movement:             EXTEND 
+Position of finger:                       1214
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1019
+Direction of movement:             EXTEND 
+Position of finger:                        726
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1071
+Direction of movement:             EXTEND 
+Position of finger:                        236
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        983
+Direction of movement:             CONTRACT 
+Position of finger:                        100
+
+
+
+
+
+
+
+
+
+UART Init Complete
+
+
+Program Has Started!
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1041
+Direction of movement:             CONTRACT 
+Position of finger:                        286
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        849
+Direction of movement:             CONTRACT 
+Position of finger:                        848
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        999
+Direction of movement:             CONTRACT 
+Position of finger:                       1412
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1004
+Direction of movement:             CONTRACT 
+Position of finger:                       2065
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1001
+Direction of movement:             CONTRACT 
+Position of finger:                       2530
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        250
+Direction of movement:             CONTRACT 
+Position of finger:                       2749
+
+
+
+
+
+
+
+
+
+UART Init Complete
+
+
+Program Has Started!
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1029
+Direction of movement:             EXTEND 
+Position of finger:                       -292
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        942
+Direction of movement:             EXTEND 
+Position of finger:                       -774
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        907
+Direction of movement:             EXTEND 
+Position of finger:                      -1256
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1011
+Direction of movement:             EXTEND 
+Position of finger:                      -2029
+
+
+
+
+
+
+
+
+

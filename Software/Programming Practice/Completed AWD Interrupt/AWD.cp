@@ -31,9 +31,6 @@ void main() {
  motor_1_pwm_init();
  InitTimer3();
 
- UART1_Init(115200);
- delay_ms(100);
- UART1_Write_Text("Started \n");
 
 
  Timer4_init();
@@ -44,7 +41,7 @@ void main() {
  GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_1);
 
 
- ADC_Set_Input_Channel(_ADC_CHANNEL_4 | _ADC_CHANNEL_3);
+ ADC_Set_Input_Channel(_ADC_CHANNEL_3);
  ADC1_Init();
 
 
@@ -61,6 +58,10 @@ void main() {
  NVIC_IntEnable(IVT_INT_ADC);
 
 
+ UART1_Init(115200);
+ delay_ms(100);
+ UART1_Write_Text("\r\nStarted \n");
+
  while(1){
  if (analogGo) {
  analogGo = 0;
@@ -73,7 +74,7 @@ void main() {
  MPV = ADC1_Get_Sample(4);
  UART1_Write_Text("\n\nFlexiforce reading = ");
  IntToStr(MPV, ToStr);
-
+ UART1_Write_Text(ToStr);
  }
  GPIOD_ODR = ADC1_Get_Sample(3);
  Delay_ms(20);

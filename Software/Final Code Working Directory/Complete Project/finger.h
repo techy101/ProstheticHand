@@ -117,7 +117,7 @@ struct finger {
 	unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz) (Used in future for motor_speed_actual conversion)
 	long double input_sig_period;                                           // Period of motor encoder signal (in ms)
 	float motor_torque;														// Motor torque as measured by motor driver current 
-	float tip_force;														// Force applied at flexiforce sensor on fingertip 
+	unsigned int tip_force;													// Force applied at flexiforce sensor on fingertip - CHANGED BY RM FROM FLOAT 12/9
 };
 
 

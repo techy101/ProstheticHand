@@ -37,10 +37,7 @@ void main() {
      motor_1_init();                // Initialize hardware for motor 1
      motor_1_pwm_init();            // Initialize PWM for motor 1
      InitTimer3();                  // Timer3 init
-     
-     UART1_Init(115200);
-     delay_ms(100);
-     UART1_Write_Text("\r\nStarted \n");
+
      
      // set up 10 Hz timer
      Timer4_init();
@@ -51,7 +48,7 @@ void main() {
      GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_1);  //Pin 1 (output)
      
      /* ------------ ADC Initialization ------------ */
-     ADC_Set_Input_Channel(_ADC_CHANNEL_4 | _ADC_CHANNEL_3);     // Set active ADC channels
+     ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channels
      ADC1_Init();                                                // Initialize ADC1
 
      /* ------------ AWD Initialization ------------ */
@@ -67,6 +64,10 @@ void main() {
      ADC1_CR1bits.AWDIE = 1;      // Enable analog watchdog interrupt
      NVIC_IntEnable(IVT_INT_ADC); // Enable global ADC interrupt
      
+
+     UART1_Init(115200);
+     delay_ms(100);
+     UART1_Write_Text("\r\nStarted \n");
      
      while(1){
          if (analogGo) {

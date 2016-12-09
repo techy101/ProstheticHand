@@ -1,0 +1,1083 @@
+UART Init Complete
+
+
+Program Has Started!
+
+
+************* PV stabilized at    175
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
+UART Init Complete
+
+
+Program Has Started!
+
+
+************* PV stabilized at    173
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        949
+Direction of movement:             EXTEND 
+Position of finger:                         -1
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        920
+Direction of movement:             CONTRACT 
+Position of finger:                        173
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        963
+Direction of movement:             CONTRACT 
+Position of finger:                        370
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1034
+Direction of movement:             CONTRACT 
+Position of finger:                        566
+
+
+Force applied to tip of finger:                   213
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1018
+Direction of movement:             CONTRACT 
+Position of finger:                        772
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        981
+Direction of movement:             CONTRACT 
+Position of finger:                        967
+
+
+Force applied to tip of finger:                   213
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        979
+Direction of movement:             CONTRACT 
+Position of finger:                       1184
+
+
+Force applied to tip of finger:                   213
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        916
+Direction of movement:             CONTRACT 
+Position of finger:                       1382
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        887
+Direction of movement:             CONTRACT 
+Position of finger:                       1591
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        880
+Direction of movement:             CONTRACT 
+Position of finger:                       1792
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        911
+Direction of movement:             CONTRACT 
+Position of finger:                       1993
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        948
+Direction of movement:             CONTRACT 
+Position of finger:                       2193
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        862
+Direction of movement:             CONTRACT 
+Position of finger:                       2396
+
+
+Force applied to tip of finger:                   201
+
+
+
+
+
+
+
+
+
+
+
+************* PV stabilized at    189
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        981
+Direction of movement:             EXTEND 
+Position of finger:                         -1
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        960
+Direction of movement:             CONTRACT 
+Position of finger:                        159
+
+
+Force applied to tip of finger:                   208
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1016
+Direction of movement:             CONTRACT 
+Position of finger:                        357
+
+
+Force applied to tip of finger:                   214
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1024
+Direction of movement:             CONTRACT 
+Position of finger:                        564
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        975
+Direction of movement:             CONTRACT 
+Position of finger:                        761
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        921
+Direction of movement:             CONTRACT 
+Position of finger:                        959
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        911
+Direction of movement:             CONTRACT 
+Position of finger:                       1159
+
+
+Force applied to tip of finger:                   207
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        895
+Direction of movement:             CONTRACT 
+Position of finger:                       1360
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        907
+Direction of movement:             CONTRACT 
+Position of finger:                       1570
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        911
+Direction of movement:             CONTRACT 
+Position of finger:                       1772
+
+
+Force applied to tip of finger:                   212
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1005
+Direction of movement:             CONTRACT 
+Position of finger:                       1972
+
+
+Force applied to tip of finger:                   218
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1028
+Direction of movement:             CONTRACT 
+Position of finger:                       2172
+
+
+Force applied to tip of finger:                   208
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1021
+Direction of movement:             CONTRACT 
+Position of finger:                       2371
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        445
+Direction of movement:             CONTRACT 
+Position of finger:                       2513
+
+
+Force applied to tip of finger:                   216
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        127
+Direction of movement:             CONTRACT 
+Position of finger:                       2584
+
+
+Force applied to tip of finger:                   207
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):         90
+Direction of movement:             CONTRACT 
+Position of finger:                       2591
+
+
+Force applied to tip of finger:                   205
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):         90
+Direction of movement:             CONTRACT 
+Position of finger:                       2591
+
+
+Force applied to tip of finger:                   203
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):         90
+Direction of movement:             CONTRACT 
+Position of finger:                       2591
+
+
+Force applied to tip of finger:                   200
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):         90
+Direction of movement:             CONTRACT 
+Position of finger:                       2591
+
+
+Force applied to tip of finger:                   203
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):         90
+Direction of movement:             CONTRACT 
+Position of finger:                       2591
+
+
+Force applied to tip of finger:                   199
+
+
+
+
+
+
+
+
+
+
+
+************* PV stabilized at    181
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        949
+Direction of movement:             EXTEND 
+Position of finger:                         -1
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        980
+Direction of movement:             CONTRACT 
+Position of finger:                        152
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1035
+Direction of movement:             CONTRACT 
+Position of finger:                        346
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        960
+Direction of movement:             CONTRACT 
+Position of finger:                        542
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        955
+Direction of movement:             CONTRACT 
+Position of finger:                        748
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        972
+Direction of movement:             CONTRACT 
+Position of finger:                        993
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        932
+Direction of movement:             CONTRACT 
+Position of finger:                       1200
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        867
+Direction of movement:             CONTRACT 
+Position of finger:                       1400
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        886
+Direction of movement:             CONTRACT 
+Position of finger:                       1600
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        889
+Direction of movement:             CONTRACT 
+Position of finger:                       1854
+
+
+Force applied to tip of finger:                   212
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        873
+Direction of movement:             CONTRACT 
+Position of finger:                       2055
+
+
+Force applied to tip of finger:                   208
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        917
+Direction of movement:             CONTRACT 
+Position of finger:                       2257
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        844
+Direction of movement:             CONTRACT 
+Position of finger:                       2454
+
+
+Force applied to tip of finger:                   204
+
+
+
+
+
+
+
+
+
+
+
+************* PV stabilized at    188
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        904
+Direction of movement:             EXTEND 
+Position of finger:                         -1
+
+
+Force applied to tip of finger:                   212
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1019
+Direction of movement:             CONTRACT 
+Position of finger:                        184
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1023
+Direction of movement:             CONTRACT 
+Position of finger:                        390
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1005
+Direction of movement:             CONTRACT 
+Position of finger:                        585
+
+
+Force applied to tip of finger:                   211
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        953
+Direction of movement:             CONTRACT 
+Position of finger:                        783
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        882
+Direction of movement:             CONTRACT 
+Position of finger:                        983
+
+
+Force applied to tip of finger:                   213
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        894
+Direction of movement:             CONTRACT 
+Position of finger:                       1183
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        890
+Direction of movement:             CONTRACT 
+Position of finger:                       1402
+
+
+Force applied to tip of finger:                   210
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        906
+Direction of movement:             CONTRACT 
+Position of finger:                       1612
+
+
+Force applied to tip of finger:                   206
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        923
+Direction of movement:             CONTRACT 
+Position of finger:                       1831
+
+
+Force applied to tip of finger:                   212
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        981
+Direction of movement:             CONTRACT 
+Position of finger:                       2032
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):        995
+Direction of movement:             CONTRACT 
+Position of finger:                       2231
+
+
+Force applied to tip of finger:                   209
+
+
+
+
+
+
+
+
+
+
+Finger Name: fngr_pointer
+Frequency of incoming signal (Hz):       1001
+Direction of movement:             CONTRACT 
+Position of finger:                       2429
+
+
+Force applied to tip of finger:                   208
+
+
+
+
+
+
+
+
+
+
+
+************* PV stabilized at    188
+***************** Setpoint was    180
+
+
+
+
+***************** New setpoint =    180
+
+
+
