@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=1
 [ACTIVE_TAB]
-Value=read_2_ADC_channels.c
+Value=Input Capture Complete 5ch.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -17,7 +17,7 @@ Value=0
 Value=
 [FILES]
 Count=1
-File0=read_2_ADC_channels.c
+File0=Input Capture Complete 5ch.c
 [BINARIES]
 Count=0
 [IMAGES]
@@ -25,7 +25,7 @@ Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
 Count=1
-File0=read_2_ADC_channels.c
+File0=Input Capture Complete 5ch.c
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -33,11 +33,12 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=4
+Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path2=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Test for Multiple ADC Channel Reads\
-Path3=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
+Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Position Control Code DEMO BACKUP\
+Path3=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
+Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
 Count=0
 [HEADERS]
@@ -45,11 +46,14 @@ Count=0
 [PLDS]
 Count=0
 [Useses]
-Count=4
+Count=7
 File0=UART
 File1=Conversions
 File2=C_String
-File3=ADC
+File3=PWM
+File4=C_Stdlib
+File5=C_Type
+File6=ADC
 [EXPANDED_NODES]
 Node0=Sources
 Count=1

@@ -121,9 +121,9 @@ void init_finger(struct finger *fngr) {
 		PWM_TIM1_Start(POINTER_PWM, &_GPIO_MODULE_TIM1_CH1_PE9);       				// Start PWM
 		
 		// Configure flexiforce sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_POINTER_TIP_FORCE);
 		//Configure motor driver current sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_POINTER_ISENSE);
 	}
 	
 	else if (strcmp(fngr->name, "fngr_middle") == 0) {
@@ -145,9 +145,9 @@ void init_finger(struct finger *fngr) {
 		PWM_TIM1_Start(MIDDLE_PWM, &_GPIO_MODULE_TIM1_CH2_PE11);       				// Start PWM
 		
 		// Configure flexiforce sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_MIDDLE_TIP_FORCE);
 		//Configure motor driver current sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_MIDDLE_ISENSE);
 	}
 
 	//Ring Finger
@@ -169,9 +169,9 @@ void init_finger(struct finger *fngr) {
 		PWM_TIM1_Start(RING_PWM, &_GPIO_MODULE_TIM1_CH3_PE13);       				// Start PWM
 
 		// Configure flexiforce sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_RING_TIP_FORCE);
 		//Configure motor driver current sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_RING_ISENSE);
 	}
 
 	//Pinky 
@@ -194,9 +194,9 @@ void init_finger(struct finger *fngr) {
 		PWM_TIM1_Start(PINKY_PWM, &_GPIO_MODULE_TIM1_CH4_PE14);       				// Start PWM
 
 		// Configure flexiforce sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_PINKY_TIP_FORCE);
 		//Configure motor driver current sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_PINKY_ISENSE);
 	}
 
 	//Thumb
@@ -219,9 +219,9 @@ void init_finger(struct finger *fngr) {
 		PWM_TIM4_Start(THUMB_PWM, &_GPIO_MODULE_TIM4_CH1_PB6);       				// Start PWM
 
 		// Configure flexiforce sensor 
-		
+		 ADC_Set_Input_Channel(CHANNEL_ADC_THUMB_TIP_FORCE);                    // set up for Flexiforce input
 		//Configure motor driver current sensor 
-		
+		ADC_Set_Input_Channel(CHANNEL_ADC_THUMB_ISENSE);
 	}
 
 
@@ -627,6 +627,26 @@ void timer3_ISR() iv IVT_INT_TIM3 {
         fngr_pinky.enc_chan_b = PINKY_ENCODER_B;                                // Sample the second encoder channel state (For direction)
         fngr_pinky.position_temp++;                                             // Increment total input capture event counter
     }
-}                                                                
+	
+	
+}           
+ // ADC INTERRUPT HANDLER
+void ADC_AWD() iv IVT_INT_ADC ics ICS_AUTO {
+      ADC1_CR1bits.AWDIE = 0;       // Disabling analog interrupt (disable)
+      ADC1_SRbits.AWD = 0;          // Reset status bit
+      if(ADC1_HTR <= 1000) {
+            TIM3_SR.UIF = 0;        // Clear timer 3 interrupt bit
+            TIM3_CNT = 0x00;        // Reset timer value to 0
+            ADC1_HTR = high_level2; // Set high threshold to MAX
+            ADC1_LTR = low_level2;  // Set high threshold to 400
+            TIM3_DIER.UIE = 1;      // CC1 Update Interrupt Enable
+      }else {
+            TIM3_DIER.UIE = 0;      // Disable timer interrupt
+            ADC1_HTR = high_level;  // Set high threshold to 400
+            ADC1_LTR = low_level;   // Set low threshold to 0
+            }
+      ADC1_CR1bits.AWDIE = 1;       //Enable analog interrupt (enabled)
+}
+                                                     
 
 

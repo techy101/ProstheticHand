@@ -36,7 +36,7 @@ Count=0
 Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Position Control Code\
+Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Position control Code 3 fingers USE FOR DEMO\
 Path3=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
 Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
@@ -54,8 +54,7 @@ File3=PWM
 File4=C_Stdlib
 File5=C_Type
 [EXPANDED_NODES]
-Node0=Sources
-Count=1
+Count=0
 [PROGRAMMER_OPTIONS]
 Value=JTAG
 [PROGRAMMER_TYPE]

@@ -56,6 +56,15 @@
 #define UART_BAUD_RATE                                   115200                 // UART Baud rate
 
 
+/* ------- DEFINE ANALOG WATCHDOG STUFFS --------*/
+// Define variables 1 (mode = 0)
+#define high_level        400
+#define low_level         0
+// Define variable 2  (mode = 1)
+#define high_level2        4095
+#define low_level2         400
+
+
 /*****************  Constants  ******************/
 unsigned long MCU_FREQUENCY = 168000000;                                        // Microcontroller clock speed in Hz
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
@@ -79,6 +88,8 @@ unsigned int poll_flag;                                                         
 unsigned int terminal_print_count;                                              // ** DEBUG ** Flag to print statistics to terminal (via UART)
 unsigned long tim2_overflow_count;                                              // Overflow counter for timer 2
 unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
+int analogGo = 0;
+int goStatus = 0;
 
 // NEW
 unsigned int pwm_period;                                                        // Base timer period of PWM - needed for duty cycle calculations
@@ -94,7 +105,9 @@ void init_timer11();                                                            
 void calc_finger_state(struct finger *fngr);                                    // Function to determine state of finger
 void print_finger_info(struct finger *fngr);                                    // Function to print finger state info to terminal
 void calc_timer_values(struct finger *fngr);                                    // Function to calculate motor speed, etc...
-
+void ADC_AWD();               // ADC interrupt handler
+void InitTimer5();            // Timer 5 init
+void Timer5_interrupt();      // Timer 5 interrupt handler
 
 // NEW
 void init_pointer_PWM();
@@ -155,6 +168,26 @@ void main() {
         init_UART();                                                            // Configure and Initialize UART serial communications
         init_GPIO();                                                            // Configure MCU I/O
         init_pointer_PWM();
+
+        // Initialize stuff for AWD
+        InitTimer5();                  // Timer3 init
+
+        /* ------------ ADC Initialization ------------ */
+     ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channels
+     ADC1_Init();                                                // Initialize ADC1
+
+     /* ------------ AWD Initialization ------------ */
+     ADC1_LTR = low_level;        // Set AWD guard window initial lower threshold
+     ADC1_HTR = high_level;       // Set AWD guard window initial upper threshold
+     ADC1_CR2bits.CONT = 1;       // Enable ADC1 continuous conversion mode
+     ADC1_SQR3bits.SQ1 = 3;       // Set first channel in continuous coversion sequence to channel 3
+     ADC1_SQR3bits.SQ2 = 4;       // Set second channel in continuous coversion sequence to channel 4 - NEW
+     ADC1_CR1bits.AWDSGL = 1;     // Enable single channel monitoring mode for AWD
+     ADC1_CR1 |= 3;               // Set channel 3 as the single monitored AWD channel
+     ADC1_CR1bits.AWDEN = 1;      // Enable Analog watchdog on regular channels
+     ADC1_CR2bits.SWSTART = 1;    // Start ADC1 Conversions
+     ADC1_CR1bits.AWDIE = 1;      // Enable analog watchdog interrupt
+     NVIC_IntEnable(IVT_INT_ADC); // Enable global ADC interrupt
 
         // Define names of finger struct instances
         strcpy(fngr_pointer.name, "fngr_pointer");
@@ -369,6 +402,9 @@ void init_GPIO() {
     // NEW: for motor control
     GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);                         // Pointer direction
     GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_0);                          // Motor enable: may not use in this test
+    
+    // For AWD Debug light
+    GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_1);                          // For awd debug test
 }
 
 
@@ -578,4 +614,46 @@ void print_finger_info( struct finger *fngr) {
     UART1_Write_Text("\n\n\n\r");        
 
     terminal_print_count = 0;                                                   // Reset counter for terminal printing
+}
+
+
+
+
+// ADC INTERRUPT HANDLER
+void ADC_AWD() iv IVT_INT_ADC ics ICS_AUTO {
+      ADC1_CR1bits.AWDIE = 0;       // Disabling analog interrupt (disable)
+      ADC1_SRbits.AWD = 0;          // Reset status bit
+      if(ADC1_HTR <= 1000) {
+            TIM5_SR.UIF = 0;        // Clear timer 3 interrupt bit
+            TIM5_CNT = 0x00;        // Reset timer value to 0
+            ADC1_HTR = high_level2; // Set high threshold to MAX
+            ADC1_LTR = low_level2;  // Set high threshold to 400
+            TIM5_DIER.UIE = 1;      // CC1 Update Interrupt Enable
+      }else {
+            TIM5_DIER.UIE = 0;      // Disable timer interrupt
+            ADC1_HTR = high_level;  // Set high threshold to 400
+            ADC1_LTR = low_level;   // Set low threshold to 0
+            }
+      ADC1_CR1bits.AWDIE = 1;       //Enable analog interrupt (enabled)
+}
+
+
+// TIMER5 INTERRUPT ( 3 seconds )
+void InitTimer5(){
+     RCC_APB1ENR.TIM5EN = 1;        // Enable clock gating for timer module 3
+     TIM5_CR1.CEN = 0;              // Disable timer/counter
+     TIM5_PSC = 7874;               // Set timer 3 prescaler (need to determine value)
+     TIM5_ARR = 63999;              // Set timer 3 overflow value at max
+     NVIC_IntEnable(IVT_INT_TIM5);  // Enable timer 3 interrupt
+     TIM5_CR1.CEN = 1;              // Enable timer/counter
+}
+
+// TIMER5 INTERRUPT HANDLER
+void Timer5_interrupt() iv IVT_INT_TIM5 { // Interrupt handler if 6 s have past
+     TIM5_SR.UIF = 0;                     // Clear timer 3 interrupt bit
+     ADC1_HTR = high_level;               // Set high threshold to 400
+     ADC1_LTR = low_level;                // Set low threshold to 0
+     TIM5_DIER.UIE = 0;                   // Disable timer interrupt
+     analogGo = 1;
+     GPIOD_ODR.B1 = 1;                              //DEBUG
 }

@@ -6,44 +6,30 @@ MOVW	R1, #255
 MOVW	R0, #lo_addr(GPIOD_BASE+0)
 MOVT	R0, #hi_addr(GPIOD_BASE+0)
 BL	_GPIO_Digital_Output+0
-;read_2_ADC_channels.c,12 :: 		GPIOD_ODR = 0x0000;              // init all to 0
-MOVS	R1, #0
-MOVW	R0, #lo_addr(GPIOD_ODR+0)
-MOVT	R0, #hi_addr(GPIOD_ODR+0)
-STR	R1, [R0, #0]
-;read_2_ADC_channels.c,15 :: 		ADC_Set_Input_Channel(_ADC_CHANNEL_7);                    // set up for 1 input - 16-bit ADC
-MOVW	R0, #128
+;read_2_ADC_channels.c,17 :: 		ADC_Set_Input_Channel(_ADC_CHANNEL_1);                    // set up for 2 input
+MOVW	R0, #2
 BL	_ADC_Set_Input_Channel+0
-;read_2_ADC_channels.c,16 :: 		ADC_Set_Input_Channel(_ADC_CHANNEL_3);                    // set up for 2 input
-MOVW	R0, #8
-BL	_ADC_Set_Input_Channel+0
-;read_2_ADC_channels.c,17 :: 		ADC1_Init();
+;read_2_ADC_channels.c,18 :: 		ADC1_Init();
 BL	_ADC1_Init+0
-;read_2_ADC_channels.c,20 :: 		channel1_value = 0;
+;read_2_ADC_channels.c,21 :: 		channel1_value = 0;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_channel1_value+0)
 MOVT	R0, #hi_addr(_channel1_value+0)
 STRH	R1, [R0, #0]
-;read_2_ADC_channels.c,21 :: 		channel2_value = 0;
+;read_2_ADC_channels.c,22 :: 		channel2_value = 0;
 MOVS	R1, #0
 MOVW	R0, #lo_addr(_channel2_value+0)
 MOVT	R0, #hi_addr(_channel2_value+0)
 STRH	R1, [R0, #0]
-;read_2_ADC_channels.c,23 :: 		while(1)
+;read_2_ADC_channels.c,24 :: 		while(1)
 L_main0:
-;read_2_ADC_channels.c,25 :: 		channel1_value = ADC1_Get_Sample(7);
-MOVS	R0, #7
-BL	_ADC1_Get_Sample+0
-MOVW	R1, #lo_addr(_channel1_value+0)
-MOVT	R1, #hi_addr(_channel1_value+0)
-STRH	R0, [R1, #0]
-;read_2_ADC_channels.c,26 :: 		channel2_value = ADC1_Get_Sample(3);
-MOVS	R0, #3
+;read_2_ADC_channels.c,27 :: 		channel2_value = ADC1_Get_Sample(1);         // Pin A3 - Thumb Flexiforce
+MOVS	R0, #1
 BL	_ADC1_Get_Sample+0
 MOVW	R1, #lo_addr(_channel2_value+0)
 MOVT	R1, #hi_addr(_channel2_value+0)
 STRH	R0, [R1, #0]
-;read_2_ADC_channels.c,28 :: 		delay_ms(100);		// wait a little between tests
+;read_2_ADC_channels.c,29 :: 		delay_ms(100);                // wait a little between tests
 MOVW	R7, #29438
 MOVT	R7, #85
 NOP
@@ -54,33 +40,7 @@ BNE	L_main2
 NOP
 NOP
 NOP
-;read_2_ADC_channels.c,31 :: 		if(channel1_value > THRESHOLD)		// some threshold
-MOVW	R0, #lo_addr(_THRESHOLD+0)
-MOVT	R0, #hi_addr(_THRESHOLD+0)
-LDRH	R1, [R0, #0]
-MOVW	R0, #lo_addr(_channel1_value+0)
-MOVT	R0, #hi_addr(_channel1_value+0)
-LDRH	R0, [R0, #0]
-CMP	R0, R1
-IT	LS
-BLS	L_main4
-;read_2_ADC_channels.c,32 :: 		GPIOD_ODR.B0 = 1;              // Turn on D0
-MOVS	R1, #1
-SXTB	R1, R1
-MOVW	R0, #lo_addr(GPIOD_ODR+0)
-MOVT	R0, #hi_addr(GPIOD_ODR+0)
-STR	R1, [R0, #0]
-IT	AL
-BAL	L_main5
-L_main4:
-;read_2_ADC_channels.c,34 :: 		GPIOD_ODR.B0 = 0;              // Turn off D0
-MOVS	R1, #0
-SXTB	R1, R1
-MOVW	R0, #lo_addr(GPIOD_ODR+0)
-MOVT	R0, #hi_addr(GPIOD_ODR+0)
-STR	R1, [R0, #0]
-L_main5:
-;read_2_ADC_channels.c,36 :: 		if(channel2_value > THRESHOLD)		// some threshold
+;read_2_ADC_channels.c,37 :: 		if(channel2_value > THRESHOLD)                // some threshold
 MOVW	R0, #lo_addr(_THRESHOLD+0)
 MOVT	R0, #hi_addr(_THRESHOLD+0)
 LDRH	R1, [R0, #0]
@@ -89,27 +49,27 @@ MOVT	R0, #hi_addr(_channel2_value+0)
 LDRH	R0, [R0, #0]
 CMP	R0, R1
 IT	LS
-BLS	L_main6
-;read_2_ADC_channels.c,37 :: 		GPIOD_ODR.B1 = 1;              // Turn on D1
+BLS	L_main4
+;read_2_ADC_channels.c,38 :: 		GPIOD_ODR.B1 = 1;              // Turn on D1
 MOVS	R1, #1
 SXTB	R1, R1
 MOVW	R0, #lo_addr(GPIOD_ODR+0)
 MOVT	R0, #hi_addr(GPIOD_ODR+0)
 STR	R1, [R0, #0]
 IT	AL
-BAL	L_main7
-L_main6:
-;read_2_ADC_channels.c,39 :: 		GPIOD_ODR.B1 = 0;              // Turn off D1
+BAL	L_main5
+L_main4:
+;read_2_ADC_channels.c,40 :: 		GPIOD_ODR.B1 = 0;              // Turn off D1
 MOVS	R1, #0
 SXTB	R1, R1
 MOVW	R0, #lo_addr(GPIOD_ODR+0)
 MOVT	R0, #hi_addr(GPIOD_ODR+0)
 STR	R1, [R0, #0]
-L_main7:
-;read_2_ADC_channels.c,40 :: 		}
+L_main5:
+;read_2_ADC_channels.c,41 :: 		}
 IT	AL
 BAL	L_main0
-;read_2_ADC_channels.c,41 :: 		}
+;read_2_ADC_channels.c,42 :: 		}
 L_end_main:
 L__main_end_loop:
 B	L__main_end_loop

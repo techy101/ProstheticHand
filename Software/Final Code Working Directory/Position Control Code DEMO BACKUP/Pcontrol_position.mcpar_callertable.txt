@@ -1,4 +1,5 @@
 main
+	NVIC_IntEnable
 	__CC2DW
 	__FillZeros
 	init_UART
@@ -38,6 +39,14 @@ main
 		PWM_TIM1_Start
 			PWM_TIMx_Start
 				GPIO_Alternate_Function_Enable
+	InitTimer5
+		NVIC_IntEnable
+	ADC_Set_Input_Channel
+		GPIO_Analog_Input
+			GPIO_Config
+	ADC1_Init
+		ADCx_Init
+			RCC_GetClocksFrequency
 	strcpy
 	init_finger
 	UART1_Write_Text
@@ -61,6 +70,8 @@ main
 		LongWordToStr
 		LongToStr
 			LongWordToStr
+ADC_AWD
+Timer5_interrupt
 timer11_ISR
-timer3_ISR
 timer2_ISR
+timer3_ISR

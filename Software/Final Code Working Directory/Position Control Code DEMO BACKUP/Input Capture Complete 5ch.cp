@@ -1,5 +1,5 @@
-#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
-#line 60 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code DEMO BACKUP/Input Capture Complete 5ch.c"
+#line 69 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code DEMO BACKUP/Input Capture Complete 5ch.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
@@ -22,6 +22,8 @@ unsigned int poll_flag;
 unsigned int terminal_print_count;
 unsigned long tim2_overflow_count;
 unsigned long tim3_overflow_count;
+int analogGo = 0;
+int goStatus = 0;
 
 
 unsigned int pwm_period;
@@ -37,7 +39,9 @@ void init_timer11();
 void calc_finger_state(struct finger *fngr);
 void print_finger_info(struct finger *fngr);
 void calc_timer_values(struct finger *fngr);
-
+void ADC_AWD();
+void InitTimer5();
+void Timer5_interrupt();
 
 
 void init_pointer_PWM();
@@ -100,6 +104,26 @@ void main() {
  init_pointer_PWM();
 
 
+ InitTimer5();
+
+
+ ADC_Set_Input_Channel(_ADC_CHANNEL_3);
+ ADC1_Init();
+
+
+ ADC1_LTR =  0 ;
+ ADC1_HTR =  400 ;
+ ADC1_CR2bits.CONT = 1;
+ ADC1_SQR3bits.SQ1 = 3;
+ ADC1_SQR3bits.SQ2 = 4;
+ ADC1_CR1bits.AWDSGL = 1;
+ ADC1_CR1 |= 3;
+ ADC1_CR1bits.AWDEN = 1;
+ ADC1_CR2bits.SWSTART = 1;
+ ADC1_CR1bits.AWDIE = 1;
+ NVIC_IntEnable(IVT_INT_ADC);
+
+
  strcpy(fngr_pointer.name, "fngr_pointer");
  strcpy(fngr_middle.name, "fngr_middle");
  strcpy(fngr_ring.name, "fngr_ring");
@@ -123,13 +147,13 @@ void main() {
  if (poll_flag) {
  poll_flag = 0;
  calc_finger_state(&fngr_pointer);
-#line 220 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+#line 253 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code DEMO BACKUP/Input Capture Complete 5ch.c"
  }
 
  if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
 
  print_finger_info(&fngr_pointer);
-#line 229 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code/Input Capture Complete 5ch.c"
+#line 262 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Position Control Code DEMO BACKUP/Input Capture Complete 5ch.c"
  UART1_Write_Text("\n\n\n\n\n\n\n\r");
  }
  }
@@ -273,6 +297,9 @@ void init_GPIO() {
 
  GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);
  GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_0);
+
+
+ GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_1);
 }
 
 
@@ -482,4 +509,46 @@ void print_finger_info( struct finger *fngr) {
  UART1_Write_Text("\n\n\n\r");
 
  terminal_print_count = 0;
+}
+
+
+
+
+
+void ADC_AWD() iv IVT_INT_ADC ics ICS_AUTO {
+ ADC1_CR1bits.AWDIE = 0;
+ ADC1_SRbits.AWD = 0;
+ if(ADC1_HTR <= 1000) {
+ TIM5_SR.UIF = 0;
+ TIM5_CNT = 0x00;
+ ADC1_HTR =  4095 ;
+ ADC1_LTR =  400 ;
+ TIM5_DIER.UIE = 1;
+ }else {
+ TIM5_DIER.UIE = 0;
+ ADC1_HTR =  400 ;
+ ADC1_LTR =  0 ;
+ }
+ ADC1_CR1bits.AWDIE = 1;
+}
+
+
+
+void InitTimer5(){
+ RCC_APB1ENR.TIM5EN = 1;
+ TIM5_CR1.CEN = 0;
+ TIM5_PSC = 7874;
+ TIM5_ARR = 63999;
+ NVIC_IntEnable(IVT_INT_TIM5);
+ TIM5_CR1.CEN = 1;
+}
+
+
+void Timer5_interrupt() iv IVT_INT_TIM5 {
+ TIM5_SR.UIF = 0;
+ ADC1_HTR =  400 ;
+ ADC1_LTR =  0 ;
+ TIM5_DIER.UIE = 0;
+ analogGo = 1;
+ GPIOD_ODR.B1 = 1;
 }
