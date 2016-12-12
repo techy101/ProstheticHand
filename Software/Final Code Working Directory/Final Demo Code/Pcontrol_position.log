@@ -1,0 +1,113 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -UICD -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\SCSUS\Desktop\Final Demo Code\Pcontrol_position.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\SCSUS\Desktop\Final Demo Code\" -SP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Matthew Position control working\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -IP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Matthew Position control working\" -IP"C:\Users\SCSUS\Desktop\Final Demo Code\" "main.c" "system.c" "finger.c" "emg.c" "uart.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_CType.emcl" "__Lib_CString.emcl" "__Lib_CStdlib.emcl" "__Lib_Conversions.emcl" "__Lib_ADC_123_32F20x_16ch.emcl" "__Lib_PWM_1234589_12_10_11_13_14.emcl" "__Lib_UART_123_45_6.emcl"	 
+hint: 23	1354	 warning: "/*" within comment     /************************  Finger Structure  ************************  s       from C:/Users/SCSUS/Desktop/Final Demo Code/main.c: 3:    #include "finger.h"	c:\users\scsus\desktop\final demo code\finger.h
+hint: 31	1354	 warning: "/*" within comment     /*******************************************************************/     /	c:\users\scsus\desktop\final demo code\finger.h
+diagnostics: 0	122	Compilation Started	system.h
+diagnostics: 196	123	Compiled Successfully	main.c
+hint: 38	1354	 warning: "/*" within comment     /*******************************************************************/    /	C:\Users\SCSUS\Desktop\Final Demo Code\system.c
+hint: 10	1354	 warning: "/*" within comment     /*******************************************************************/    /   FG_PULL_DOWN);	C:\Users\SCSUS\Desktop\Final Demo Code\system.c
+hint: 14	1354	 warning: "/*" within comment     /*******************************************************************/    /     pt enable  ;	C:\Users\SCSUS\Desktop\Final Demo Code\system.c
+hint: 17	1354	 warning: "/*" within comment     /*******************************************************************/    /      // Increment the debug print counter  Unused)  d)  use for now)	C:\Users\SCSUS\Desktop\Final Demo Code\system.c
+diagnostics: 0	122	Compilation Started	system.h
+hint: 0	1004	interrupt handler (sample_timer_ISR at 0x002A)	system.c
+diagnostics: 146	123	Compiled Successfully	system.c
+hint: 23	1354	 warning: "/*" within comment     /************************  Finger Structure  ************************  s       from C:/Users/SCSUS/Desktop/Final Demo Code/finger.c: 1:    #include "finger.h"	c:\users\scsus\desktop\final demo code\finger.h
+hint: 31	1354	 warning: "/*" within comment     /*******************************************************************/     /	c:\users\scsus\desktop\final demo code\finger.h
+hint: 38	1354	 warning: "/*" within comment     /*******************************************************************/	C:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 81	1354	 warning: "/*" within comment     /*******************************************************************/  ODER_TIM_PSC + 1));	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 10	1354	 warning: "/*" within comment     /*******************************************************************/	C:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 262	1354	 warning: "/*" within comment     /*******************************************************************/  ches and calibration are in place ******  , channel 1  CC1S = 01)  OR to TI1)   MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 357	1354	 warning: "/*" within comment     /*******************************************************************/  ar!      // ERROR: Invalid direction state  late new position  1)  OR to TI1)   MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 402	1354	 warning: "/*" within comment     /*******************************************************************/  RT print functions     // set new duty cycle  te new position  1)  OR to TI1)   MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 461	1354	 warning: "/*" within comment     /***************************************************************************/   functions     // set new duty cycle  te new position  1)  OR to TI1)   MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 507	1354	 warning: "/*" within comment     /***************************************************************************/  e  ol  V)	#defûC:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 53	1354	 warning: "/*" within comment     /*******************************************************************/  *****/  e  ol  V)	C:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+hint: 62	1354	 warning: "/*" within comment     /*******************************************************************/	C:\Users\SCSUS\Desktop\Final Demo Code\finger.c
+diagnostics: 0	122	Compilation Started	finger.h
+hint: 408	1163	Variable 'direction_text' has been declared, but not used	finger.c
+hint: 0	1004	interrupt handler (thumb_input_capture_ISR at 0x002D)	finger.c
+error: 552	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 552	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 552	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 552	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 553	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 553	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 554	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 554	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 554	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 554	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 555	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 555	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 556	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 556	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 557	324	Undeclared identifier 'fngr_pointer' in expression	finger.c
+error: 557	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 557	317	Operator '++' is not applicable to these operands ''	finger.c
+error: 563	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 563	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 563	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 563	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 564	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 564	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 565	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 565	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 565	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 565	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 566	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 566	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 567	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 567	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 568	324	Undeclared identifier 'fngr_middle' in expression	finger.c
+error: 568	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 568	317	Operator '++' is not applicable to these operands ''	finger.c
+error: 573	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 573	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 573	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 573	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 574	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 574	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 575	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 575	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 575	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 575	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 576	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 576	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 577	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 577	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 578	324	Undeclared identifier 'fngr_ring' in expression	finger.c
+error: 578	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 578	317	Operator '++' is not applicable to these operands ''	finger.c
+error: 583	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 583	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 583	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 583	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 584	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 584	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 585	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 585	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 585	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 585	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 586	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 586	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 587	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 587	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 588	324	Undeclared identifier 'fngr_pinky' in expression	finger.c
+error: 588	317	Operator '.' is not applicable to these operands ''	finger.c
+error: 588	317	Operator '++' is not applicable to these operands ''	finger.c
+error: 590	312	Internal error ''	finger.c
+hint: 39	1354	 warning: "/*" within comment     /*******************************************************************/    /	C:\Users\SCSUS\Desktop\Final Demo Code\emg.c
+hint: 91	1354	 warning: "/*" within comment     /*******************************************************************/	#defûC:\Users\SCSUS\Desktop\Final Demo Code\emg.c
+hint: 131	1354	 warning: "/*" within comment     /*******************************************************************/      /  ernal interrupt B3 for EMG override button*/  hannel 4 - NEW  switch for MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\emg.c
+diagnostics: 0	122	Compilation Started	emg.h
+hint: 0	1004	interrupt handler (AWD_ISR at 0x0022)	emg.c
+hint: 0	1004	interrupt handler (emg_timer_ISR at 0x0042)	emg.c
+diagnostics: 140	123	Compiled Successfully	emg.c
+hint: 36	1354	 warning: "/*" within comment     /*******************************************************************/	C:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 78	1354	 warning: "/*" within comment     /*******************************************************************/  ===   message to terminal  ODULE_USART2_PD56);	#defûC:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 80	1354	 warning: "/*" within comment     	C:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 11	1354	 warning: "/*" within comment     /*******************************************************************/  E LINES DO LATER*****  al  ODULE_USART2_PD56);	C:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 13	1354	 warning: "/*" within comment     /*******************************************************************/  a in the rx buffer  n we change this name?)  ;	C:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 17	1354	 warning: "/*" within comment     /*******************************************************************/  a in the rx buffer  dler (can we change this name?)  minal  t (home) switch for MIDDLE #define MIDDLE_ENCODER_B	C:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+hint: 203	1354	 warning: "/*" within comment     /*******************************************************************/  e text or data to BOTH UARTs (Text/Data Flag, Text Char array, Data as int)  or MIDDLE #define MIDDLE_ENCODER_B	#defûC:\Users\SCSUS\Desktop\Final Demo Code\uart.c
+diagnostics: 0	122	Compilation Started	uart.h
+diagnostics: 47	123	Compiled Successfully	uart.c
+error: 0	102	Finished (with errors): 12 Dec 2016, 16:58:35	Pcontrol_position.mcpar

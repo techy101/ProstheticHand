@@ -40,19 +40,19 @@
 
 
 //User I/O
-#define GRAB_MODE_BUTTON						GPIOD_IDR.B11					// Input  - D11 - User button to enable Grab mode
-#define GRAB_MODE_LED							GPIOD_ODR.B12					// Output - D12 - LED to indicate hand is in Grab mode
-#define PINCH_MODE_BUTTON						GPIOD_IDR.B7					// Input  - D7  - User button to enable Pinch mode
-#define PINCH_MODE_LED							GPIOD_ODR.B14					// Output - D14 - LED to indicate hand is in Pinch mode
-#define POINT_MODE_BUTTON						GPIOD_IDR.B1					// Input  - D1  - User button to enable Point mode
-#define POINT_MODE_LED							GPIOD_ODR.B15					// Output - D15 - LED to indicate hand is in Point mode
-#define SHAKE_MODE_BUTTON						GPIOD_IDR.B2					// Input  - D2  - User button to enable Hand Shake mode
-#define SHAKE_MODE_LED							GPIOA_ODR.B8					// Output - A8  - LED to indicate hand is in Hand Shake mode
-#define WAKEUP_BUTTON							GPIOA_IDR.B0					// Input  - A0  - Wakeup button (May be user defined for future)
-#define HAND_RUNNING_LED						GPIOB_ODR.B8					// Output - B8  - Active whenever hand is actively moving
-#define LOW_BATTERY_LED							GPIOB_ODR.B7					// Output - B7  - Active whenever battery level is low
-#define USER_DEF_BUTTON							GPIOD_IDR.B4					// Input  - D4  - User defined button for future use
-#define CHANNEL_ADC_FORCE_KNOB					6								// Chan   - A6  - ADC1 channel 6 used for force control knob
+#define GRAB_MODE_BUTTON                                                GPIOD_IDR.B11                                        // Input  - D11 - User button to enable Grab mode
+#define GRAB_MODE_LED                                                        GPIOD_ODR.B12                                        // Output - D12 - LED to indicate hand is in Grab mode
+#define PINCH_MODE_BUTTON                                                GPIOD_IDR.B7                                        // Input  - D7  - User button to enable Pinch mode
+#define PINCH_MODE_LED                                                        GPIOD_ODR.B14                                        // Output - D14 - LED to indicate hand is in Pinch mode
+#define POINT_MODE_BUTTON                                                GPIOD_IDR.B1                                        // Input  - D1  - User button to enable Point mode
+#define POINT_MODE_LED                                                        GPIOD_ODR.B15                                        // Output - D15 - LED to indicate hand is in Point mode
+#define SHAKE_MODE_BUTTON                                                GPIOD_IDR.B2                                        // Input  - D2  - User button to enable Hand Shake mode
+#define SHAKE_MODE_LED                                                        GPIOA_ODR.B8                                        // Output - A8  - LED to indicate hand is in Hand Shake mode
+#define WAKEUP_BUTTON                                                        GPIOA_IDR.B0                                        // Input  - A0  - Wakeup button (May be user defined for future)
+#define HAND_RUNNING_LED                                                GPIOB_ODR.B8                                        // Output - B8  - Active whenever hand is actively moving
+#define LOW_BATTERY_LED                                                        GPIOB_ODR.B7                                        // Output - B7  - Active whenever battery level is low
+#define USER_DEF_BUTTON                                                        GPIOD_IDR.B4                                        // Input  - D4  - User defined button for future use
+#define CHANNEL_ADC_FORCE_KNOB                                        6                                                                // Chan   - A6  - ADC1 channel 6 used for force control knob
 
 
 

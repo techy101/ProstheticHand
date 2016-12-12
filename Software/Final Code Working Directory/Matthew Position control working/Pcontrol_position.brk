@@ -1,1 +1,8 @@
-<BREAKS/>
+<BREAKS>
+  <BP>
+    <UnitName>Input Capture Complete 5ch.c</UnitName>
+    <Line>737</Line>
+    <Enabled>True</Enabled>
+    <Type>0</Type>
+  </BP>
+</BREAKS>
