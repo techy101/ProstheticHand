@@ -151,7 +151,7 @@ struct finger {
         unsigned long enc_total_ticks;                                          // Calculated total number of timer ticks between input capture events 
         unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz)
         long double input_sig_period;                                           // Period of motor encoder signal (in ms)
-        unsigned int tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
+        float tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
 };
 
 
@@ -179,7 +179,7 @@ void main() {
         InitTimer5();                  // Timer3 init
 
         /* ------------ ADC Initialization ------------ */
-        ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channels
+        ADC_Set_Input_Channel(_ADC_CHANNEL_7);     // Set active ADC channels
         ADC1_Init();                                                // Initialize ADC1
 
         /* ------------ AWD Initialization ------------ */
@@ -187,7 +187,6 @@ void main() {
         ADC1_HTR = high_level;       // Set AWD guard window initial upper threshold
         ADC1_CR2bits.CONT = 1;       // Enable ADC1 continuous conversion mode
         ADC1_SQR3bits.SQ1 = 3;       // Set first channel in continuous coversion sequence to channel 3
-        ADC1_SQR3bits.SQ2 = 4;       // Set second channel in continuous coversion sequence to channel 4 - NEW
         ADC1_CR1bits.AWDSGL = 1;     // Enable single channel monitoring mode for AWD
         ADC1_CR1 |= 3;               // Set channel 3 as the single monitored AWD channel
         ADC1_CR1bits.AWDEN = 1;      // Enable Analog watchdog on regular channels
@@ -605,6 +604,10 @@ void init_timer11() {
 
 // Function to calculate statistics finger encoder. Broken into steps for clarity
 void sample_finger( struct finger *fngr) {
+   
+    float fsrG;
+    float fsrV;
+    float fsrR;
 
     // Calculate number of timer overflows between previous and current capture events 
     fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
@@ -654,9 +657,28 @@ void sample_finger( struct finger *fngr) {
     // Reset position counter
     fngr->position_temp = 0;
     
+    
+    
+    
+    
+    
+ // ***From Sparkfun*****
+    
     if(strcmp(fngr->name, "fngr_pointer") == 0)   {
-         pointer_average = ADC1_Get_Sample(3);
-         fngr->tip_force = (unsigned int)(((fngr->tip_force*4)+ pointer_average)/5);         // read analog value from channel 7 - pointer
+
+    // Use ADC reading to calculate voltage:
+    fngr->tip_force =  (float) ADC1_Get_Sample(7) * 3.3 / 4095.0;
+
+    // Use voltage and static resistor value to
+    // calculate FSR resistance:
+    fsrR = 3000.0 * (3.3 / fsrV - 1.0);
+
+    fsrG = 1.0 / fsrR; // Calculate conductance
+    // Break parabolic curve down into two linear slopes:
+    if (fsrR <= 600)
+      fngr->tip_force = (fsrG - 0.00075) / 0.00000032639;
+    else
+      fngr->tip_force =  fsrG / 0.000000642857;
          POINTER_DIRECTION = fngr->direction_desired;
     }
     /* else middle, ring, pinky, thumb, etc.*/
@@ -694,7 +716,7 @@ void print_finger_info( struct finger *fngr) {
     UART1_Write_Text(position_text);
     UART1_Write_Text("\n\n\n\r"); 
     
-    IntToStr(fngr->tip_force, toStr);                            // Print Flexiforce value (16-bit unsigned) to terminal
+    FloatToStr(fngr->tip_force, toStr);                            // Print Flexiforce value (16-bit unsigned) to terminal
     UART1_Write_Text("Force applied to tip of finger:                ");
     UART1_Write_Text(toStr);
     UART1_Write_Text("\n\n\n\r");

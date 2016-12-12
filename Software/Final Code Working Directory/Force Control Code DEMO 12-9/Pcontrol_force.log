@@ -3,15 +3,18 @@ diagnostics: 0	122	Compilation Started	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer2_ISR at 0x002C)	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer3_ISR at 0x002D)	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer11_ISR at 0x002A)	Input Capture Complete 5ch.c
-hint: 672	1163	Variable 'direction_text' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 609	1163	Variable 'fsrG' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 610	1163	Variable 'fsrV' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 611	1163	Variable 'fsrR' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 695	1163	Variable 'direction_text' has been declared, but not used	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (ADC_AWD at 0x0022)	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (Timer5_interrupt at 0x0042)	Input Capture Complete 5ch.c
-diagnostics: 745	123	Compiled Successfully	Input Capture Complete 5ch.c
-diagnostics: 0	127	All files Compiled in 219 ms	 
+diagnostics: 768	123	Compiled Successfully	Input Capture Complete 5ch.c
+diagnostics: 0	127	All files Compiled in 282 ms	 
 hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
-hint: 0	1144	Static RAM (bytes): 1027   Dynamic RAM (bytes): 130033	Static RAM (bytes): 1027   Dynamic RAM (bytes): 130033
-hint: 0	1144	Used ROM (bytes): 12174 (1%)  Free ROM (bytes): 1036402 (99%)	Used ROM (bytes): 12174 (1%)  Free ROM (bytes): 1036402 (99%)
+hint: 0	1144	Static RAM (bytes): 1033   Dynamic RAM (bytes): 130029	Static RAM (bytes): 1033   Dynamic RAM (bytes): 130029
+hint: 0	1144	Used ROM (bytes): 12624 (1%)  Free ROM (bytes): 1035952 (99%)	Used ROM (bytes): 12624 (1%)  Free ROM (bytes): 1035952 (99%)
 diagnostics: 0	125	Project Linked Successfully	Pcontrol_force.mcpar
-diagnostics: 0	128	Linked in 1250 ms	 
+diagnostics: 0	128	Linked in 1359 ms	 
 diagnostics: 0	129	Project 'Pcontrol_force.mcpar' completed: 2203 ms	 
-diagnostics: 0	103	Finished successfully: 09 Dec 2016, 16:07:48	Pcontrol_force.mcpar
+diagnostics: 0	103	Finished successfully: 11 Dec 2016, 19:50:36	Pcontrol_force.mcpar

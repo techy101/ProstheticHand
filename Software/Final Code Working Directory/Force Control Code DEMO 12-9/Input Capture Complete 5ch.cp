@@ -85,7 +85,7 @@ struct finger {
  unsigned long enc_total_ticks;
  unsigned long input_sig_frequency;
  long double input_sig_period;
- unsigned int tip_force;
+ float tip_force;
 };
 
 
@@ -113,7 +113,7 @@ void main() {
  InitTimer5();
 
 
- ADC_Set_Input_Channel(_ADC_CHANNEL_3);
+ ADC_Set_Input_Channel(_ADC_CHANNEL_7);
  ADC1_Init();
 
 
@@ -506,6 +506,10 @@ void init_timer11() {
 
 void sample_finger( struct finger *fngr) {
 
+ float fsrG;
+ float fsrV;
+ float fsrR;
+
 
  fngr->enc_overflow_delta = (unsigned long) fngr->enc_overflow_end - fngr->enc_overflow_start;
 
@@ -540,12 +544,21 @@ void sample_finger( struct finger *fngr) {
  else {
  fngr->direction_actual = 7;
  }
-#line 655 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 659 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
  fngr->position_temp = 0;
 
+
+
+
+
+
+
+
  if(strcmp(fngr->name, "fngr_pointer") == 0) {
- pointer_average = ADC1_Get_Sample(3);
- fngr->tip_force = (unsigned int)(((fngr->tip_force*4)+ pointer_average)/5);
+
+
+ fngr->tip_force = (float) ADC1_Get_Sample(7) * 3.3 / 4095.0;
+#line 683 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
   GPIOE_ODR.B10  = fngr->direction_desired;
  }
 
@@ -583,7 +596,7 @@ void print_finger_info( struct finger *fngr) {
  UART1_Write_Text(position_text);
  UART1_Write_Text("\n\n\n\r");
 
- IntToStr(fngr->tip_force, toStr);
+ FloatToStr(fngr->tip_force, toStr);
  UART1_Write_Text("Force applied to tip of finger:                ");
  UART1_Write_Text(toStr);
  UART1_Write_Text("\n\n\n\r");
