@@ -20,21 +20,37 @@ Matthew Varas
 
 
 
+
+/**********************/
+// Another playground for Rachel
+
+void set_finger_name(struct finger *fngr)   {
+
+     strcpy(fngr->name, "fngr_pointer");/*strcpy(fngr_middle.name, "fngr_middle");
+     strcpy(fngr_ring.name, "fngr_ring");
+     strcpy(fngr_pinky.name, "fngr_pinky");
+     strcpy(fngr_thumb.name, "fngr_thumb");*/
+}
+/*************************/
+
+
+
+
 /***************  Input Capture Timer Initialization  ***************
-/								    /
-/    Function Name: void init_input_capture()			    /
-/								    /
-/    Description: 						    /
-/	This function performs initial configuration of timers 	    /
-/	2 and 3 which are used for motor encoder input capture	    /
-/	of fingers (2) and thumb (3)                                /
-/								    /
-/    Preconditions: 						    /
-/	None 							    /
-/								    /
-/    Postconditions: 						    /
-/	Timers 2 and 3 are configured but not yet active  	    /
-/								    /
+/                                                                    /
+/    Function Name: void init_input_capture()                            /
+/                                                                    /
+/    Description:                                                     /
+/        This function performs initial configuration of timers             /
+/        2 and 3 which are used for motor encoder input capture            /
+/        of fingers (2) and thumb (3)                                /
+/                                                                    /
+/    Preconditions:                                                     /
+/        None                                                             /
+/                                                                    /
+/    Postconditions:                                                     /
+/        Timers 2 and 3 are configured but not yet active              /
+/                                                                    /
 /*******************************************************************/
 void init_input_capture() {
 
@@ -61,23 +77,20 @@ void init_input_capture() {
 
 
 
-
-
-
 /*****************  Input Capture Timer Activation  *****************
-/								    /
-/    Function Name: void activate_input_capture()		    /
-/								    /
-/    Description: 						    /
-/	This function activates interrupts for timers 2 and 3	    /
-/	used for input capture timing 				    /
-/								    /
-/    Preconditions: 						    /
-/	Timers 2 and 3 have been initialized 			    /
-/								    /
-/    Postconditions: 						    /
-/	Timers 2 and 3 are running and interrupts are activated	    /
-/								    /
+/                                                                    /
+/    Function Name: void activate_input_capture()                    /
+/                                                                    /
+/    Description:                                                     /
+/        This function activates interrupts for timers 2 and 3            /
+/        used for input capture timing                                     /
+/                                                                    /
+/    Preconditions:                                                     /
+/        Timers 2 and 3 have been initialized                             /
+/                                                                    /
+/    Postconditions:                                                     /
+/        Timers 2 and 3 are running and interrupts are activated            /
+/                                                                    /
 /*******************************************************************/
 void activate_input_capture() {
 
@@ -92,19 +105,19 @@ void activate_input_capture() {
 
 
 /*********************  Finger Initialization  **********************
-/								    /
-/    Function Name: void init_finger(struct finger *fngr)	    /
-/								    /
-/    Description: 						    /
-/	This function sets pin masks and initialize all GPIO pins,  /
-/	timers, PWM's and other finger attributs		    /
-/								    /
-/    Preconditions: 						    /
-/	Finger instance has been instantiated and passed in	    /
-/								    /
-/    Postconditions: 						    /
-/	All pins and resources will be allocated to the finger	    /
-/								    /
+/                                                                    /
+/    Function Name: void init_finger(struct finger *fngr)            /
+/                                                                    /
+/    Description:                                                     /
+/        This function sets pin masks and initialize all GPIO pins,  /
+/        timers, PWM's and other finger attributs                    /
+/                                                                    /
+/    Preconditions:                                                     /
+/        Finger instance has been instantiated and passed in            /
+/                                                                    /
+/    Postconditions:                                                     /
+/        All pins and resources will be allocated to the finger            /
+/                                                                    /
 /*******************************************************************/
 void init_finger(struct finger *fngr) {
 
@@ -122,7 +135,7 @@ void init_finger(struct finger *fngr) {
         GPIO_Config(&GPIOE_BASE, _GPIO_PINMASK_12, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
 
         // Configure Pointer finger PWM (Pin E9)
-        PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set initial duty on Timer 1, channel 1
+        PWM_TIM1_Set_Duty(0*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set initial duty on Timer 1, channel 1
         PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);                  // Start PWM
 
         // Configure flexiforce sensor
@@ -236,29 +249,29 @@ void init_finger(struct finger *fngr) {
     }
 
     //Set Initial States
-    fngr->position_actual = 0;				// ****** Will change once limit switches and calibration are in place ******
+    fngr->position_actual = 0;                                // ****** Will change once limit switches and calibration are in place ******
     fngr->direction_desired = INITIAL_DIRECTION;
 }
 
 
 
 /********************  Sample Finger State  *************************
-/								    /
-/    Function Name: sample_finger(struct) 			    /
-/    Return Type: None		 				    /
-/								    /
-/    Description: 						    /
-/	This function samples and calculates all paramaters   	    /
-/	associated with a finger instance.  	                    /
-/	(Speed, position, direction, tip force,motor torque)	    /
-/								    /
-/    Preconditions: 						    /
-/	Finger has been instantiated 				    /
-/	Finger instance has been passed in 			    /
-/								    /
-/    Postconditions: 						    /
-/	All parameters have been stored to struct instance members  /
-/								    /
+/                                                                    /
+/    Function Name: sample_finger(struct)                             /
+/    Return Type: None                                                     /
+/                                                                    /
+/    Description:                                                     /
+/        This function samples and calculates all paramaters               /
+/        associated with a finger instance.                              /
+/        (Speed, position, direction, tip force,motor torque)            /
+/                                                                    /
+/    Preconditions:                                                     /
+/        Finger has been instantiated                                     /
+/        Finger instance has been passed in                             /
+/                                                                    /
+/    Postconditions:                                                     /
+/        All parameters have been stored to struct instance members  /
+/                                                                    /
 /*******************************************************************/
 
 //================= Currently set motor functions, this needs to be broken out to a dedicated function =============
@@ -338,22 +351,22 @@ void sample_finger( struct finger *fngr) {
 
 
 /************************  Move Finger ******************************
-/								    /
-/    Function Name: move_finger(struct, int) 			    /
-/    Return Type: None		 				    /
-/								    /
-/    Description: 						    /
-/	This function sets the motor speed for a finger via duty    /
-/	cycle from the P control algorithm	                    /
-/								    /
-/    Preconditions: 						    /
-/	Finger has been initialized 				    /
-/	Finger instance has been passed in 			    /
-/	Duty cycle is passed in from P control                      /
-/								    /
-/    Postconditions: 						    /
-/	Finger motor is running at set speed / duty cycle	    /
-/								    /
+/                                                                    /
+/    Function Name: move_finger(struct, int)                             /
+/    Return Type: None                                                     /
+/                                                                    /
+/    Description:                                                     /
+/        This function sets the motor speed for a finger via duty    /
+/        cycle from the P control algorithm                            /
+/                                                                    /
+/    Preconditions:                                                     /
+/        Finger has been initialized                                     /
+/        Finger instance has been passed in                             /
+/        Duty cycle is passed in from P control                      /
+/                                                                    /
+/    Postconditions:                                                     /
+/        Finger motor is running at set speed / duty cycle            /
+/                                                                    /
 /*******************************************************************/
 // set duty cycle returned from P control
 void move_finger(struct finger *fngr, unsigned int duty_cycle)
@@ -384,21 +397,21 @@ void move_finger(struct finger *fngr, unsigned int duty_cycle)
 
 
 /**********************  Print Debug Values  ************************
-/								    /
-/    Function Name: print_finger_info(struct)			    /
-/    Return Type: None		 				    /
-/								    /
-/    Description: 						    /
-/	This function prints all current state values of the finger /
-/	to the terminal for debug 				    /
-/								    /
-/    Preconditions: 						    /	***Needs to be adapted for new multi-UART print functions
-/	Finger has been initialized 				    /
-/	Finger instance has been passed in 			    /
-/								    /
-/    Postconditions: 						    /
-/	All state values have been printed to the terminal 	    /
-/								    /
+/                                                                    /
+/    Function Name: print_finger_info(struct)                            /
+/    Return Type: None                                                     /
+/                                                                    /
+/    Description:                                                     /
+/        This function prints all current state values of the finger /
+/        to the terminal for debug                                     /
+/                                                                    /
+/    Preconditions:                                                     /        ***Needs to be adapted for new multi-UART print functions
+/        Finger has been initialized                                     /
+/        Finger instance has been passed in                             /
+/                                                                    /
+/    Postconditions:                                                     /
+/        All state values have been printed to the terminal             /
+/                                                                    /
 /*******************************************************************/
 void print_finger_info( struct finger *fngr) {
 
@@ -440,24 +453,24 @@ void print_finger_info( struct finger *fngr) {
 
 
 /*********************  Proportional control for position  ******************
-/									    /
+/                                                                            /
 /    Function Name: Pcontrol_position(struct, unsigned long, unsigned long) /
-/    Return Type: Unsigned int 						    /
-/									    /
-/    Description: 							    /
-/	This function applies P control to position values 		    /
-/	(encoder ticks) and returns a corresponding duty cycle.		    /
-/									    /
-/    Preconditions: 							    /
-/	Finger has been initialized 					    /
-/	Finger starts fully extended (limit switches have been hit)	    /
-/	Finger instance has been passed in 				    /
-/	Setpoint and MPV are normalized position values			    /
-/									    /
-/    Postconditions: 							    /
-/	Duty cycle returned is positive					    /
-/	Finger direction is set correctly relative to setpoint		    /
-/									    /
+/    Return Type: Unsigned int                                                     /
+/                                                                            /
+/    Description:                                                             /
+/        This function applies P control to position values                     /
+/        (encoder ticks) and returns a corresponding duty cycle.                    /
+/                                                                            /
+/    Preconditions:                                                             /
+/        Finger has been initialized                                             /
+/        Finger starts fully extended (limit switches have been hit)            /
+/        Finger instance has been passed in                                     /
+/        Setpoint and MPV are normalized position values                            /
+/                                                                            /
+/    Postconditions:                                                             /
+/        Duty cycle returned is positive                                            /
+/        Finger direction is set correctly relative to setpoint                    /
+/                                                                            /
 /***************************************************************************/
 // apply P control to position to determine duty cycle. takes in encoder values (positions) and returns duty cycle.
 // *** ONLY WORKS if finger begins fully extended, i.e. the limit switch is hit
@@ -471,7 +484,7 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
      else
          fngr->direction_desired = CONTRACT;                 // Keep going
 
-     duty_cycle = K*abs(SP-MPV);                             // proportional control
+     duty_cycle = position_K*abs(SP-MPV);                             // proportional control
 
      if(duty_cycle > 100)
           duty_cycle = 100;                                  // cap duty cycle
@@ -485,30 +498,44 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
 
 
 /*********************  Proportional control for force  *********************
-/									    /
-/    Function Name: Pcontrol_force(struct, int, int) 			    /
-/    Return Type: Unsigned int 						    /
-/									    /
-/    Description: 							    /
-/	This function applies P control to force values 		    /
-/	(from Flexiforce sensor on fingertip) and 			    /
-/	returns a corresponding duty cycle.				    /
-/									    /
-/    Preconditions: 							    /
-/	Finger has been initialized 					    /
-/       Finger starts fully extended (limit switches have been hit)	    /
-/	Finger instance has been passed in 				    /
-/	Setpoint and MPV are normalized force values			    /
-/									    /
-/    Postconditions: 							    /
-/	Duty cycle returned is positive					    /
-/	Finger direction is set correctly relative to setpoint		    /
-/									    /
+/                                                                            /
+/    Function Name: Pcontrol_force(struct, int, int)                             /
+/    Return Type: Unsigned int                                                     /
+/                                                                            /
+/    Description:                                                             /
+/        This function applies P control to force values                     /
+/        (from Flexiforce sensor on fingertip) and                             /
+/        returns a corresponding duty cycle.                                    /
+/                                                                            /
+/    Preconditions:                                                             /
+/        Finger has been initialized                                             /
+/       Finger starts fully extended (limit switches have been hit)            /
+/        Finger instance has been passed in                                     /
+/        Setpoint and MPV are normalized force values                            /
+/                                                                            /
+/    Postconditions:                                                             /
+/        Duty cycle returned is positive                                            /
+/        Finger direction is set correctly relative to setpoint                    /
+/                                                                            /
 /***************************************************************************/
+unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int MPV)
+{
+     unsigned int duty_cycle;
 
+     if((SP-MPV) < 0)                                        // moved past SP
+          fngr->direction_desired = EXTEND;                  // Move back
+     else
+         fngr->direction_desired = CONTRACT;                 // Keep going
 
-//======================== TO BE FILLED IN =====================
+     duty_cycle = force_K*abs(SP-MPV);                             // proportional control
 
+     if(duty_cycle > 100)
+          duty_cycle = 100;                                  // cap duty cycle
+     else if(duty_cycle < 20)
+           duty_cycle = 20;                                  // boost duty cycle
+
+     return duty_cycle;
+}
 
 
 
@@ -524,16 +551,16 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
 
 
 /**************  Finger Encoder Interrupt Handlers  *****************
-/								    /
-/    Description: 						    /
-/	These ISR's handle all encoder input capture and overflow   /
-/	events for timers 2 and 3. These are capture channels for   /
-/	motor encoder channel A on all fingers 			    /
-/								    /
-/    Preconditions: 						    /
-/	Timers 2 and 3 have been initialized 			    /
-/	Input capture channels have been configured 		    /
-/								    /
+/                                                                    /
+/    Description:                                                     /
+/        These ISR's handle all encoder input capture and overflow   /
+/        events for timers 2 and 3. These are capture channels for   /
+/        motor encoder channel A on all fingers                             /
+/                                                                    /
+/    Preconditions:                                                     /
+/        Timers 2 and 3 have been initialized                             /
+/        Input capture channels have been configured                     /
+/                                                                    /
 /*******************************************************************/
 
 
@@ -617,14 +644,14 @@ void fingers_input_capture_ISR() iv IVT_INT_TIM2 {
 
 
 /***************  Limit Switch Interrupt Handlers  ******************
-/								    /
-/    Description: 						    /
-/	These ISR's handle all finger limit switch ext interrupts   /
-/								    /
-/    Preconditions: 						    /
+/                                                                    /
+/    Description:                                                     /
+/        These ISR's handle all finger limit switch ext interrupts   /
+/                                                                    /
+/    Preconditions:                                                     /
 /       All finger limit switches have been initialized             /
 /       Limit switch external interrupts have been configured       /
-/								    /
+/                                                                    /
 /*******************************************************************/
 
 /*
@@ -633,8 +660,3 @@ Pointer: EXTI 15
 Middle: EXTI 12
 Ring: EXTI 14
 Pinky: EXTI 10 */
-
-
-
-
-

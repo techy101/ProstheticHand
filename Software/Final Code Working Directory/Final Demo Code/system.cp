@@ -1,6 +1,6 @@
-#line 1 "C:/Users/SCSUS/Desktop/Final Demo Code/system.c"
-#line 1 "c:/users/scsus/desktop/final demo code/system.h"
-#line 23 "c:/users/scsus/desktop/final demo code/system.h"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/system.c"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
+#line 23 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
 extern const unsigned long MCU_FREQUENCY;
 extern const unsigned long ENCODER_TIM_RELOAD;
 extern const unsigned long PWM_FREQ_HZ;
@@ -27,7 +27,7 @@ void init_sample_timer();
 
 
 void sample_timer_ISR();
-#line 39 "C:/Users/SCSUS/Desktop/Final Demo Code/system.c"
+#line 39 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/system.c"
 void init_GPIO() {
 
  GPIO_Config(&GPIOE_BASE, _GPIO_PINMASK_10, _GPIO_CFG_DIGITAL_OUTPUT | _GPIO_CFG_PULL_NO);
@@ -62,7 +62,7 @@ void init_GPIO() {
  GPIO_Config(&GPIOB_BASE, _GPIO_PINMASK_8, _GPIO_CFG_DIGITAL_OUTPUT | _GPIO_CFG_PULL_DOWN);
  GPIO_Config(&GPIOB_BASE, _GPIO_PINMASK_7, _GPIO_CFG_DIGITAL_OUTPUT | _GPIO_CFG_PULL_DOWN);
 }
-#line 107 "C:/Users/SCSUS/Desktop/Final Demo Code/system.c"
+#line 107 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/system.c"
 void init_sample_timer() {
 
  RCC_APB2ENR.TIM11EN = 1;
@@ -73,7 +73,7 @@ void init_sample_timer() {
  TIM11_DIER.UIE = 1;
  TIM11_CR1.CEN = 1;
 }
-#line 142 "C:/Users/SCSUS/Desktop/Final Demo Code/system.c"
+#line 142 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/system.c"
 void sample_timer_ISR() iv IVT_INT_TIM1_TRG_COM_TIM11 {
  TIM11_SR.UIF = 0;
  poll_flag = 1;

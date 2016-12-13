@@ -1,7 +1,7 @@
-#line 1 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
-#line 1 "c:/users/scsus/desktop/final demo code/finger.h"
-#line 1 "c:/users/scsus/desktop/final demo code/defines.h"
-#line 32 "c:/users/scsus/desktop/final demo code/finger.h"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/finger.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/defines.h"
+#line 56 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/finger.h"
 extern struct finger {
  char name[ 15 ];
  long position_temp;
@@ -22,7 +22,12 @@ extern struct finger {
 };
 
 
-
+extern struct finger fngr_pointer;
+extern struct finger fngr_middle;
+extern struct finger fngr_ring;
+extern struct finger fngr_pinky;
+extern struct finger fngr_thumb;
+#line 93 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/finger.h"
 extern const unsigned int NORMALIZATION_CONSTANT;
 extern const unsigned long FULLY_CONTRACTED;
 extern const long FULLY_EXTENDED;
@@ -39,16 +44,19 @@ extern int INITIAL_DIRECTION;
 
 
 
-extern const int setP;
-extern const int MARGIN;
-extern const float const K;
+extern const int position_setP;
+extern const int POSITION_MARGIN;
+extern const float const position_K;
+
+
 extern unsigned int duty_cycle;
 extern char toStr[ 15 ];
 
 
 
-
-
+extern const int force_setP;
+extern const int FORCE_MARGIN;
+extern const float const force_K;
 
 
 
@@ -59,26 +67,29 @@ void init_finger(struct finger *fngr);
 void sample_finger(struct finger *fngr);
 void move_finger(struct finger *, unsigned int);
 void print_finger_info(struct finger *fngr);
-#line 100 "c:/users/scsus/desktop/final demo code/finger.h"
+
+
+
+void set_finger_name(struct finger *fngr);
+
+
+
+
+
+
+
+
 unsigned int Pcontrol_position(struct finger *, unsigned long, unsigned long);
+unsigned int Pcontrol_force(struct finger *, unsigned int, unsigned int);
 
 
 
 
 void fingers_input_capture_ISR();
 void thumb_input_capture_ISR();
-
-
-
-
-extern struct fngr_pointer;
-extern struct fngr_middle;
-extern struct fngr_ring;
-extern struct fngr_pinky;
-extern struct fngr_thumb;
-#line 1 "c:/users/scsus/desktop/final demo code/defines.h"
-#line 1 "c:/users/scsus/desktop/final demo code/system.h"
-#line 23 "c:/users/scsus/desktop/final demo code/system.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/defines.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
+#line 23 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
 extern const unsigned long MCU_FREQUENCY;
 extern const unsigned long ENCODER_TIM_RELOAD;
 extern const unsigned long PWM_FREQ_HZ;
@@ -105,7 +116,12 @@ void init_sample_timer();
 
 
 void sample_timer_ISR();
-#line 39 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 27 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
+void set_finger_name(struct finger *fngr) {
+#line 32 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
+ strcpy(fngr->name, "fngr_pointer");
+}
+#line 55 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void init_input_capture() {
 
 
@@ -128,7 +144,7 @@ void init_input_capture() {
 
  encoder_timer_period_ms = (long double) 1000.0 / (MCU_FREQUENCY / (ENCODER_TIM_PSC + 1));
 }
-#line 82 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 95 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void activate_input_capture() {
 
  TIM3_DIER.UIE = 1;
@@ -138,7 +154,7 @@ void activate_input_capture() {
  TIM3_CR1.CEN = 1;
  TIM2_CR1.CEN = 1;
 }
-#line 109 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 122 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void init_finger(struct finger *fngr) {
 
 
@@ -155,7 +171,7 @@ void init_finger(struct finger *fngr) {
  GPIO_Config(&GPIOE_BASE, _GPIO_PINMASK_12, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
 
 
- PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED,  _PWM_CHANNEL1 );
+ PWM_TIM1_Set_Duty(0*(pwm_period/100), _PWM_NON_INVERTED,  _PWM_CHANNEL1 );
  PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);
 
 
@@ -272,7 +288,7 @@ void init_finger(struct finger *fngr) {
  fngr->position_actual = 0;
  fngr->direction_desired = INITIAL_DIRECTION;
 }
-#line 266 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 279 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void sample_finger( struct finger *fngr) {
 
 
@@ -343,7 +359,7 @@ void sample_finger( struct finger *fngr) {
 
  fngr->position_temp = 0;
 }
-#line 359 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 372 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void move_finger(struct finger *fngr, unsigned int duty_cycle)
 {
  if(strcmp(fngr->name, "fngr_pointer") == 0) {
@@ -366,7 +382,7 @@ void move_finger(struct finger *fngr, unsigned int duty_cycle)
  PWM_TIM1_Set_Duty(duty_cycle*(pwm_period/100), _PWM_NON_INVERTED,  _PWM_CHANNEL1 );
  }
 }
-#line 403 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 416 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void print_finger_info( struct finger *fngr) {
 
 
@@ -402,7 +418,7 @@ void print_finger_info( struct finger *fngr) {
 
  terminal_print_count = 0;
 }
-#line 465 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 478 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned long MPV)
 {
  unsigned int duty_cycle;
@@ -412,7 +428,7 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
  else
  fngr->direction_desired =  1 ;
 
- duty_cycle = K*abs(SP-MPV);
+ duty_cycle = position_K*abs(SP-MPV);
 
  if(duty_cycle > 100)
  duty_cycle = 100;
@@ -421,7 +437,26 @@ unsigned int Pcontrol_position(struct finger *fngr, unsigned long SP, unsigned l
 
  return duty_cycle;
 }
-#line 542 "C:/Users/SCSUS/Desktop/Final Demo Code/finger.c"
+#line 521 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
+unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int MPV)
+{
+ unsigned int duty_cycle;
+
+ if((SP-MPV) < 0)
+ fngr->direction_desired =  0 ;
+ else
+ fngr->direction_desired =  1 ;
+
+ duty_cycle = force_K*abs(SP-MPV);
+
+ if(duty_cycle > 100)
+ duty_cycle = 100;
+ else if(duty_cycle < 20)
+ duty_cycle = 20;
+
+ return duty_cycle;
+}
+#line 569 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/finger.c"
 void thumb_input_capture_ISR() iv IVT_INT_TIM3 {
 
 

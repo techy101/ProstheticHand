@@ -83,13 +83,13 @@ int goStatus = 0;
  
  
     /************ Instantiate Finger Structs ***********/
-struct finger fngr_pointer;
+/*struct finger fngr_pointer;                 // COMMENTED BY RACHEL
 struct finger fngr_middle;
 struct finger fngr_ring;
 struct finger fngr_pinky;
-struct finger fngr_thumb;
+struct finger fngr_thumb;*/
  
- 
+
 
 // Main Starts here 
 void main() {
@@ -102,18 +102,24 @@ void main() {
 
     // Initialize Electromyography
     init_emg();
+    
+    // Test 1
+    //fngr_pointer.position_temp = 0;       // direct access - NEW by RM
+    
+    // Test 2
+    set_finger_name(&fngr_pointer);           // NEW by RM
 
     // Initialize Finger Struct Names
-    strcpy(fngr_pointer.name, "fngr_pointer");
+/*strcpy(fngr_pointer.name, "fngr_pointer");
     strcpy(fngr_middle.name, "fngr_middle");
     strcpy(fngr_ring.name, "fngr_ring");
     strcpy(fngr_pinky.name, "fngr_pinky");
-    strcpy(fngr_thumb.name, "fngr_thumb");
+    strcpy(fngr_thumb.name, "fngr_thumb");*/
 
-    // Initialize PWM frequencies
+/*// Initialize PWM frequencies
     pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                      // Set fingers PWM base frequency to 10000 Hz
     PWM_TIM4_Init(PWM_FREQ_HZ);                                   // Set thumb PWM base frequency to 10000 Hz
-    
+
     // Initialize all finger hardware, initial values, and start PWM
     init_finger(&fngr_pointer);
     init_finger(&fngr_middle);
@@ -128,17 +134,17 @@ void main() {
     init_input_capture();
 
     // Start input capture timers
-    activate_input_capture();
-    
-    // Program start terminal verification
+    activate_input_capture();*/
+
+/*// Program start terminal verification
     UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
-    delay_ms(500);
-    
-    // Infinite Loop
-    while(1) {
+    delay_ms(500);*/
+
+/*// Infinite Loop
+    while(1) {*/
 
         /************** Simple button control to prevent fingers from constantly running **************/
-        // Activate pointer finger via mode button 1
+/*// Activate pointer finger via mode button 1
         if (GRAB_MODE_BUTTON == 0) {
            PWM_TIM1_Set_Duty(0*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);
         }
@@ -168,11 +174,11 @@ void main() {
         }
         else {
              PWM_TIM4_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, THUMB_PWM);
-        }
+        }*/
 
 
        /*if(analogGo) {*/
-        if (poll_flag == 1) {                                                     // Calculate finger state values (Set by timer 3)
+/*if (poll_flag == 1) {                                                     // Calculate finger state values (Set by timer 3)
              poll_flag = 0;                                                    // Clear flag
              sample_finger(&fngr_pointer);                                 // Call state calculation function for each finger - equivalent of sampling
              sample_finger(&fngr_middle);
@@ -180,9 +186,9 @@ void main() {
              sample_finger(&fngr_pinky);
              sample_finger(&fngr_thumb);
 
-        }
+        }*/
 
-        // Print debug info to terminal if set number of samples have occured
+/*// Print debug info to terminal if set number of samples have occured
         if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
              print_finger_info(&fngr_pointer);
              print_finger_info(&fngr_middle);
@@ -190,7 +196,6 @@ void main() {
              print_finger_info(&fngr_pinky);
              print_finger_info(&fngr_thumb);
              UART1_Write_Text("\n\n\n\n\n\n\n\r");
-           }
-        }
-    //}
+           }*/
+       /*}*/
 } // Main ends here

@@ -49,13 +49,13 @@ Count=0
 Count=5
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path2=C:\Users\SCSUS\Desktop\Final Demo Code\
+Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Final Demo Code\
 Path3=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Matthew Position control working\
 Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
 Count=2
 Path0=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Matthew Position control working\
-Path1=C:\Users\SCSUS\Desktop\Final Demo Code\
+Path1=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Final Demo Code\
 [HEADERS]
 Count=5
 File0=defines.h

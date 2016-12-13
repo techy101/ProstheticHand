@@ -1,7 +1,7 @@
-#line 1 "C:/Users/SCSUS/Desktop/Final Demo Code/emg.c"
-#line 1 "c:/users/scsus/desktop/final demo code/emg.h"
-#line 1 "c:/users/scsus/desktop/final demo code/defines.h"
-#line 31 "c:/users/scsus/desktop/final demo code/emg.h"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/emg.c"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/emg.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/defines.h"
+#line 31 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/emg.h"
 extern const unsigned int EMG_TIMER_PSC;
 extern const unsigned int EMG_TIMER_RELOAD;
 
@@ -14,9 +14,9 @@ void init_emg();
 void emg_timer_ISR();
 void AWD_ISR();
 void emg_override_ISR();
-#line 1 "c:/users/scsus/desktop/final demo code/defines.h"
-#line 1 "c:/users/scsus/desktop/final demo code/system.h"
-#line 23 "c:/users/scsus/desktop/final demo code/system.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/defines.h"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
+#line 23 "c:/handgitrepo/prosthetichand/software/final code working directory/final demo code/system.h"
 extern const unsigned long MCU_FREQUENCY;
 extern const unsigned long ENCODER_TIM_RELOAD;
 extern const unsigned long PWM_FREQ_HZ;
@@ -43,7 +43,7 @@ void init_sample_timer();
 
 
 void sample_timer_ISR();
-#line 40 "C:/Users/SCSUS/Desktop/Final Demo Code/emg.c"
+#line 40 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/emg.c"
 void init_emg() {
 
 
@@ -67,9 +67,9 @@ void init_emg() {
  NVIC_IntEnable(IVT_INT_TIM5);
  TIM5_CR1.CEN = 1;
  GPIO_Digital_Output(&GPIOB_BASE,  GPIOB_ODR.B9 );
-#line 71 "C:/Users/SCSUS/Desktop/Final Demo Code/emg.c"
+#line 71 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/emg.c"
 }
-#line 92 "C:/Users/SCSUS/Desktop/Final Demo Code/emg.c"
+#line 92 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/emg.c"
 void AWD_ISR() iv IVT_INT_ADC ics ICS_AUTO {
  ADC1_CR1bits.AWDIE = 0;
  ADC1_SRbits.AWD = 0;
@@ -87,7 +87,7 @@ void AWD_ISR() iv IVT_INT_ADC ics ICS_AUTO {
  }
  ADC1_CR1bits.AWDIE = 1;
 }
-#line 132 "C:/Users/SCSUS/Desktop/Final Demo Code/emg.c"
+#line 132 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Final Demo Code/emg.c"
 void emg_timer_ISR() iv IVT_INT_TIM5 {
  TIM5_SR.UIF = 0;
  ADC1_HTR =  400 ;
