@@ -143,7 +143,7 @@ int analogGo = 0;
 int goStatus = 0;
 
 // NEW
-unsigned int pwm_period;                                                        // Base timer period of PWM - needed for duty cycle calculations
+unsigned int pwm_period_TIM1, pwm_period_TIM4;                                  // Base timer period of PWM - needed for duty cycle calculations
 
 
 /*************  Function Prototypes  ************/
@@ -225,8 +225,8 @@ void main() {
       init_GPIO();                                                            // Configure MCU I/O
 
       // Initialize PWM frequencies
-      pwm_period = PWM_TIM1_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 10000 Hz
-      PWM_TIM4_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 10000 Hz
+      pwm_period_TIM1 = PWM_TIM1_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 10000 Hz
+      pwm_period_TIM4 = PWM_TIM4_Init(PWM_FREQ_HZ);                                   // Set PWM base frequency to 10000 Hz
 
 
       init_pointer_PWM();
@@ -534,17 +534,17 @@ void init_GPIO() {
 }
 
 
- // Initialize pointer finger PWM
+ // Initialize pointer finger PWM - CHANGED by RM 12/13 to start all at 0% duty cycle
  void init_pointer_PWM( ) {
      // Configure Pointer finger PWM (Pin E9)
-     PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set 70% duty on Timer 1, channel 1
+     PWM_TIM1_Set_Duty(0*(pwm_period_TIM1/100), _PWM_NON_INVERTED, POINTER_PWM);    // Set 70% duty on Timer 1, channel 1
      PWM_TIM1_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM1_CH1_PE9);                 // Start PWM
  }
 
   // Initialize Middle finger PWM
  void init_middle_PWM( ) {
      // Configure Middle finger PWM (Pin E11)
-     PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, MIDDLE_PWM);    // Set 70% duty on Timer 1, channel 2
+     PWM_TIM1_Set_Duty(0*(pwm_period_TIM1/100), _PWM_NON_INVERTED, MIDDLE_PWM);    // Set 70% duty on Timer 1, channel 2
      PWM_TIM1_Start(_PWM_CHANNEL2, &_GPIO_MODULE_TIM1_CH2_PE11);                 // Start PWM
  }
  
@@ -552,7 +552,7 @@ void init_GPIO() {
   // Initialize Ring finger PWM
  void init_ring_PWM( ) {
      // Configure Ring finger PWM (Pin E13)
-     PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, RING_PWM);    // Set 70% duty on Timer 1, channel 3
+     PWM_TIM1_Set_Duty(0*(pwm_period_TIM1/100), _PWM_NON_INVERTED, RING_PWM);    // Set 70% duty on Timer 1, channel 3
      PWM_TIM1_Start(_PWM_CHANNEL3, &_GPIO_MODULE_TIM1_CH3_PE13);                 // Start PWM
  }
  
@@ -560,7 +560,7 @@ void init_GPIO() {
   // Initialize pinky PWM
  void init_pinky_PWM( ) {
      // Configure Pinky PWM (Pin E14)
-     PWM_TIM1_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, PINKY_PWM);    // Set 70% duty on Timer 1, channel 4
+     PWM_TIM1_Set_Duty(0*(pwm_period_TIM1/100), _PWM_NON_INVERTED, PINKY_PWM);    // Set 70% duty on Timer 1, channel 4
      PWM_TIM1_Start(_PWM_CHANNEL4, &_GPIO_MODULE_TIM1_CH4_PE14);                 // Start PWM
  }
  
@@ -568,7 +568,7 @@ void init_GPIO() {
   // Initialize Thumb PWM
  void init_thumb_PWM( ) {
      // Configure Thumb PWM (Pin B6)
-     PWM_TIM4_Set_Duty(100*(pwm_period/100), _PWM_NON_INVERTED, THUMB_PWM);    // Set 70% duty on Timer 4, channel 1
+     PWM_TIM4_Set_Duty(0*(pwm_period_TIM4/100), _PWM_NON_INVERTED, THUMB_PWM);    // Set 70% duty on Timer 4, channel 1
      PWM_TIM4_Start(_PWM_CHANNEL1, &_GPIO_MODULE_TIM4_CH1_PB6);                 // Start PWM
  }
 
