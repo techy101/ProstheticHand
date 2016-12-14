@@ -8544,7 +8544,6 @@ cont
 cont_adc2_cr2_bit
 cont_adc3_cr2_bit
 cont_bit
-contract
 countflag
 countflag
 countflag_bit
@@ -14365,7 +14364,6 @@ exten1
 exten1_adc2_cr2_bit
 exten1_adc3_cr2_bit
 exten1_bit
-extend
 exti_emr
 exti_emrbits
 exti_ftsr

@@ -1,3 +1,5 @@
+#include "defines.h"
+
 // Prosthetic Hand Senior Design Project
 // Matthew Varas, Rachel Mertz, Donnell Jones
 // 12/2/2016
@@ -38,50 +40,21 @@
      
 */
 
-
-// Define second encoder channels for each motor. Used for direction checking
-#define FNGR_POINTER_ENC_B                               GPIOE_IDR.B12          // Pin E12
-#define FNGR_MIDDLE_ENC_B                                GPIOA_IDR.B11          // Pin A11
-#define FNGR_RING_ENC_B                                  GPIOB_IDR.B15          // Pin B15
-#define FNGR_PINKY_ENC_B                                 GPIOD_IDR.B9           // Pin D9
-#define FNGR_THUMB_ENC_B                                 GPIOC_IDR.B11          // Pin C11
-
-// NEW
-#define POINTER_PWM                                        _PWM_CHANNEL1                // Chan   - E9  - TIM1 CH1 PWM Channel used for pointer finger
-#define POINTER_DIRECTION                                GPIOE_ODR.B10                // Output - E10 - Direction pin for Pointer motor driver
-
-
-// Define other parameters
-#define STR_MAX                                          15                     // Max string size
-#define UART_BAUD_RATE                                   115200                 // UART Baud rate
-
-
-/* ------- DEFINE ANALOG WATCHDOG STUFFS --------*/
-// Define variables 1 (mode = 0)
-#define high_level        400
-#define low_level         0
-// Define variable 2  (mode = 1)
-#define high_level2        4095
-#define low_level2         400
-
-
 /*****************  System constants  ******************/
 unsigned long MCU_FREQUENCY = 168000000;                                        // Microcontroller clock speed in Hz
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
-unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (100ms)
-unsigned int SAMPLE_TIM_PSC = 27;                                              // Prescaler for sampling timer
-unsigned int TERMINAL_PRINT_THRESH = 20;                                        // Number of polling events
+unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (5ms)
+unsigned int SAMPLE_TIM_PSC = 13;                                              // Prescaler for sampling timer
+unsigned int TERMINAL_PRINT_THRESH = 100;                                        // Number of polling events
 unsigned long PWM_FREQ_HZ = 10000;                                              // PWM base frequency
 
 unsigned int PWM_PERIOD_TIM1;                                                   // For four fingers - base timer period of PWM - needed for duty cycle calculations
 unsigned int PWM_PERIOD_TIM4;                                                   // For thumb
 
 // Motor control constants
-int EXTEND = 1;                                                                 // Arbitrarily assigned - reliant on encoder orientation
-int CONTRACT = 0;
 long FULLY_EXTENDED = 0;                                                        // Lower bound for position
-unsigned long FULLY_CONTRACTED = 3800;                                          // Higher bound for position
+unsigned long FULLY_CONTRACTED = 3300;                                          // Higher bound for position
 unsigned int NORMALIZATION_CONSTANT = 1;                                        // "Self-explanatory" - was 4
 
 
@@ -118,9 +91,9 @@ void init_pointer_PWM();
 unsigned int Pcontrol_force(struct finger *, unsigned int, unsigned int);       // Takes finger structure, SP, and MPV
 void move_pointer_finger(struct finger *, unsigned int);                        // Takes finger structure and duty cycle
 
-int MARGIN = 10;                                                                  // accuracy of PV - 10/400 = 2.5%
+int MARGIN = 50;                                                                  // accuracy of PV - 10/400 = 2.5%
 int setP;
-int SP_LOW = 180, SP_HIGH = 240;                                                   // 2 setpoints - desired force
+int SP_LOW = 600, SP_HIGH = 1200;                                                   // 2 setpoints - desired force
 float FORCE_K = 50.0;                                                           // proportionality constant for P control
 unsigned int MPV;                                                               // measured process variable
 unsigned int dutyCycle;                                                         // duty cycle returned by P controller
@@ -151,7 +124,7 @@ struct finger {
         unsigned long enc_total_ticks;                                          // Calculated total number of timer ticks between input capture events 
         unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz)
         long double input_sig_period;                                           // Period of motor encoder signal (in ms)
-        float tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
+        int tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
 };
 
 
@@ -178,10 +151,6 @@ void main() {
         // Initialize stuff for AWD
         InitTimer5();                  // Timer3 init
 
-        /* ------------ ADC Initialization ------------ */
-        ADC_Set_Input_Channel(_ADC_CHANNEL_7);     // Set active ADC channels
-        ADC1_Init();                                                // Initialize ADC1
-
         /* ------------ AWD Initialization ------------ */
         ADC1_LTR = low_level;        // Set AWD guard window initial lower threshold
         ADC1_HTR = high_level;       // Set AWD guard window initial upper threshold
@@ -203,6 +172,13 @@ void main() {
         
         // Set initial direction to CONTRACT, initial position to 0, and configure ADC1 for input on channel 7
         init_finger(&fngr_pointer);
+        init_finger(&fngr_middle);
+        init_finger(&fngr_ring);
+        init_finger(&fngr_pinky);
+        init_finger(&fngr_thumb);
+        
+        // Initialize ADC
+        ADC1_init();
 
         // Program start terminal verification 
         UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
@@ -221,10 +197,10 @@ void main() {
            if (poll_flag) {                                                     // Calculate finger state values (Set by timer 3)
               poll_flag = 0;                                                    // Clear flag
               sample_finger(&fngr_pointer);                                     // Call state calculation function for each finger - equivalent of sampling
-              /*sample_finger(&fngr_middle);
+              sample_finger(&fngr_middle);
               sample_finger(&fngr_ring);
               sample_finger(&fngr_pinky);
-              sample_finger(&fngr_thumb);*/
+              sample_finger(&fngr_thumb);
               
               // emergency - if stabilization not reached
               if(fngr_pointer.position_actual >= FULLY_CONTRACTED) {
@@ -283,7 +259,7 @@ void main() {
                         change_SP_flag = 1;
                    }
                    else if(change_SP_flag == 1)     {
-                        setP = SP_LOW;                                          // Normally would switch to high setpoint for next time
+                        setP = SP_HIGH;                                          // Normally would switch to high setpoint for next time
                         change_SP_flag = 0;
                    }
 
@@ -307,10 +283,10 @@ void main() {
            if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
 
               print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger     - PUT BACK IN
-              /*print_finger_info(&fngr_middle);
+              print_finger_info(&fngr_middle);
               print_finger_info(&fngr_ring);
               print_finger_info(&fngr_pinky);
-              print_finger_info(&fngr_thumb);*/
+              print_finger_info(&fngr_thumb);
               UART1_Write_Text("\n\n\n\n\n\n\n\r");                             //PUT BACK IN
            }
         }
@@ -375,7 +351,7 @@ void timer2_ISR() iv IVT_INT_TIM2 {
         fngr_thumb.enc_end_time = TIM2_CCR1;                                    // Read stored input capture time
         fngr_thumb.enc_overflow_start = fngr_thumb.enc_overflow_end;            // Store previous overflow value for next calculation
         fngr_thumb.enc_overflow_end = tim2_overflow_count;                      // Store number of timer 2 overflows for thumb
-        fngr_thumb.enc_chan_b = FNGR_THUMB_ENC_B;                               // Sample the second encoder channel (For direction)
+        fngr_thumb.enc_chan_b = THUMB_ENCODER_B;                               // Sample the second encoder channel (For direction)
         fngr_thumb.position_temp++;                                             // Increment total input capture event counter
     }
 }
@@ -396,7 +372,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
         fngr_pointer.enc_end_time = TIM3_CCR1;                                  // Read stored input capture time
         fngr_pointer.enc_overflow_start = fngr_pointer.enc_overflow_end;        // Store previous overflow value for next calculation
         fngr_pointer.enc_overflow_end = tim3_overflow_count;                    // Store number of timer 3 overflows for Pointer finger
-        fngr_pointer.enc_chan_b = FNGR_POINTER_ENC_B;                           // Sample the second encoder channel state (For direction)
+        fngr_pointer.enc_chan_b = POINTER_ENCODER_B;                           // Sample the second encoder channel state (For direction)
         fngr_pointer.position_temp++;                                           // Increment total input capture event counter
     }
 
@@ -407,7 +383,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
         fngr_middle.enc_end_time = TIM3_CCR2;                                   // Read stored input capture time
         fngr_middle.enc_overflow_start = fngr_middle.enc_overflow_end;          // Store previous overflow value for next calculation
         fngr_middle.enc_overflow_end = tim3_overflow_count;                     // Store number of timer 3 overflows for Middle finger
-        fngr_middle.enc_chan_b = FNGR_MIDDLE_ENC_B;                             // Sample the second encoder channel state (For direction)
+        fngr_middle.enc_chan_b = MIDDLE_ENCODER_B;                             // Sample the second encoder channel state (For direction)
         fngr_middle.position_temp++;                                            // Increment total input capture event counter
     }
 
@@ -417,7 +393,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
         fngr_ring.enc_end_time = TIM3_CCR3;                                     // Read stored input capture time
         fngr_ring.enc_overflow_start = fngr_ring.enc_overflow_end;              // Store previous overflow value for next calculation
         fngr_ring.enc_overflow_end = tim3_overflow_count;                       // Store number of timer 3 overflows for Ring finger
-        fngr_ring.enc_chan_b = FNGR_RING_ENC_B;                                 // Sample the second encoder channel state (For direction)
+        fngr_ring.enc_chan_b = RING_ENCODER_B;                                 // Sample the second encoder channel state (For direction)
         fngr_ring.position_temp++;                                              // Increment total input capture event counter
     }
 
@@ -427,7 +403,7 @@ void timer3_ISR() iv IVT_INT_TIM3 {
         fngr_pinky.enc_end_time = TIM3_CCR4;                                    // Read stored input capture time
         fngr_pinky.enc_overflow_start = fngr_pinky.enc_overflow_end;            // Store previous overflow value for next calculation
         fngr_pinky.enc_overflow_end = tim3_overflow_count;                      // Store number of timer 3 overflows for Pinky
-        fngr_pinky.enc_chan_b = FNGR_PINKY_ENC_B;                               // Sample the second encoder channel state (For direction)
+        fngr_pinky.enc_chan_b = PINKY_ENCODER_B;                               // Sample the second encoder channel state (For direction)
         fngr_pinky.position_temp++;                                             // Increment total input capture event counter
     }
 }                                                                
@@ -449,14 +425,28 @@ void timer11_ISR() iv IVT_INT_TIM1_TRG_COM_TIM11 {
 void init_GPIO() {
 
     // Configure GPIO's for secondary motor encoder channels
-    GPIO_Digital_Input(&GPIOE_BASE, _GPIO_PINMASK_12);                          // Pointer motor encoder channel B
-    GPIO_Digital_Input(&GPIOA_BASE, _GPIO_PINMASK_11);                          // Middle motor encoder channel B
-    GPIO_Digital_Input(&GPIOB_BASE, _GPIO_PINMASK_15);                          // Ring motor encoder channel B
-    GPIO_Digital_Input(&GPIOD_BASE, _GPIO_PINMASK_9);                           // Pinky motor encoder channel B
-    GPIO_Digital_Output(&GPIOC_BASE, _GPIO_PINMASK_11);                          // Thumb motor encoder channel B
+    // Configure GPIO's for secondary motor encoder channels
+    GPIO_Config(&GPIOE_BASE,                                                    // Pointer Encoder Channel B
+            _GPIO_PINMASK_12, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
+
+    GPIO_Config(&GPIOA_BASE,                                                    // Middle Encoder Channel B
+            _GPIO_PINMASK_11, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
+
+    GPIO_Config(&GPIOB_BASE,                                                    // Ring Encoder Channel B
+            _GPIO_PINMASK_15, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
+
+    GPIO_Config(&GPIOD_BASE,                                                    // Pinky Encoder Channel B
+            _GPIO_PINMASK_9, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
+
+    GPIO_Config(&GPIOC_BASE,                                                    // Thumb Encoder Channel B
+            _GPIO_PINMASK_11, _GPIO_CFG_DIGITAL_INPUT | _GPIO_CFG_PULL_DOWN);
     
     // NEW: for motor control
     GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_10);                         // Pointer direction
+    GPIO_Digital_Output(&GPIOB_BASE, _GPIO_PINMASK_10);                         // Middle direction
+    GPIO_Digital_Output(&GPIOB_BASE, _GPIO_PINMASK_13);                         // Ring direction
+    GPIO_Digital_Output(&GPIOD_BASE, _GPIO_PINMASK_8);                          // Pinky direction
+    GPIO_Digital_Output(&GPIOC_BASE, _GPIO_PINMASK_12);                         // Thumb direction
     GPIO_Digital_Output(&GPIOE_BASE, _GPIO_PINMASK_0);                          // Motor enable: may not use in this test
     
     // For AWD Debug light
@@ -481,22 +471,25 @@ void init_GPIO() {
       
       if (strcmp(fngr->name, "fngr_pointer") == 0) {
          POINTER_DIRECTION = fngr->direction_desired;
-
-         ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
-         ADC1_Init();                                                // Initialize ADC1
+         ADC_Set_Input_Channel(_ADC_CHANNEL_7);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
       }
-      /*else if (strcmp(fngr->name, "fngr_middle") == 0) {
-
+      else if (strcmp(fngr->name, "fngr_middle") == 0) {
+         MIDDLE_DIRECTION = fngr->direction_desired;
+         ADC_Set_Input_Channel(_ADC_CHANNEL_9);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
       }
       else if (strcmp(fngr->name, "fngr_ring") == 0) {
-
+         RING_DIRECTION = fngr->direction_desired;
+         ADC_Set_Input_Channel(_ADC_CHANNEL_11);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
       }
       else if (strcmp(fngr->name, "fngr_pinky") == 0) {
+         PINKY_DIRECTION = fngr->direction_desired;
+         ADC_Set_Input_Channel(_ADC_CHANNEL_13);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
 
       }
       else if (strcmp(fngr->name, "fngr_thumb") == 0) {
-
-    }*/
+         THUMB_DIRECTION = fngr->direction_desired;
+         ADC_Set_Input_Channel(_ADC_CHANNEL_3);     // Set active ADC channel for Pointer finger   - 3 is not on the resources list but I know it works
+    }
  }
  
 
@@ -512,7 +505,7 @@ void init_UART() {
 // Initialize Input Capture for all fingers
 void init_input_capture() {
 
-    // Configure timer 3 (Used for pointer, middle, ring, pinky)
+ // Configure timer 3 (Used for pointer, middle, ring, pinky)
     // 0 values not strictly needed as all are reset states. Used for testing and clarity
     RCC_APB1ENR.TIM3EN = 1;                                                     // Enable clock gating for timer module 3
     TIM3_CR1.CEN = 0;                                                           // Disable timer/counter
@@ -520,9 +513,10 @@ void init_input_capture() {
     TIM3_PSC = ENCODER_TIM_PSC;                                                 // Set timer 3 prescaler
     TIM3_ARR = ENCODER_TIM_RELOAD;                                              // Set timer 3 Auto Reload value
     TIM3_CR1 |= 0;                                                              // Set counter direction as upcounting (DIR bit)
-    
+
     // Configure pointer finger (Pin C6, Channel 1) input capture
-    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH1_PC6);                 // Configure alternate function for C6 as Timer 3 Channel 1
+ //   GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH1_PC6);                 // Configure alternate function for C6 as Timer 3 Channel 1
+    GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_6, _GPIO_CFG_MODE_ALT_FUNCTION | _GPIO_CFG_AF_TIM3 | _GPIO_CFG_PULL_DOWN);
     TIM3_CCMR1_Input |= 0x01;                                                   // Set capture channel 1 as input on TI1 (CC1S = 01)
     TIM3_CCER.CC1P = 0;                                                         // Set capture on rising edge event
     TIM3_CCER.CC1NP = 0;                                                        // ^^ Continuation of above
@@ -530,30 +524,33 @@ void init_input_capture() {
     TIM3_DIER.CC1IE = 1;                                                        // Enable interrupt on capture channel 1
 
     // Configure middle finger (Pin C7, Channel 2) input capture
-    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH2_PC7);                 // Configure alternate function for pin C7 as Timer 3 Channel 2
+//    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH2_PC7);                 // Configure alternate function for pin C7 as Timer 3 Channel 2
+    GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_7, _GPIO_CFG_MODE_ALT_FUNCTION | _GPIO_CFG_AF_TIM3 | _GPIO_CFG_PULL_DOWN);
     TIM3_CCMR1_Input |= 0x100;                                                  // Set capture channel 2 as input on TI2 (CC2S = 01)
     TIM3_CCER.CC2P = 0;                                                         // Set capture on rising edge event
     TIM3_CCER.CC2NP = 0;                                                        // ^^ Continuation of above
     TIM3_CCER.CC2E = 1;                                                         // Enable capture on channel 2
     TIM3_DIER.CC2IE = 1;                                                        // Enable interrupt on capture channel 2
-    
+
     // Configure ring finger (Pin C8, Channel 3) input capture
-    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH3_PC8);                 // Configure alternate function for pin BC8 as Timer 3 Channel 3
+//    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH3_PC8);                 // Configure alternate function for pin BC8 as Timer 3 Channel 3
+    GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_8, _GPIO_CFG_MODE_ALT_FUNCTION | _GPIO_CFG_AF_TIM3 | _GPIO_CFG_PULL_DOWN);
     TIM3_CCMR2_Input |= 0x01;                                                   // Set capture channel 3 as input on TI3 (CC3S = 01)
     TIM3_CCER.CC3P = 0;                                                         // Set capture on rising edge event
     TIM3_CCER.CC3NP = 0;                                                         // ^^ Continuation of above
     TIM3_CCER.CC3E = 1;                                                         // Enable capture on channel 3
     TIM3_DIER.CC3IE = 1;                                                        // Enable interrupt on capture channel 3
-    
+
     // Configure pinky finger (Pin C9, Channel 4) input capture
-    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH4_PC9);                 // Configure alternate function for pin C9 as Timer 3 Channel 4
+//    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM3_CH4_PC9);                 // Configure alternate function for pin C9 as Timer 3 Channel 4
+    GPIO_Config(&GPIOC_BASE, _GPIO_PINMASK_4, _GPIO_CFG_MODE_ALT_FUNCTION | _GPIO_CFG_AF_TIM3 | _GPIO_CFG_PULL_DOWN);
     TIM3_CCMR2_Input |= 0x100;                                                  // Set capture channel 4 as input on TI4 (CC4S = 01)
     TIM3_CCER.CC3P = 0;                                                         // Set capture on rising edge event
     TIM3_CCER.CC3NP = 0;                                                        // ^^ Continuation of above
     TIM3_CCER.CC4E = 1;                                                         // Enable capture on channel 4
     TIM3_DIER.CC4IE = 1;                                                        // Enable interrupt on capture channel 4
-    
-    
+
+
     // Configure Timer 2 (Used for thumb)
     RCC_APB1ENR.TIM2EN = 1;                                                     // Enable clock gating for timer module 5
     TIM2_CR1.CEN = 0;                                                           // Disable timer/counter
@@ -563,13 +560,14 @@ void init_input_capture() {
     TIM2_CR1 |= 0;                                                              // Set counter direction as upcounting (DIR bit)
 
     // Configure Thumb (Pin A5, Channel 1) input capture
-    GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA5);                 // Configure alternate function for A5 as Timer 2 Channel 1
+  //  GPIO_Alternate_Function_Enable(&_GPIO_MODULE_TIM2_CH1_PA5);                 // Configure alternate function for A5 as Timer 2 Channel 1
+    GPIO_Config(&GPIOA_BASE, _GPIO_PINMASK_5, _GPIO_CFG_MODE_ALT_FUNCTION | _GPIO_CFG_AF_TIM2 | _GPIO_CFG_PULL_DOWN);
     TIM2_CCMR1_Input |= 0x01;                                                   // Set capture channel 1 as input on TI1 (CC1S = 01)
     TIM2_CCER.CC1P = 0;                                                         // Set capture on rising edge event
     TIM2_CCER.CC1NP = 0;                                                        // ^^ Continuation of above
     TIM2_CCER.CC1E = 1;                                                         // Enable capture on channel 1
     TIM2_DIER.CC1IE = 1;                                                        // Enable interrupt on capture channel 1
-    
+
 
     // Configure timer interrupts
     TIM3_DIER.UIE = 1;                                                          // Enable overflow interrupt Timer 3
@@ -657,31 +655,26 @@ void sample_finger( struct finger *fngr) {
     // Reset position counter
     fngr->position_temp = 0;
     
+
     
     
     
-    
-    
- // ***From Sparkfun*****
-    
+
     if(strcmp(fngr->name, "fngr_pointer") == 0)   {
-
-    // Use ADC reading to calculate voltage:
-    fngr->tip_force =  (float) ADC1_Get_Sample(7) * 3.3 / 4095.0;
-
-    // Use voltage and static resistor value to
-    // calculate FSR resistance:
-    fsrR = 3000.0 * (3.3 / fsrV - 1.0);
-
-    fsrG = 1.0 / fsrR; // Calculate conductance
-    // Break parabolic curve down into two linear slopes:
-    if (fsrR <= 600)
-      fngr->tip_force = (fsrG - 0.00075) / 0.00000032639;
-    else
-      fngr->tip_force =  fsrG / 0.000000642857;
-         POINTER_DIRECTION = fngr->direction_desired;
+        fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_POINTER_TIP_FORCE);
     }
-    /* else middle, ring, pinky, thumb, etc.*/
+    else if (strcmp(fngr->name, "fngr_middle") == 0) {
+        fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_MIDDLE_TIP_FORCE);
+    }
+    else if (strcmp(fngr->name, "fngr_ring") == 0) {
+        fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_RING_TIP_FORCE);
+    }
+    else if (strcmp(fngr->name, "fngr_pinky") == 0) {
+        fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_PINKY_TIP_FORCE);
+    }
+    else if (strcmp(fngr->name, "fngr_thumb") == 0) {
+        fngr->tip_force = ADC1_Get_Sample(CHANNEL_ADC_THUMB_TIP_FORCE);
+    }
 }
 
 
@@ -716,7 +709,7 @@ void print_finger_info( struct finger *fngr) {
     UART1_Write_Text(position_text);
     UART1_Write_Text("\n\n\n\r"); 
     
-    FloatToStr(fngr->tip_force, toStr);                            // Print Flexiforce value (16-bit unsigned) to terminal
+    IntToStr(fngr->tip_force, toStr);                            // Print Flexiforce value (16-bit unsigned) to terminal
     UART1_Write_Text("Force applied to tip of finger:                ");
     UART1_Write_Text(toStr);
     UART1_Write_Text("\n\n\n\r");

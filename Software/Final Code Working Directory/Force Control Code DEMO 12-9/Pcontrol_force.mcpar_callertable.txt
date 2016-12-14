@@ -27,8 +27,7 @@ main
 				UART6_Write
 					UARTx_Write
 	init_GPIO
-		GPIO_Digital_Input
-			GPIO_Config
+		GPIO_Config
 		GPIO_Digital_Output
 			GPIO_Config
 	init_pointer_PWM
@@ -42,17 +41,15 @@ main
 				GPIO_Alternate_Function_Enable
 	InitTimer5
 		NVIC_IntEnable
-	ADC_Set_Input_Channel
-		GPIO_Analog_Input
-			GPIO_Config
-	ADC1_Init
-		ADCx_Init
-			RCC_GetClocksFrequency
 	strcpy
 	init_finger
 		strcmp
 		ADC_Set_Input_Channel
-		ADC1_Init
+			GPIO_Analog_Input
+				GPIO_Config
+	ADC1_Init
+		ADCx_Init
+			RCC_GetClocksFrequency
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
@@ -60,7 +57,7 @@ main
 		NVIC_IntEnable
 	init_input_capture
 		NVIC_IntEnable
-		GPIO_Alternate_Function_Enable
+		GPIO_Config
 		_UnsignedIntegralToLongDouble
 		_Div_DP
 	sample_finger
@@ -88,8 +85,7 @@ main
 		LongWordToStr
 		LongToStr
 			LongWordToStr
-		FloatToStr
-			strcpy
+		IntToStr
 ADC_AWD
 Timer5_interrupt
 timer11_ISR

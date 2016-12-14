@@ -24,8 +24,9 @@ Count=0
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-Count=1
+Count=2
 File0=Input Capture Complete 5ch.c
+File1=defines.h
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
@@ -40,9 +41,11 @@ Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force 
 Path3=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
 Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
-Count=0
+Count=2
+Path1=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\
 [HEADERS]
-Count=0
+Count=1
+File0=defines.h
 [PLDS]
 Count=0
 [Useses]
@@ -55,7 +58,8 @@ File4=C_Stdlib
 File5=C_Type
 File6=ADC
 [EXPANDED_NODES]
-Count=0
+Node0=Sources
+Count=1
 [PROGRAMMER_OPTIONS]
 Value=JTAG
 [PROGRAMMER_TYPE]
