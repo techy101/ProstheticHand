@@ -11130,6 +11130,7 @@ direction_desired
 direction_desired
 direction_desired
 direction_desired
+dirtrack
 disableinterrupts
 discen
 discen
@@ -41550,7 +41551,6 @@ sofouten
 sofouten_bit
 sofouten_otg_hs_gccfg_bit
 sp
-sp_high
 sp_low
 spe
 spe

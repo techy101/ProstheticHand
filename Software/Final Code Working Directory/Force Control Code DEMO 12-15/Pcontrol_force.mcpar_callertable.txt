@@ -48,9 +48,6 @@ main
 		ADC_Set_Input_Channel
 			GPIO_Analog_Input
 				GPIO_Config
-	ADC1_Init
-		ADCx_Init
-			RCC_GetClocksFrequency
 	UART1_Write_Text
 		UARTx_Write_Text
 			UARTx_Write
@@ -61,6 +58,9 @@ main
 		GPIO_Config
 		_UnsignedIntegralToLongDouble
 		_Div_DP
+	ADC1_Init
+		ADCx_Init
+			RCC_GetClocksFrequency
 	sample_finger
 		_UnsignedIntegralToLongDouble
 		_Mul_DP
@@ -72,17 +72,18 @@ main
 			ADCx_Get_Sample
 				Delay_1us
 	Pcontrol_force
-		strcmp
 		abs
 	move_pointer_finger
 		PWM_TIM1_Set_Duty
+	IntToStr
+		WordToStr
+	UART_Write_Text
 	print_finger_info
 		UART1_Write_Text
 		LongWordToStr
 		LongToStr
 			LongWordToStr
 		IntToStr
-			WordToStr
 Timer10_interrupt
 emg_override_ISR
 timer11_ISR

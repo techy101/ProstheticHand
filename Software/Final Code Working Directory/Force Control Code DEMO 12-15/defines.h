@@ -60,7 +60,7 @@ Rachel Mertz
 #define POINTER_LIMIT                                                        GPIOE_IDR.B15                                        // Input  - E15 - Limit (home) switch for Pointer 
 #define POINTER_ENCODER_B                                                GPIOE_IDR.B12                                        // Input  - E12 - Quadrature encoder channel B for Pointer motor 
 #define POINTER_PWM                                                                _PWM_CHANNEL1                                        // Chan   - E9  - TIM1 CH1 PWM Channel used for pointer finger 
-#define CHANNEL_ADC_POINTER_TIP_FORCE                        7                                                                // Chan          - A7  - ADC1 channel 7 used for FlexiForce sensor on pointer finger
+#define CHANNEL_ADC_POINTER_TIP_FORCE                        9                                                                // Chan   WAS 7, CHANGE BACK       - A7  - ADC1 channel 7 used for FlexiForce sensor on pointer finger
 #define CHANNEL_ADC_POINTER_ISENSE                                4                                                                // Chan   - A4  - ADC1 channel 4 used for current sense on pointer finger
 
 //Middle - Motor 4

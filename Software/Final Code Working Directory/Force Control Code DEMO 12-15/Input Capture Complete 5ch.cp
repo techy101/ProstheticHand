@@ -1,12 +1,12 @@
-#line 1 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
-#line 1 "c:/users/scsus/desktop/force control code demo 12-9/defines.h"
-#line 44 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
+#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/force control code demo 12-15/defines.h"
+#line 44 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
-unsigned int SAMPLE_TIM_RELOAD = 59999;
-unsigned int SAMPLE_TIM_PSC = 13;
-unsigned int TERMINAL_PRINT_THRESH = 100;
+unsigned int SAMPLE_TIM_RELOAD = 55999;
+unsigned int SAMPLE_TIM_PSC = 2;
+unsigned int TERMINAL_PRINT_THRESH = 500;
 unsigned long PWM_FREQ_HZ = 10000;
 
 unsigned int PWM_PERIOD_TIM1;
@@ -14,7 +14,7 @@ unsigned int PWM_PERIOD_TIM4;
 
 
 long FULLY_EXTENDED = 0;
-unsigned long FULLY_CONTRACTED = 3300;
+unsigned long FULLY_CONTRACTED = 3600;
 unsigned int NORMALIZATION_CONSTANT = 1;
 
 
@@ -52,10 +52,11 @@ void init_pointer_PWM(unsigned int);
 unsigned int Pcontrol_force(struct finger *, unsigned int, unsigned int);
 void move_pointer_finger(struct finger *, unsigned int);
 
-int MARGIN = 50;
+int MARGIN = 250;
 int setP;
-int SP_LOW = 600, SP_HIGH = 1200;
-float FORCE_K = 25.0;
+int SP_LOW = 700;
+
+float FORCE_K = 50.0;
 unsigned int MPV;
 unsigned int dutyCycle;
 float pointer_average = 0.0;
@@ -100,6 +101,7 @@ struct finger fngr_thumb;
 
 void init_finger(struct finger *);
 
+unsigned int dirTrack;
 
 
 void main() {
@@ -108,7 +110,7 @@ void main() {
  init_UART();
  init_GPIO();
  init_pointer_PWM(0);
-#line 164 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 166 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
  InitTimer10();
 
 
@@ -127,7 +129,6 @@ void main() {
  init_finger(&fngr_thumb);
 
 
- ADC1_init();
 
 
  UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
@@ -143,11 +144,11 @@ void main() {
   GPIOB_ODR.B7  = 0;
 
 
+ ADC1_init();
+
+
  while(1) {
 
-
- if(analogGo && !doShutdown)
- {
  if (poll_flag) {
  poll_flag = 0;
  sample_finger(&fngr_pointer);
@@ -155,23 +156,54 @@ void main() {
  sample_finger(&fngr_ring);
  sample_finger(&fngr_pinky);
  sample_finger(&fngr_thumb);
+
+
  }
 
+
+ if(analogGo && !doShutdown)
+ {
 
 
  if(fngr_pointer.position_actual >= FULLY_CONTRACTED )
  doShutdown = 1;
 
+
  MPV = fngr_pointer.tip_force;
 
  dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);
-#line 236 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 234 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
+  GPIOE_ODR.B10  = fngr_pointer.direction_desired;
+#line 248 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
+if(MPV > setP)
+ {
+
+
+
+ dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);
+
+ move_pointer_finger(&fngr_pointer, 0);
+
+
+
+ }
+ else
  move_pointer_finger(&fngr_pointer, dutyCycle);
-#line 287 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 311 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
  }
 
  if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
 
+ dirTrack = fngr_pointer.direction_desired;
+ UART1_Write_Text("Duty cycle returned is ");
+ IntToStr(dutyCycle, toStr);
+ UART1_Write_Text(toStr);
+ UART1_Write_Text("\n\r");
+
+ UART_Write_Text(" \n Setpoint is ");
+ IntToStr(setP, toStr);
+ UART1_Write_Text(ToStr);
+ UART1_Write_Text("\n\r");
  print_finger_info(&fngr_pointer);
  print_finger_info(&fngr_middle);
  print_finger_info(&fngr_ring);
@@ -190,6 +222,7 @@ void main() {
  move_pointer_finger(&fngr_pointer, 100);
  }
 
+
  move_pointer_finger(&fngr_pointer, 0);
  analogGo = 0;
  doShutdown = 0;
@@ -197,7 +230,7 @@ void main() {
  fngr_pointer.position_actual = 2;
  }
 
-
+ dirTrack = fngr_pointer.direction_desired;
 
  }
 }
@@ -209,25 +242,27 @@ void main() {
 
 
 
-unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int MPV)
+unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int mpv)
 {
  unsigned int duty_cycle;
 
- if((SP-MPV) < 0)
+ if((SP-mpv) <= 0) {
  fngr->direction_desired =  1 ;
+
+ }
  else
  fngr->direction_desired =  0 ;
 
- if(strcmp(fngr->name, "fngr_pointer") == 0) {
-  GPIOE_ODR.B10  = fngr->direction_desired;
- }
 
- duty_cycle = FORCE_K*abs(SP-MPV);
+
+
+
+ duty_cycle = FORCE_K*abs(SP-mpv);
 
  if(duty_cycle > 100)
  duty_cycle = 100;
  else if(duty_cycle < 20)
- duty_cycle = 20;
+ duty_cycle = 0;
 
  return duty_cycle;
 }
@@ -386,6 +421,7 @@ void init_GPIO() {
  void init_finger(struct finger *fngr)
  {
  fngr->position_actual = 0;
+
  fngr->direction_desired =  0 ;
 
  if (strcmp(fngr->name, "fngr_pointer") == 0) {
@@ -556,7 +592,7 @@ void sample_finger( struct finger *fngr) {
  else {
  fngr->direction_actual = 7;
  }
-#line 687 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 725 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-15/Input Capture Complete 5ch.c"
  fngr->position_temp = 0;
 
 
@@ -565,7 +601,7 @@ void sample_finger( struct finger *fngr) {
 
 
  if(strcmp(fngr->name, "fngr_pointer") == 0) {
- fngr->tip_force = ADC1_Get_Sample( 7 );
+ fngr->tip_force = ADC1_Get_Sample( 9 );
  }
  else if (strcmp(fngr->name, "fngr_middle") == 0) {
  fngr->tip_force = ADC1_Get_Sample( 9 );
@@ -607,6 +643,16 @@ void print_finger_info( struct finger *fngr) {
  UART1_Write_Text("CONTRACT ");
 
  UART1_Write_Text("\n\r");
+
+
+ UART1_Write_Text("Direction desired:             ");
+ if(fngr->direction_desired ==  1 )
+ UART1_Write_Text("EXTEND ");
+ else
+ UART1_Write_Text("CONTRACT ");
+
+ UART1_Write_Text("\n\r");
+
 
  LongToStr(fngr->position_actual, position_text);
  UART1_Write_Text("Position of finger:                ");

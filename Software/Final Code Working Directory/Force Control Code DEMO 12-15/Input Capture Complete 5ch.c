@@ -44,9 +44,9 @@
 unsigned long MCU_FREQUENCY = 168000000;                                        // Microcontroller clock speed in Hz
 unsigned long ENCODER_TIM_RELOAD = 65535;                                       // Auto Reload value for encoder CCP timers (16 bit register)
 unsigned int ENCODER_TIM_PSC = 100;                                             // Prescaler for encoder CCP timers
-unsigned int SAMPLE_TIM_RELOAD = 59999;                                         // Auto reload value for sampling timer (5ms)
-unsigned int SAMPLE_TIM_PSC = 13;                                              // Prescaler for sampling timer
-unsigned int TERMINAL_PRINT_THRESH = 100;                                        // Number of polling events
+unsigned int SAMPLE_TIM_RELOAD = 55999;                                         // Auto reload value for sampling timer (5ms)
+unsigned int SAMPLE_TIM_PSC = 2;                                              // Prescaler for sampling timer
+unsigned int TERMINAL_PRINT_THRESH = 500;                                        // Number of polling events
 unsigned long PWM_FREQ_HZ = 10000;                                              // PWM base frequency
 
 unsigned int PWM_PERIOD_TIM1;                                                   // For four fingers - base timer period of PWM - needed for duty cycle calculations
@@ -54,7 +54,7 @@ unsigned int PWM_PERIOD_TIM4;                                                   
 
 // Motor control constants
 long FULLY_EXTENDED = 0;                                                        // Lower bound for position
-unsigned long FULLY_CONTRACTED = 3300;                                          // Higher bound for position
+unsigned long FULLY_CONTRACTED = 3600;                                          // Higher bound for position
 unsigned int NORMALIZATION_CONSTANT = 1;                                        // "Self-explanatory" - was 4
 
 
@@ -92,10 +92,11 @@ void init_pointer_PWM(unsigned int);
 unsigned int Pcontrol_force(struct finger *, unsigned int, unsigned int);       // Takes finger structure, SP, and MPV
 void move_pointer_finger(struct finger *, unsigned int);                        // Takes finger structure and duty cycle
 
-int MARGIN = 50;                                                                  // accuracy of PV - 10/400 = 2.5%
+int MARGIN = 250;                                                                // accuracy of PV - 10/400 = 2.5%
 int setP;
-int SP_LOW = 600, SP_HIGH = 1200;                                               // 2 setpoints - desired force
-float FORCE_K = 25.0;                                                           // proportionality constant for P control
+int SP_LOW = 700;                                               // setpoints - desired force
+                                                                                // Firm touch - about 700 mV + 200-300 mV offset
+float FORCE_K = 50.0;                                                           // proportionality constant for P control
 unsigned int MPV;                                                               // measured process variable
 unsigned int dutyCycle;                                                         // duty cycle returned by P controller
 float pointer_average = 0.0;                                                    // moving average over 5 force samples
@@ -125,7 +126,7 @@ struct finger {
         unsigned long enc_total_ticks;                                          // Calculated total number of timer ticks between input capture events 
         unsigned long input_sig_frequency;                                      // Frequency of motor encoder signal (in Hz)
         long double input_sig_period;                                           // Period of motor encoder signal (in ms)
-        int tip_force;                                                 // NEW: Force applied at flexiforce sensor on fingertip
+        int tip_force;                                                          // NEW: Force applied at flexiforce sensor on fingertip
 };
 
 
@@ -140,6 +141,7 @@ struct finger fngr_thumb;
 // NEW
 void init_finger(struct finger *);                                              // Sets initial position of finger to 0 and direction to CONTRACT
 
+unsigned int dirTrack;
 
 // Main Starts here 
 void main() {
@@ -178,8 +180,7 @@ void main() {
     init_finger(&fngr_pinky);
     init_finger(&fngr_thumb);
 
-    // Initialize ADC
-    ADC1_init();
+
 
     // Program start terminal verification
     UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
@@ -194,12 +195,12 @@ void main() {
 
     LOW_BATTERY_LED = 0;
 
+    // Initialize ADC
+    ADC1_init();
+
     // Infinite Loop
     while(1) {
 
-        // execute shutoff outside of sampling
-        if(analogGo && !doShutdown)         // if the system is running and still needs to go through the shutoff procedure
-        {
            if (poll_flag) {                             // system is running and doesn't need to go through shutoff
               poll_flag = 0;                                                    // Clear flag
               sample_finger(&fngr_pointer);                                     // Call state calculation function for each finger - equivalent of sampling
@@ -207,34 +208,57 @@ void main() {
               sample_finger(&fngr_ring);
               sample_finger(&fngr_pinky);
               sample_finger(&fngr_thumb);
+              
+
           }
-          
+
+        // execute shutoff outside of sampling
+        if(analogGo && !doShutdown)         // if the system is running and still needs to go through the shutoff procedure
+        {
           // emergency - if stabilization not reached
           // If finger reaches fully contracted state instruct it to shutdown
           if(fngr_pointer.position_actual >= FULLY_CONTRACTED )
               doShutdown = 1;
+              
 
           MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
 
           dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
-          
+
           /*UART1_Write_Text("Force value is ");
           IntToStr(MPV, toStr);               // Print
           UART1_Write_Text(toStr);
           UART1_Write_Text("\n\r");*/
 
-          /*UART1_Write_Text("Duty cycle returned is ");
-          IntToStr(dutyCycle, toStr);                                       // Print
-          UART1_Write_Text(toStr);
-          UART1_Write_Text("\n\r");*/
 
-          /*UART_Write_Text(" \n Setpoint is ");   // display it
-          IntToStr(setP, toStr);
-          UART1_Write_Text(ToStr);
-          UART1_Write_Text("\n\r");*/
+          POINTER_DIRECTION = fngr_pointer.direction_desired;
 
-          move_pointer_finger(&fngr_pointer, dutyCycle);                 // apply duty cycle
 
+/*if(MPV - setP > 0)       // stabilizing - MARGIN should be small
+          {
+             MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
+
+             dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
+
+             move_pointer_finger(&fngr_pointer, dutyCycle);
+            // sample_finger(&fngr_pointer);
+            // MPV = fngr_pointer.tip_force;      // store the MPV to be able to break out of stabilization
+          }*/
+
+if(MPV > setP)       // stabilizing - MARGIN should be small
+          {
+    //       sample_finger(&fngr_pointer);
+    //          MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
+
+             dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
+
+             move_pointer_finger(&fngr_pointer, 0);
+
+            // sample_finger(&fngr_pointer);
+            // MPV = fngr_pointer.tip_force;      // store the MPV to be able to break out of stabilization
+          }
+ else
+               move_pointer_finger(&fngr_pointer, dutyCycle);                 // apply duty cycle
           // stabilization: toggle between two different setpoints, light and hard
           /*if(abs(MPV - setP) < MARGIN)
           {
@@ -287,7 +311,17 @@ void main() {
        }
 
        if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
+            
+            dirTrack = fngr_pointer.direction_desired;
+                        UART1_Write_Text("Duty cycle returned is ");
+              IntToStr(dutyCycle, toStr);                                       // Print
+              UART1_Write_Text(toStr);
+              UART1_Write_Text("\n\r");
 
+               UART_Write_Text(" \n Setpoint is ");   // display it
+               IntToStr(setP, toStr);
+               UART1_Write_Text(ToStr);
+               UART1_Write_Text("\n\r");
           print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger     - PUT BACK IN
           print_finger_info(&fngr_middle);
           print_finger_info(&fngr_ring);
@@ -299,21 +333,22 @@ void main() {
        // Actual shutdown code
        if (doShutdown) {
 
-          while(fngr_pointer.position_actual >= FULLY_EXTENDED) {		// Loop until finger is fully extended again
+          while(fngr_pointer.position_actual >= FULLY_EXTENDED) {                // Loop until finger is fully extended again
               sample_finger(&fngr_pointer);
-              fngr_pointer.direction_desired = EXTEND;
+              fngr_pointer.direction_desired = EXTEND;          // could move these two lines out in front of while
               POINTER_DIRECTION = EXTEND;
               move_pointer_finger(&fngr_pointer, 100);                          // Run finger back
           }
           
+          // finger now fully extended
           move_pointer_finger(&fngr_pointer, 0);                                // Stop the motor - wait for analogGo again
-  	  analogGo = 0;				                                // Set the system to be inactive
-  	  doShutdown = 0;				                        // Disable shutdown flag since shutdown routine has been completed
-  	  LOW_BATTERY_LED = 0;		                                        // Turn off LED to indicate system is now inactive
+            analogGo = 0;                                                                // Set the system to be inactive
+            doShutdown = 0;                                                        // Disable shutdown flag since shutdown routine has been completed
+            LOW_BATTERY_LED = 0;                                                        // Turn off LED to indicate system is now inactive
           fngr_pointer.position_actual = 2;
        }
     
-    
+      dirTrack = fngr_pointer.direction_desired;
 
     }
 } // Main ends here
@@ -325,25 +360,27 @@ void main() {
 // apply P control to force to determine duty cycle. takes in Flexiforce values and returns duty cycle.
 // *** ONLY WORKS if finger begins fully extended, i.e. the limit switch is hit
 // *** so counting up is contracting and counting down is extending.
-unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int MPV)
+unsigned int Pcontrol_force(struct finger *fngr, unsigned int SP, unsigned int mpv)
 {
      unsigned int duty_cycle;
 
-     if((SP-MPV) < 0)                // moved past SP
-          fngr->direction_desired = EXTEND;              // Move back
+     if((SP-mpv) <= 0) {                // moved past SP
+          fngr->direction_desired = EXTEND;
+     //     POINTER_DIRECTION = EXTEND;              // Move back
+          }
      else
          fngr->direction_desired = CONTRACT;         // Keep going
-         
-     if(strcmp(fngr->name, "fngr_pointer") == 0)     {
-          POINTER_DIRECTION = fngr->direction_desired;
-     }
 
-     duty_cycle = FORCE_K*abs(SP-MPV);    // proportional control
+ //    if(strcmp(fngr->name, "fngr_pointer") == 0)     {
+ //         POINTER_DIRECTION = fngr->direction_desired;
+  //   }
+
+     duty_cycle = FORCE_K*abs(SP-mpv);    // proportional control
      
      if(duty_cycle > 100)
           duty_cycle = 100;       // cap duty cycle
      else if(duty_cycle < 20)
-           duty_cycle = 20;       // boost duty cycle
+           duty_cycle = 0;       // boost duty cycle
 
      return duty_cycle;
 }
@@ -502,6 +539,7 @@ void init_GPIO() {
  void init_finger(struct finger *fngr)
  {
       fngr->position_actual = 0;
+      //fngr->position_actual = FULLY_CONTRACTED +100;                 // CLEANUP - in case finger jams contracted
       fngr->direction_desired = CONTRACT;
       
       if (strcmp(fngr->name, "fngr_pointer") == 0) {
@@ -735,6 +773,16 @@ void print_finger_info( struct finger *fngr) {
     //UART1_Write_Text(direction_text);
     UART1_Write_Text("\n\r");                        
     
+        //IntToStr(fngr->direction_actual, direction_text);                           // Print direction of movement to terminal
+    UART1_Write_Text("Direction desired:             ");
+    if(fngr->direction_desired == EXTEND)
+         UART1_Write_Text("EXTEND ");
+    else
+        UART1_Write_Text("CONTRACT ");
+    //UART1_Write_Text(direction_text);
+    UART1_Write_Text("\n\r");
+    
+    
     LongToStr(fngr->position_actual, position_text);                            // Print total number of input events (position) to terminal
     UART1_Write_Text("Position of finger:                ");
     UART1_Write_Text(position_text);
@@ -769,27 +817,27 @@ void InitTimer10(){
 // I don't know how the configurations would be changed.
 void Timer10_interrupt() iv IVT_INT_TIM1_UP_TIM10 { // Interrupt handler if 3 s have past
     // Deal with interrupt stuffs
-    EXTI_IMRbits.MR3 = 0;			// mask bit 3 to disable external interrupt on line 3
-    EXTI_PR.B3 = 1;                            	// Clear Interrupt Flag
-    TIM10_DIER.UIE = 0;                   	// Disable timer 10 interrupt
-    TIM10_SR.UIF = 0;                     	// Clear timer 10 interrupt flag
+    EXTI_IMRbits.MR3 = 0;                        // mask bit 3 to disable external interrupt on line 3
+    EXTI_PR.B3 = 1;                                    // Clear Interrupt Flag
+    TIM10_DIER.UIE = 0;                           // Disable timer 10 interrupt
+    TIM10_SR.UIF = 0;                             // Clear timer 10 interrupt flag
     EXTI_RTSRbits.TR3 = 1;                      // Enable rising edge trigger
     EXTI_FTSRbits.TR3 = 0;                      // Disable falling edge trigger
-    EXTI_IMRbits.MR3 = 1;			// Unmask bit 3 to enable external interrupt on line 3
+    EXTI_IMRbits.MR3 = 1;                        // Unmask bit 3 to enable external interrupt on line 3
     EMG_ACTIVE_LED = 0;                         // Clear EMG Override button indicator
-    emg_override_status = 0;			// Put the EMG override handler back into dormant state
+    emg_override_status = 0;                        // Put the EMG override handler back into dormant state
 
     // Deal with conditional stuff
-    if (!analogGo) {				// If system is current inactive
+    if (!analogGo) {                                // If system is current inactive
        doShutdown = 0;
-       analogGo = 1;			// Flag to indicate the system should run
-       LOW_BATTERY_LED = 1;    	                // Turn on the system state LED to indicate system is now running
+       analogGo = 1;                        // Flag to indicate the system should run
+       LOW_BATTERY_LED = 1;                            // Turn on the system state LED to indicate system is now running
     }
 
-    else {					// If the system is currently active
-       doShutdown = 1;			        // Send the shutdown command.
+    else {                                        // If the system is currently active
+       doShutdown = 1;                                // Send the shutdown command.
        analogGo = 0;
-    						// The LED, analogGo, doShutdown, and emg_override_status are all cleared by the "actual shutdown code"
+                                                    // The LED, analogGo, doShutdown, and emg_override_status are all cleared by the "actual shutdown code"
 }
 }
 
@@ -799,7 +847,7 @@ void Timer10_interrupt() iv IVT_INT_TIM1_UP_TIM10 { // Interrupt handler if 3 s 
 // EMG Override Button Interrupt Hnadler
 void emg_override_ISR() iv IVT_INT_EXTI3 {
 
-     EXTI_IMRbits.MR3 = 0;			    // mask bit 3 to Disable external interrupt on line 3
+     EXTI_IMRbits.MR3 = 0;                            // mask bit 3 to Disable external interrupt on line 3
       EXTI_PR.B3 = 1;                               // Clear Interrupt Flag
       if(emg_override_status == 0) {                // Current system state is dormant
             TIM10_SR.UIF = 0;                       // Clear timer 5 interrupt bit
@@ -820,5 +868,5 @@ void emg_override_ISR() iv IVT_INT_EXTI3 {
             analogGo = 0;
             doShutdown = 1;
       }
-      EXTI_IMRbits.MR3 = 1;			    // Unmask bit 3 to enable external interrupt on line 3
+      EXTI_IMRbits.MR3 = 1;                            // Unmask bit 3 to enable external interrupt on line 3
 }
