@@ -65,7 +65,7 @@ unsigned int terminal_print_count;                                              
 unsigned long tim2_overflow_count;                                              // Overflow counter for timer 2
 unsigned long tim3_overflow_count;                                              // Overflow counter for timer 3
 int analogGo = 0;                                                               // Tells the system whether the timer interrupt has triggered
-int doShutoff = 0;                                                              // Tells the system whether it needs to go through the shutoff procedure
+int doShutdown = 0;                                                              // Tells the system whether it needs to go through the shutoff procedure
 int emg_override_status;                                                        // Used as state variable to control EMG delay timer. Do not use for anything else
 
 
@@ -150,167 +150,172 @@ void main() {
         init_pointer_PWM(0);                                                    // Set up PWM with 0% duty cycle
         
 /*while(1)
+    {
+    // Cleanup to extend finger backward
+    POINTER_DIRECTION = EXTEND;
+    if(GRAB_MODE_BUTTON == 1)  // pressing the button should run the motor!!
+        move_pointer_finger(&fngr_pointer, 100);                                // Extend finger at 100% without position control - visually choose where it stops
+    else
+        move_pointer_finger(&fngr_pointer, 0);
+    }*/
+    
+
+    // Initialize stuff for AWD
+    InitTimer10();                  // Timer3 init
+
+
+    // Define names of finger struct instances
+    strcpy(fngr_pointer.name, "fngr_pointer");
+    strcpy(fngr_middle.name, "fngr_middle");
+    strcpy(fngr_ring.name, "fngr_ring");
+    strcpy(fngr_pinky.name, "fngr_pinky");
+    strcpy(fngr_thumb.name, "fngr_thumb");
+
+    // Set initial direction to CONTRACT, initial position to 0, and configure ADC1 for input on channel 7
+    init_finger(&fngr_pointer);
+    init_finger(&fngr_middle);
+    init_finger(&fngr_ring);
+    init_finger(&fngr_pinky);
+    init_finger(&fngr_thumb);
+
+    // Initialize ADC
+    ADC1_init();
+
+    // Program start terminal verification
+    UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
+    delay_ms(500);
+
+    // Begin Timers and input capture
+    init_timer11();                                                         // Initialize timer 11, used for sampling
+    init_input_capture();                                                   // Initialize input capture channels
+
+    setP = SP_LOW;                                                          // Medium touch to begin
+    change_SP_flag = 1;                                                     // Light touch next time
+
+    LOW_BATTERY_LED = 0;
+
+    // Infinite Loop
+    while(1) {
+
+        // execute shutoff outside of sampling
+        if(analogGo && !doShutdown)         // if the system is running and still needs to go through the shutoff procedure
         {
-        // Cleanup to extend finger backward
-        POINTER_DIRECTION = EXTEND;
-        if(GRAB_MODE_BUTTON == 1)  // pressing the button should run the motor!!
-            move_pointer_finger(&fngr_pointer, 100);                                // Extend finger at 100% without position control - visually choose where it stops
-        else
-            move_pointer_finger(&fngr_pointer, 0);
-        }*/
-        
-
-        // Initialize stuff for AWD
-        InitTimer10();                  // Timer3 init
-
-
-        // Define names of finger struct instances
-        strcpy(fngr_pointer.name, "fngr_pointer");
-        strcpy(fngr_middle.name, "fngr_middle");
-        strcpy(fngr_ring.name, "fngr_ring");
-        strcpy(fngr_pinky.name, "fngr_pinky");
-        strcpy(fngr_thumb.name, "fngr_thumb");
-
-        // Set initial direction to CONTRACT, initial position to 0, and configure ADC1 for input on channel 7
-        init_finger(&fngr_pointer);
-        init_finger(&fngr_middle);
-        init_finger(&fngr_ring);
-        init_finger(&fngr_pinky);
-        init_finger(&fngr_thumb);
-
-        // Initialize ADC
-        ADC1_init();
-
-        // Program start terminal verification
-        UART1_Write_Text("\n\n\rProgram Has Started!\n\r");
-        delay_ms(500);
-
-        // Begin Timers and input capture
-        init_timer11();                                                         // Initialize timer 11, used for sampling
-        init_input_capture();                                                   // Initialize input capture channels
-
-        setP = SP_LOW;                                                          // Medium touch to begin
-        change_SP_flag = 1;                                                     // Light touch next time
-
-        LOW_BATTERY_LED = 0;
-
-        // Infinite Loop
-        while(1) {
-
-            // execute shutoff outside of sampling
-            if(analogGo && doShutoff)         // if the system is running and still needs to go through the shutoff procedure
-            {
-                // execute shutoff procedure
-                 sample_finger(&fngr_pointer);                                // Sample to get current position
-                 while(fngr_pointer.position_actual >= FULLY_EXTENDED)   {    // Go back to fully extended
-                      sample_finger(&fngr_pointer);                           // Make sure finger extends backward before resuming force control
-                      move_pointer_finger(&fngr_pointer, 100);                // Run finger back
-                 }
-                 move_pointer_finger(&fngr_pointer, 0);                       // Stop the motor - wait for analogGo again
-                 analogGo = 0;      // turn off analogGo
-                 goStatus = 0;      // went through the shutoff procedure
-                 emg_override_status = 1;   // ??
-            }
-              
-           if (analogGo && !doShutoff && poll_flag) {                             // system is running and doesn't need to go through shutoff
+           if (poll_flag) {                             // system is running and doesn't need to go through shutoff
               poll_flag = 0;                                                    // Clear flag
               sample_finger(&fngr_pointer);                                     // Call state calculation function for each finger - equivalent of sampling
               sample_finger(&fngr_middle);
               sample_finger(&fngr_ring);
               sample_finger(&fngr_pinky);
               sample_finger(&fngr_thumb);
+          }
+          
+          // emergency - if stabilization not reached
+          // If finger reaches fully contracted state instruct it to shutdown
+          if(fngr_pointer.position_actual >= FULLY_CONTRACTED )
+              doShutdown = 1;
 
-              // emergency - if stabilization not reached
-              if(fngr_pointer.position_actual >= FULLY_CONTRACTED) {
-                   while(fngr_pointer.position_actual >= FULLY_EXTENDED) {
-                       sample_finger(&fngr_pointer);
-                       fngr_pointer.direction_desired = EXTEND;
-                       POINTER_DIRECTION = EXTEND;
-                   }
-              }
+          MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
 
-              MPV = fngr_pointer.tip_force;                                     // Store the sampled value locally
+          dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
+          
+          /*UART1_Write_Text("Force value is ");
+          IntToStr(MPV, toStr);               // Print
+          UART1_Write_Text(toStr);
+          UART1_Write_Text("\n\r");*/
 
-              dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);  // apply P control; input is finger, SP, MPV
-              
-              /*UART1_Write_Text("Force value is ");
-              IntToStr(MPV, toStr);               // Print
-              UART1_Write_Text(toStr);
-              UART1_Write_Text("\n\r");*/
+          /*UART1_Write_Text("Duty cycle returned is ");
+          IntToStr(dutyCycle, toStr);                                       // Print
+          UART1_Write_Text(toStr);
+          UART1_Write_Text("\n\r");*/
 
-              /*UART1_Write_Text("Duty cycle returned is ");
-              IntToStr(dutyCycle, toStr);                                       // Print
-              UART1_Write_Text(toStr);
-              UART1_Write_Text("\n\r");*/
+          /*UART_Write_Text(" \n Setpoint is ");   // display it
+          IntToStr(setP, toStr);
+          UART1_Write_Text(ToStr);
+          UART1_Write_Text("\n\r");*/
 
-              /*UART_Write_Text(" \n Setpoint is ");   // display it
-              IntToStr(setP, toStr);
-              UART1_Write_Text(ToStr);
-              UART1_Write_Text("\n\r");*/
+          move_pointer_finger(&fngr_pointer, dutyCycle);                 // apply duty cycle
 
-              move_pointer_finger(&fngr_pointer, dutyCycle);                 // apply duty cycle
+          // stabilization: toggle between two different setpoints, light and hard
+          /*if(abs(MPV - setP) < MARGIN)
+          {
+               move_pointer_finger(&fngr_pointer, 0);                       // stop the motor
 
-              // stabilization: toggle between two different setpoints, light and hard
-              /*if(abs(MPV - setP) < MARGIN)
-              {
-                   move_pointer_finger(&fngr_pointer, 0);                       // stop the motor
+               fngr_pointer.direction_desired = EXTEND;                     // Set up to EXTEND back from setpoint to mechanical 0
+               POINTER_DIRECTION = fngr_pointer.direction_desired;
 
-                   fngr_pointer.direction_desired = EXTEND;                     // Set up to EXTEND back from setpoint to mechanical 0
-                   POINTER_DIRECTION = fngr_pointer.direction_desired;
+               poll_flag = 0;
+               NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
 
-                   poll_flag = 0;
-                   NVIC_IntDisable(IVT_INT_TIM1_TRG_COM_TIM11);                   // stop sampling with timer 11
+               // Indicate stabilization
+               UART1_Write_Text("\n\n************* PV stabilized at ");       // HOORAH
+               IntToStr(MPV, toStr);
+               UART1_Write_Text(ToStr);
 
-                   // Indicate stabilization
-                   UART1_Write_Text("\n\n************* PV stabilized at ");       // HOORAH
-                   IntToStr(MPV, toStr);
-                   UART1_Write_Text(ToStr);
+               UART_Write_Text("\n\r***************** Setpoint was ");   // display it
+               IntToStr(setP, toStr);
+               UART1_Write_Text(ToStr);
+               UART1_Write_Text("\n\n\n\n\r");
 
-                   UART_Write_Text("\n\r***************** Setpoint was ");   // display it
-                   IntToStr(setP, toStr);
-                   UART1_Write_Text(ToStr);
-                   UART1_Write_Text("\n\n\n\n\r");
+               // Change system setpoint
+               if(change_SP_flag == 0)   {
+                    setP = SP_LOW;                                          // Switch to low setpoint for next time
+                    change_SP_flag = 1;
+               }
+               else if(change_SP_flag == 1)     {
+                    setP = SP_HIGH;                                          // Normally would switch to high setpoint for next time
+                    change_SP_flag = 0;
+               }
 
-                   // Change system setpoint
-                   if(change_SP_flag == 0)   {
-                        setP = SP_LOW;                                          // Switch to low setpoint for next time
-                        change_SP_flag = 1;
-                   }
-                   else if(change_SP_flag == 1)     {
-                        setP = SP_HIGH;                                          // Normally would switch to high setpoint for next time
-                        change_SP_flag = 0;
-                   }
+               UART_Write_Text("\n***************** New setpoint = ");   // display it
+               IntToStr(setP, toStr);
+               UART1_Write_Text(ToStr);
+               UART1_Write_Text("\n\n\n\n\r");
 
-                   UART_Write_Text("\n***************** New setpoint = ");   // display it
-                   IntToStr(setP, toStr);
-                   UART1_Write_Text(ToStr);
-                   UART1_Write_Text("\n\n\n\n\r");
+               fngr_pointer.direction_desired = EXTEND;                     // Set up to EXTEND again!
+               POINTER_DIRECTION = fngr_pointer.direction_desired;
 
-                   fngr_pointer.direction_desired = EXTEND;                     // Set up to EXTEND again!
-                   POINTER_DIRECTION = fngr_pointer.direction_desired;
+               move_pointer_finger(&fngr_pointer, 100);                     // Restart the motor
+               NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);                  // Start sampling with timer 11 again
+               sample_finger(&fngr_pointer);                                // Sample to get current position
+               while(fngr_pointer.position_actual >= FULLY_EXTENDED)   {
+                    sample_finger(&fngr_pointer);                           // Make sure finger extends backward before resuming force control
+                    MPV = fngr_pointer.tip_force;                           // Store the force value for comparison
+               }
+               // reached FULLY_EXTENDED: start contracting again
+               POINTER_DIRECTION = CONTRACT;
+          }*/
+       }
 
-                   move_pointer_finger(&fngr_pointer, 100);                     // Restart the motor
-                   NVIC_IntEnable(IVT_INT_TIM1_TRG_COM_TIM11);                  // Start sampling with timer 11 again
-                   sample_finger(&fngr_pointer);                                // Sample to get current position
-                   while(fngr_pointer.position_actual >= FULLY_EXTENDED)   {
-                        sample_finger(&fngr_pointer);                           // Make sure finger extends backward before resuming force control
-                        MPV = fngr_pointer.tip_force;                           // Store the force value for comparison
-                   }
-                   // reached FULLY_EXTENDED: start contracting again
-                   POINTER_DIRECTION = CONTRACT;
-              }*/
-           }
+       if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
 
-           if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {  // Set number of polling events has occured => Print statistics to terminal
+          print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger     - PUT BACK IN
+          print_finger_info(&fngr_middle);
+          print_finger_info(&fngr_ring);
+          print_finger_info(&fngr_pinky);
+          print_finger_info(&fngr_thumb);
+          UART1_Write_Text("\n\n\n\n\n\n\n\r");                             //PUT BACK IN
+       }
+       
+       // Actual shutdown code
+       if (doShutdown) {
 
-              print_finger_info(&fngr_pointer);                                 // Print statistics to terminal for each finger     - PUT BACK IN
-              print_finger_info(&fngr_middle);
-              print_finger_info(&fngr_ring);
-              print_finger_info(&fngr_pinky);
-              print_finger_info(&fngr_thumb);
-              UART1_Write_Text("\n\n\n\n\n\n\n\r");                             //PUT BACK IN
-           }
-        }
+          while(fngr_pointer.position_actual >= FULLY_EXTENDED) {		// Loop until finger is fully extended again
+              sample_finger(&fngr_pointer);
+              fngr_pointer.direction_desired = EXTEND;
+              POINTER_DIRECTION = EXTEND;
+              move_pointer_finger(&fngr_pointer, 100);                          // Run finger back
+          }
+          
+          move_pointer_finger(&fngr_pointer, 0);                                // Stop the motor - wait for analogGo again
+  	  analogGo = 0;				                                // Set the system to be inactive
+  	  doShutdown = 0;				                        // Disable shutdown flag since shutdown routine has been completed
+  	  LOW_BATTERY_LED = 0;		                                        // Turn off LED to indicate system is now inactive
+          fngr_pointer.position_actual = 2;
+       }
+    
+    
+
+    }
 } // Main ends here
 
 
@@ -473,13 +478,13 @@ void init_GPIO() {
     // Two debug lights on PCB used for EMG Override visual indicators
     GPIO_Digital_Output(&GPIOB_BASE, _GPIO_PINMASK_7 | _GPIO_PINMASK_9);
     
-     	 /* ------------ EMG Override Button (EXTI) Initialization ------------ */   //D3
-	 GPIO_Digital_input(&GPIOD_BASE, _GPIO_PINMASK_3);		// Enable digital input on B3
-	 SYSCFGEN_bit = 1;					//Enable system config controller clock
-	 SYSCFG_EXTICR1bits.EXTI3 = 3;		// Map external interrupt 3 to port B
-	 EXTI_RTSRbits.TR3 = 1;				// Set interrupt on rising edge
-	 EXTI_IMRbits.MR3 = 1;				// Unmask bit 3 to enable external interrupt on line 3
-	 NVIC_IntEnable(IVT_INT_EXTI3);     //Enable external interrupt B3 for EMG override button
+              /* ------------ EMG Override Button (EXTI) Initialization ------------ */   //D3
+         GPIO_Digital_input(&GPIOD_BASE, _GPIO_PINMASK_3);                // Enable digital input on B3
+         SYSCFGEN_bit = 1;                                        //Enable system config controller clock
+         SYSCFG_EXTICR1bits.EXTI3 = 3;                // Map external interrupt 3 to port B
+         EXTI_RTSRbits.TR3 = 1;                                // Set interrupt on rising edge
+         EXTI_IMRbits.MR3 = 1;                                // Unmask bit 3 to enable external interrupt on line 3
+         NVIC_IntEnable(IVT_INT_EXTI3);     //Enable external interrupt B3 for EMG override button
     
 }
 
@@ -748,12 +753,12 @@ void print_finger_info( struct finger *fngr) {
 
 // TIMER10 INTERRUPT Init ( 3 seconds )
 void InitTimer10(){
-     RCC_APB2ENR.TIM10EN = 1;       		// Enable clock gating for timer 10
-     TIM10_CR1.CEN = 0;              		// Disable timer/counter
-     TIM10_PSC = 7874;         	// Set timer 10 prescaler
-     TIM10_ARR = 63999;      	// Set timer 10 overflow value
+     RCC_APB2ENR.TIM10EN = 1;                       // Enable clock gating for timer 10
+     TIM10_CR1.CEN = 0;                              // Disable timer/counter
+     TIM10_PSC = 7874;                 // Set timer 10 prescaler
+     TIM10_ARR = 63999;              // Set timer 10 overflow value
      NVIC_IntEnable(IVT_INT_TIM1_UP_TIM10); // Enable timer 10 interrupt
-     TIM10_CR1.CEN = 1;              		// Enable timer/counter
+     TIM10_CR1.CEN = 1;                              // Enable timer/counter
 }
 
 // TIMER10 INTERRUPT HANDLER
@@ -763,18 +768,29 @@ void InitTimer10(){
 // The only reason I haven't implemented this is because I don't know if that involves different configurations inside this interrupt.
 // I don't know how the configurations would be changed.
 void Timer10_interrupt() iv IVT_INT_TIM1_UP_TIM10 { // Interrupt handler if 3 s have past
-     EXTI_IMRbits.MR3 = 0;			    // mask bit 3 to disable external interrupt on line 3
-     EXTI_PR.B3 = 1;                                // Clear Interrupt Flag
-     TIM10_DIER.UIE = 0;                   	    // Disable timer 10 interrupt
-     TIM10_SR.UIF = 0;                     	    // Clear timer 10 interrupt flag
-     //emg_override_status = 0;                       // State flag used for the EMG Override EXTI button handler     ??
-     analogGo = 1;                                  // Tells the system that the timer interrupt has triggered - start force control
-     doShutoff = ~doShutoff;                        // Tells the system that the shutoff procedure doesn't need to be executed
-     LOW_BATTERY_LED = ~LOW_BATTERY_LED;            // Toggle system state led (On = System is running, Off = System has been shut down via EMG Override)
-     EMG_ACTIVE_LED = 0;                            // Clear EMG Override button indicator
-     EXTI_RTSRbits.TR3 = 1;                         // Enable rising edge trigger
-     EXTI_FTSRbits.TR3 = 0;                         // Disable falling edge trigger
-     EXTI_IMRbits.MR3 = 1;			    // Unmask bit 3 to enable external interrupt on line 3
+    // Deal with interrupt stuffs
+    EXTI_IMRbits.MR3 = 0;			// mask bit 3 to disable external interrupt on line 3
+    EXTI_PR.B3 = 1;                            	// Clear Interrupt Flag
+    TIM10_DIER.UIE = 0;                   	// Disable timer 10 interrupt
+    TIM10_SR.UIF = 0;                     	// Clear timer 10 interrupt flag
+    EXTI_RTSRbits.TR3 = 1;                      // Enable rising edge trigger
+    EXTI_FTSRbits.TR3 = 0;                      // Disable falling edge trigger
+    EXTI_IMRbits.MR3 = 1;			// Unmask bit 3 to enable external interrupt on line 3
+    EMG_ACTIVE_LED = 0;                         // Clear EMG Override button indicator
+    emg_override_status = 0;			// Put the EMG override handler back into dormant state
+
+    // Deal with conditional stuff
+    if (!analogGo) {				// If system is current inactive
+       doShutdown = 0;
+       analogGo = 1;			// Flag to indicate the system should run
+       LOW_BATTERY_LED = 1;    	                // Turn on the system state LED to indicate system is now running
+    }
+
+    else {					// If the system is currently active
+       doShutdown = 1;			        // Send the shutdown command.
+       analogGo = 0;
+    						// The LED, analogGo, doShutdown, and emg_override_status are all cleared by the "actual shutdown code"
+}
 }
 
 
@@ -793,6 +809,7 @@ void emg_override_ISR() iv IVT_INT_EXTI3 {
             EXTI_FTSRbits.TR3 = 1;                  // Enable falling edge trigger
             TIM10_DIER.UIE = 1;                     // CC1 Update Interrupt Enable
             EMG_ACTIVE_LED = 1;                     // Notify button is held
+            //doShutdown = 0;
       }
       else {                                        // Current EMG state is armed
             TIM10_DIER.UIE = 0;                     // Disable timer interrupt
@@ -800,6 +817,8 @@ void emg_override_ISR() iv IVT_INT_EXTI3 {
             EXTI_RTSRbits.TR3 = 1;                  // Enable rising edge trigger
             EXTI_FTSRbits.TR3 = 0;                  // Disable falling edge trigger
             EMG_ACTIVE_LED = 0;                     // Notify button released
+            analogGo = 0;
+            doShutdown = 1;
       }
       EXTI_IMRbits.MR3 = 1;			    // Unmask bit 3 to enable external interrupt on line 3
 }

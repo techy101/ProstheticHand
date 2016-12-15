@@ -12460,6 +12460,7 @@ dmeif7
 dmeif7
 dmeif7_bit
 dmeif7_dma1_hisr_bit
+doshutdown
 dpid
 dpid
 dpid
@@ -23379,7 +23380,6 @@ gonsts
 gonsts
 gonsts_bit
 gonsts_otg_hs_dctl_bit
-gostatus
 goutnakeff
 goutnakeff
 goutnakeff_bit

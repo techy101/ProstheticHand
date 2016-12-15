@@ -1,21 +1,10 @@
-0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -UICD -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\Pcontrol_force.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" -SP"C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -IP"" -IP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" "Input Capture Complete 5ch.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_CType.emcl" "__Lib_CString.emcl" "__Lib_CStdlib.emcl" "__Lib_Conversions.emcl" "__Lib_ADC_123_32F20x_16ch.emcl" "__Lib_PWM_1234589_12_10_11_13_14.emcl" "__Lib_UART_123_45_6.emcl"	 
-warning: 0	1502	Specified include path does not exist: '-IPC:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9'	 
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -UICD -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\Pcontrol_force.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" -SP"C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -IP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" "Input Capture Complete 5ch.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_CType.emcl" "__Lib_CString.emcl" "__Lib_CStdlib.emcl" "__Lib_Conversions.emcl" "__Lib_ADC_123_32F20x_16ch.emcl" "__Lib_PWM_1234589_12_10_11_13_14.emcl" "__Lib_UART_123_45_6.emcl"	 
 diagnostics: 0	122	Compilation Started	Input Capture Complete 5ch.c
+error: 211	324	Undeclared identifier 'goStatus' in expression	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer2_ISR at 0x002C)	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer3_ISR at 0x002D)	Input Capture Complete 5ch.c
 hint: 0	1004	interrupt handler (timer11_ISR at 0x002A)	Input Capture Complete 5ch.c
-hint: 606	1163	Variable 'fsrG' has been declared, but not used	Input Capture Complete 5ch.c
-hint: 607	1163	Variable 'fsrV' has been declared, but not used	Input Capture Complete 5ch.c
-hint: 608	1163	Variable 'fsrR' has been declared, but not used	Input Capture Complete 5ch.c
-hint: 687	1163	Variable 'direction_text' has been declared, but not used	Input Capture Complete 5ch.c
-hint: 0	1004	interrupt handler (ADC_AWD at 0x0022)	Input Capture Complete 5ch.c
-hint: 0	1004	interrupt handler (Timer5_interrupt at 0x0042)	Input Capture Complete 5ch.c
-diagnostics: 760	123	Compiled Successfully	Input Capture Complete 5ch.c
-diagnostics: 0	127	All files Compiled in 250 ms	 
-hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
-hint: 0	1144	Static RAM (bytes): 1109   Dynamic RAM (bytes): 129953	Static RAM (bytes): 1109   Dynamic RAM (bytes): 129953
-hint: 0	1144	Used ROM (bytes): 11980 (1%)  Free ROM (bytes): 1036596 (99%)	Used ROM (bytes): 11980 (1%)  Free ROM (bytes): 1036596 (99%)
-diagnostics: 0	125	Project Linked Successfully	Pcontrol_force.mcpar
-diagnostics: 0	128	Linked in 1281 ms	 
-diagnostics: 0	129	Project 'Pcontrol_force.mcpar' completed: 2031 ms	 
-diagnostics: 0	103	Finished successfully: 14 Dec 2016, 12:53:00	Pcontrol_force.mcpar
+hint: 713	1163	Variable 'direction_text' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (Timer10_interrupt at 0x0029)	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (emg_override_ISR at 0x0019)	Input Capture Complete 5ch.c
+error: 0	102	Finished (with errors): 15 Dec 2016, 07:45:48	Pcontrol_force.mcpar

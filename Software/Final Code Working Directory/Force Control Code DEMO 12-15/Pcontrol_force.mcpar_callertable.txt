@@ -40,8 +40,49 @@ main
 		PWM_TIM1_Start
 			PWM_TIMx_Start
 				GPIO_Alternate_Function_Enable
+	InitTimer10
+		NVIC_IntEnable
+	strcpy
+	init_finger
+		strcmp
+		ADC_Set_Input_Channel
+			GPIO_Analog_Input
+				GPIO_Config
+	ADC1_Init
+		ADCx_Init
+			RCC_GetClocksFrequency
+	UART1_Write_Text
+		UARTx_Write_Text
+			UARTx_Write
+	init_timer11
+		NVIC_IntEnable
+	init_input_capture
+		NVIC_IntEnable
+		GPIO_Config
+		_UnsignedIntegralToLongDouble
+		_Div_DP
+	sample_finger
+		_UnsignedIntegralToLongDouble
+		_Mul_DP
+		_Div_DP
+		_LongDoubleToUnsignedIntegral
+			_LongDoubleToSignedIntegral
+		strcmp
+		ADC1_Get_Sample
+			ADCx_Get_Sample
+				Delay_1us
+	Pcontrol_force
+		strcmp
+		abs
 	move_pointer_finger
 		PWM_TIM1_Set_Duty
+	print_finger_info
+		UART1_Write_Text
+		LongWordToStr
+		LongToStr
+			LongWordToStr
+		IntToStr
+			WordToStr
 Timer10_interrupt
 emg_override_ISR
 timer11_ISR

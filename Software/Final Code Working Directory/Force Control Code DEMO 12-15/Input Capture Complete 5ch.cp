@@ -1,6 +1,6 @@
-#line 1 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
-#line 1 "c:/handgitrepo/prosthetichand/software/final code working directory/force control code demo 12-9/defines.h"
-#line 44 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 1 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 1 "c:/users/scsus/desktop/force control code demo 12-9/defines.h"
+#line 44 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
 unsigned long MCU_FREQUENCY = 168000000;
 unsigned long ENCODER_TIM_RELOAD = 65535;
 unsigned int ENCODER_TIM_PSC = 100;
@@ -25,7 +25,7 @@ unsigned int terminal_print_count;
 unsigned long tim2_overflow_count;
 unsigned long tim3_overflow_count;
 int analogGo = 0;
-int doShutoff = 0;
+int doShutdown = 0;
 int emg_override_status;
 
 
@@ -108,7 +108,7 @@ void main() {
  init_UART();
  init_GPIO();
  init_pointer_PWM(0);
-#line 164 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 164 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
  InitTimer10();
 
 
@@ -146,43 +146,28 @@ void main() {
  while(1) {
 
 
- if(analogGo && doShutoff)
+ if(analogGo && !doShutdown)
  {
-
- sample_finger(&fngr_pointer);
- while(fngr_pointer.position_actual >= FULLY_EXTENDED) {
- sample_finger(&fngr_pointer);
- move_pointer_finger(&fngr_pointer, 100);
- }
- move_pointer_finger(&fngr_pointer, 0);
- analogGo = 0;
- goStatus = 0;
- emg_override_status = 1;
- }
-
- if (analogGo && !doShutoff && poll_flag) {
+ if (poll_flag) {
  poll_flag = 0;
  sample_finger(&fngr_pointer);
  sample_finger(&fngr_middle);
  sample_finger(&fngr_ring);
  sample_finger(&fngr_pinky);
  sample_finger(&fngr_thumb);
+ }
 
 
- if(fngr_pointer.position_actual >= FULLY_CONTRACTED) {
- while(fngr_pointer.position_actual >= FULLY_EXTENDED) {
- sample_finger(&fngr_pointer);
- fngr_pointer.direction_desired =  1 ;
-  GPIOE_ODR.B10  =  1 ;
- }
- }
+
+ if(fngr_pointer.position_actual >= FULLY_CONTRACTED )
+ doShutdown = 1;
 
  MPV = fngr_pointer.tip_force;
 
  dutyCycle = Pcontrol_force(&fngr_pointer, setP, MPV);
-#line 251 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 236 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
  move_pointer_finger(&fngr_pointer, dutyCycle);
-#line 302 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 287 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
  }
 
  if (poll_flag && (terminal_print_count >= TERMINAL_PRINT_THRESH)) {
@@ -194,6 +179,26 @@ void main() {
  print_finger_info(&fngr_thumb);
  UART1_Write_Text("\n\n\n\n\n\n\n\r");
  }
+
+
+ if (doShutdown) {
+
+ while(fngr_pointer.position_actual >= FULLY_EXTENDED) {
+ sample_finger(&fngr_pointer);
+ fngr_pointer.direction_desired =  1 ;
+  GPIOE_ODR.B10  =  1 ;
+ move_pointer_finger(&fngr_pointer, 100);
+ }
+
+ move_pointer_finger(&fngr_pointer, 0);
+ analogGo = 0;
+ doShutdown = 0;
+  GPIOB_ODR.B7  = 0;
+ fngr_pointer.position_actual = 2;
+ }
+
+
+
  }
 }
 
@@ -551,7 +556,7 @@ void sample_finger( struct finger *fngr) {
  else {
  fngr->direction_actual = 7;
  }
-#line 682 "C:/HandGitRepo/ProstheticHand/Software/Final Code Working Directory/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
+#line 687 "C:/Users/SCSUS/Desktop/Force Control Code DEMO 12-9/Input Capture Complete 5ch.c"
  fngr->position_temp = 0;
 
 
@@ -636,18 +641,29 @@ void InitTimer10(){
 
 
 void Timer10_interrupt() iv IVT_INT_TIM1_UP_TIM10 {
+
  EXTI_IMRbits.MR3 = 0;
  EXTI_PR.B3 = 1;
  TIM10_DIER.UIE = 0;
  TIM10_SR.UIF = 0;
-
- analogGo = 1;
- doShutoff = ~doShutoff;
-  GPIOB_ODR.B7  = ~ GPIOB_ODR.B7 ;
-  GPIOB_ODR.B9  = 0;
  EXTI_RTSRbits.TR3 = 1;
  EXTI_FTSRbits.TR3 = 0;
  EXTI_IMRbits.MR3 = 1;
+  GPIOB_ODR.B9  = 0;
+ emg_override_status = 0;
+
+
+ if (!analogGo) {
+ doShutdown = 0;
+ analogGo = 1;
+  GPIOB_ODR.B7  = 1;
+ }
+
+ else {
+ doShutdown = 1;
+ analogGo = 0;
+
+}
 }
 
 
@@ -666,6 +682,7 @@ void emg_override_ISR() iv IVT_INT_EXTI3 {
  EXTI_FTSRbits.TR3 = 1;
  TIM10_DIER.UIE = 1;
   GPIOB_ODR.B9  = 1;
+
  }
  else {
  TIM10_DIER.UIE = 0;
@@ -673,6 +690,8 @@ void emg_override_ISR() iv IVT_INT_EXTI3 {
  EXTI_RTSRbits.TR3 = 1;
  EXTI_FTSRbits.TR3 = 0;
   GPIOB_ODR.B9  = 0;
+ analogGo = 0;
+ doShutdown = 1;
  }
  EXTI_IMRbits.MR3 = 1;
 }

@@ -34,15 +34,17 @@ Count=0
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=5
+Count=6
 Path0=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\
 Path1=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\
-Path2=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\
-Path3=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
-Path4=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
+Path2=C:\Users\SCSUS\Desktop\Force Control Code DEMO 12-9\
+Path3=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\
+Path4=C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\
+Path5=C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\
 [HEADER_PATH]
-Count=1
+Count=2
 Path0=C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\
+Path1=C:\Users\SCSUS\Desktop\Force Control Code DEMO 12-9\
 [HEADERS]
 Count=1
 File0=defines.h

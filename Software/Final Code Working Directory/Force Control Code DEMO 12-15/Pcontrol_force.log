@@ -1,0 +1,18 @@
+0	1	mikroCARM.exe -MSF -DBG -pSTM32F407VG -UICD -BIN -LHF -DL -SSA -O11111114 -fo168 -N"C:\Users\SCSUS\Desktop\Force Control Code DEMO 12-9\Pcontrol_force.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\" -SP"C:\Users\SCSUS\Desktop\Force Control Code DEMO 12-9\" -SP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" -SP"C:\HandGitRepo\ProstheticHand\Software\Programming Practice\Input Capture Full Demo\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\ST M4\" -IP"C:\HandGitRepo\ProstheticHand\Software\Final Code Working Directory\Force Control Code DEMO 12-9\" -IP"C:\Users\SCSUS\Desktop\Force Control Code DEMO 12-9\" "Input Capture Complete 5ch.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_4XX.emcl" "__Lib_GPIO_32F4xx_Defs.emcl" "__Lib_GPIO_32F4xx.emcl" "__Lib_CType.emcl" "__Lib_CString.emcl" "__Lib_CStdlib.emcl" "__Lib_Conversions.emcl" "__Lib_ADC_123_32F20x_16ch.emcl" "__Lib_PWM_1234589_12_10_11_13_14.emcl" "__Lib_UART_123_45_6.emcl"	 
+diagnostics: 0	122	Compilation Started	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (timer2_ISR at 0x002C)	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (timer3_ISR at 0x002D)	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (timer11_ISR at 0x002A)	Input Capture Complete 5ch.c
+hint: 718	1163	Variable 'direction_text' has been declared, but not used	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (Timer10_interrupt at 0x0029)	Input Capture Complete 5ch.c
+hint: 0	1004	interrupt handler (emg_override_ISR at 0x0019)	Input Capture Complete 5ch.c
+diagnostics: 824	123	Compiled Successfully	Input Capture Complete 5ch.c
+hint: 353	1164	Variable 'fngr' has been eliminated by optimizer	Input Capture Complete 5ch.c
+diagnostics: 0	127	All files Compiled in 344 ms	 
+hint: 0	1144	Used RX: 16 (100%)   Free RX: 0 (0%)	Used RX: 16 (100%)   Free RX: 0 (0%)
+hint: 0	1144	Static RAM (bytes): 981   Dynamic RAM (bytes): 130085	Static RAM (bytes): 981   Dynamic RAM (bytes): 130085
+hint: 0	1144	Used ROM (bytes): 11514 (1%)  Free ROM (bytes): 1037062 (99%)	Used ROM (bytes): 11514 (1%)  Free ROM (bytes): 1037062 (99%)
+diagnostics: 0	125	Project Linked Successfully	Pcontrol_force.mcpar
+diagnostics: 0	128	Linked in 1281 ms	 
+diagnostics: 0	129	Project 'Pcontrol_force.mcpar' completed: 2172 ms	 
+diagnostics: 0	103	Finished successfully: 15 Dec 2016, 08:46:58	Pcontrol_force.mcpar
